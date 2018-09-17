@@ -16,3 +16,9 @@
 ###< symfony/web-server-bundle ###
 /node_modules/
 .idea
+
+###> symfony/webpack-encore-pack ###
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-pack ###
