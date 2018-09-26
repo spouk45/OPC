@@ -9,6 +9,9 @@
 namespace App\DataFixtures;
 
 
+use App\Entity\ExtractionType;
+use App\Entity\HeatingSource;
+use App\Entity\HeatingType;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -37,6 +40,24 @@ class AppFixtures extends Fixture
             $this->addReference($username, $user);
         }
 
+        foreach ($this->getHeatingTypeData() as [$name]){
+            $heatingType = new HeatingType();
+            $heatingType->setName($name);
+            $manager->persist($heatingType);
+        }
+
+        foreach ($this->getHeatingSourceData() as [$name]){
+            $heatingSource = new HeatingSource();
+            $heatingSource->setName($name);
+            $manager->persist($heatingSource);
+        }
+
+        foreach ($this->getExtractionTypeData() as [$name]){
+            $extractionType = new ExtractionType();
+            $extractionType->setName($name);
+            $manager->persist($extractionType);
+        }
+
         $manager->flush();
     }
 
@@ -50,5 +71,28 @@ class AppFixtures extends Fixture
         ];
     }
 
+    private function getHeatingTypeData(): array
+    {
+        return [
+            // $userData = [$fullname, $username, $password, $email, $roles];
+            ['chaudière', 'chauffe eau', 'chauffe bain',],
+        ];
+    }
+
+    private function getHeatingSourceData(): array
+    {
+        return [
+            // $userData = [$fullname, $username, $password, $email, $roles];
+            ['propane', 'gaz de ville', 'électrique',],
+        ];
+    }
+
+    private function getExtractionTypeData(): array
+    {
+        return [
+            // $userData = [$fullname, $username, $password, $email, $roles];
+            ['conduit', 'ventouse'],
+        ];
+    }
 
 }

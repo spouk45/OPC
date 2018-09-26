@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Heating index{% endblock %}
+
+{% block body %}
+    <h1>Heating index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>OnTheGround</th>
+                <th>Comment</th>
+                <th>ContratDate</th>
+                <th>MaintenanceAnniversary</th>
+                <th>LastMaintenanceDate</th>
+                <th>ContractInProgress</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for heating in heatings %}
+            <tr>
+                <td>{{ heating.id }}</td>
+                <td>{{ heating.onTheGround ? 'Yes' : 'No' }}</td>
+                <td>{{ heating.comment }}</td>
+                <td>{{ heating.contratDate ? heating.contratDate|date('Y-m-d') : '' }}</td>
+                <td>{{ heating.maintenanceAnniversary ? heating.maintenanceAnniversary|date('Y-m-d') : '' }}</td>
+                <td>{{ heating.lastMaintenanceDate ? heating.lastMaintenanceDate|date('Y-m-d') : '' }}</td>
+                <td>{{ heating.contractInProgress ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('heating_show', {'id': heating.id}) }}">show</a>
+                    <a href="{{ path('heating_edit', {'id': heating.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('heating_new') }}">Create new</a>
+{% endblock %}
