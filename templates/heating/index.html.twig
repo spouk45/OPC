@@ -8,26 +8,21 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>OnTheGround</th>
-                <th>Comment</th>
-                <th>ContratDate</th>
-                <th>MaintenanceAnniversary</th>
-                <th>LastMaintenanceDate</th>
-                <th>ContractInProgress</th>
-                <th>actions</th>
+                <th>Type de chauffage</th>
+                <th>Source d'énergie</th>
+                <th>Type d'extraction</th>
+                <th>Désignation</th>
+                <th>Posé au sol ?</th>
             </tr>
         </thead>
         <tbody>
         {% for heating in heatings %}
             <tr>
-                <td>{{ heating.id }}</td>
-                <td>{{ heating.onTheGround ? 'Yes' : 'No' }}</td>
-                <td>{{ heating.comment }}</td>
-                <td>{{ heating.contratDate ? heating.contratDate|date('Y-m-d') : '' }}</td>
-                <td>{{ heating.maintenanceAnniversary ? heating.maintenanceAnniversary|date('Y-m-d') : '' }}</td>
-                <td>{{ heating.lastMaintenanceDate ? heating.lastMaintenanceDate|date('Y-m-d') : '' }}</td>
-                <td>{{ heating.contractInProgress ? 'Yes' : 'No' }}</td>
+                <td>{{ heating.heatingType.name }}</td>
+                <td>{{ heating.sourceType.name }}</td>
+                <td>{{ heating.extractionType.name }}</td>
+                <td>{{ heating.designation }}</td>
+                <td>{{ heating.onTheGround ? 'Oui' : 'Non' }}</td>
                 <td>
                     <a href="{{ path('heating_show', {'id': heating.id}) }}">show</a>
                     <a href="{{ path('heating_edit', {'id': heating.id}) }}">edit</a>

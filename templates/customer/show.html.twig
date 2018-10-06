@@ -45,6 +45,7 @@
     <a href="{{ path('customer_index') }}">back to list</a>
 
     <a href="{{ path('customer_edit', {'id': customer.id}) }}">edit</a>
+    <a class="btn btn-primary" href="{{ path('customer_heating_new', {'id': customer.id}) }}">Ajouter un produit</a>
 
     {{ include('customer/_delete_form.html.twig') }}
 {% endblock %}

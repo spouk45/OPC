@@ -25,7 +25,7 @@ security:
                 # Securisation des formulaires
                 csrf_token_generator: security.csrf.token_manager
                 # La page par defaut apres une connexion reussie
-                default_target_path: admin
+                default_target_path: index
 
             logout:
                 # La route où se trouve le process de deconnexion
@@ -42,6 +42,7 @@ security:
         # Là dans ce cas seul les utilisateurs ayant le rôle ROLE_ADMIN
         # peuvent acceder à toutes les pages commençant par /admin
         - { path: '^/admin', roles: ROLE_ADMIN }
-        - { path: '^/', roles: ROLE_USER }
+
+
     encoders:
         App\Entity\User: bcrypt

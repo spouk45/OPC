@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CustomerHeating{% endblock %}
+
+{% block body %}
+    <h1>CustomerHeating</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ customer_heating.id }}</td>
+            </tr>
+            <tr>
+                <th>Mark</th>
+                <td>{{ customer_heating.mark }}</td>
+            </tr>
+            <tr>
+                <th>Model</th>
+                <td>{{ customer_heating.model }}</td>
+            </tr>
+            <tr>
+                <th>Serial</th>
+                <td>{{ customer_heating.serial }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ customer_heating.comment }}</td>
+            </tr>
+            <tr>
+                <th>ContractDate</th>
+                <td>{{ customer_heating.contractDate ? customer_heating.contractDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>AnniversaryDate</th>
+                <td>{{ customer_heating.anniversaryDate ? customer_heating.anniversaryDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>LastMaintenanceDate</th>
+                <td>{{ customer_heating.lastMaintenanceDate ? customer_heating.lastMaintenanceDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ContractFinish</th>
+                <td>{{ customer_heating.contractFinish ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('customer_heating_index') }}">back to list</a>
+
+    <a href="{{ path('customer_heating_edit', {'id': customer_heating.id}) }}">edit</a>
+
+    {{ include('customer_heating/_delete_form.html.twig') }}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New CustomerHeating{% endblock %}
+
+{% block body %}
+    <h1>Create new CustomerHeating</h1>
+
+    {{ include('customer_heating/_form.html.twig') }}
+
+
+
+    <a href="{{ path('customer_heating_index') }}">back to list</a>
+{% endblock %}

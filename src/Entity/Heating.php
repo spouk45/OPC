@@ -45,6 +45,11 @@ class Heating
      */
     private $customerHeatings;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $designation;
+
     public function __construct()
     {
         $this->customerHeatings = new ArrayCollection();
@@ -130,6 +135,18 @@ class Heating
     public function setExtractionType(?ExtractionType $extractionType): self
     {
         $this->extractionType = $extractionType;
+
+        return $this;
+    }
+
+    public function getDesignation(): ?string
+    {
+        return $this->designation;
+    }
+
+    public function setDesignation(string $designation): self
+    {
+        $this->designation = $designation;
 
         return $this;
     }

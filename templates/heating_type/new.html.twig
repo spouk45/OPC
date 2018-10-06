@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New HeatingType{% endblock %}
+
+{% block body %}
+    <h1>Create new HeatingType</h1>
+
+    {{ include('heating_type/_form.html.twig') }}
+
+    <a href="{{ path('heating_type_index') }}">back to list</a>
+{% endblock %}

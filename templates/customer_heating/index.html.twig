@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CustomerHeating index{% endblock %}
+
+{% block body %}
+    <h1>CustomerHeating index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Mark</th>
+                <th>Model</th>
+                <th>Serial</th>
+                <th>Comment</th>
+                <th>ContractDate</th>
+                <th>AnniversaryDate</th>
+                <th>LastMaintenanceDate</th>
+                <th>ContractFinish</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for customer_heating in customer_heatings %}
+            <tr>
+                <td>{{ customer_heating.id }}</td>
+                <td>{{ customer_heating.mark }}</td>
+                <td>{{ customer_heating.model }}</td>
+                <td>{{ customer_heating.serial }}</td>
+                <td>{{ customer_heating.comment }}</td>
+                <td>{{ customer_heating.contractDate ? customer_heating.contractDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ customer_heating.anniversaryDate ? customer_heating.anniversaryDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ customer_heating.lastMaintenanceDate ? customer_heating.lastMaintenanceDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ customer_heating.contractFinish ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('customer_heating_show', {'id': customer_heating.id}) }}">show</a>
+                    <a href="{{ path('customer_heating_edit', {'id': customer_heating.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('customer_heating_new') }}">Create new</a>
+{% endblock %}
