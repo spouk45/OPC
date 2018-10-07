@@ -34,10 +34,6 @@ class CustomerHeatingController extends AbstractController
         $customerHeating = new CustomerHeating();
         $form = $this->createForm(CustomerHeatingType::class, $customerHeating);
         $form->handleRequest($request);
-//
-//        $heating = new Heating();
-//        $formHeating = $this->createForm(HeatingType::class, $heating);
-//        $formHeating->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $customerHeating->setCustomer($customer);
@@ -45,23 +41,14 @@ class CustomerHeatingController extends AbstractController
             $em->persist($customerHeating);
             $em->flush();
 
-            return $this->redirectToRoute('customer_heating_index');
+            return $this->redirectToRoute('customer_show',['id' => $customer->getId()]);
         }
-
-//        if ($formHeating->isSubmitted() && $formHeating->isValid()) {
-//            $em = $this->getDoctrine()->getManager();
-//            $em->persist($heating);
-//            $em->flush();
-//
-//            $data = ['ok'];
-//            return $this->json($data);
-//        }
 
 
         return $this->render('customer_heating/new.html.twig', [
             'customer_heating' => $customerHeating,
             'form' => $form->createView(),
-//            'formHeating' => $formHeating->createView(),
+            'customer' => $customer,
         ]);
     }
 

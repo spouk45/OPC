@@ -1,4 +1,8 @@
 {{ form_start(form) }}
+{{ form_label(form.designation) }}
+<a class="btn btn-outline-secondary btn-sm ml-4" id="addNameHeating">Generation auto</a>
+{{ form_widget(form.designation) }}
+
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
 {{ form_end(form) }}

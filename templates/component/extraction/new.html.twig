@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ExtractionType{% endblock %}
+
+{% block body %}
+    <h1>Create new ExtractionType</h1>
+
+    {{ include('extraction_type/_form.html.twig') }}
+
+    <a href="{{ path('extraction_type_index') }}">back to list</a>
+{% endblock %}

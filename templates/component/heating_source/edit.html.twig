@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit HeatingSource{% endblock %}
+
+{% block body %}
+    <h1>Edit HeatingSource</h1>
+
+    {{ include('heating_source/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('heating_source_index') }}">back to list</a>
+
+    {{ include('heating_source/_delete_form.html.twig') }}
+{% endblock %}

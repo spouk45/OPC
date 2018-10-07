@@ -3,9 +3,14 @@
 {% block title %}New Heating{% endblock %}
 
 {% block body %}
-    <h1>Create new Heating</h1>
+    <h1>Création d'un système de chauffe</h1>
 
     {{ include('heating/_form.html.twig') }}
 
-    <a href="{{ path('heating_index') }}">back to list</a>
+    <a class="btn btn-info mt-4" href="{{ path('heating_index') }}">Retour à la liste</a>
+
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('build/test.js') }}">
+</script>
 {% endblock %}

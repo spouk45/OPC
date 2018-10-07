@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}HeatingSource{% endblock %}
+
+{% block body %}
+    <h1>HeatingSource</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ heating_source.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ heating_source.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('heating_source_index') }}">back to list</a>
+
+    <a href="{{ path('heating_source_edit', {'id': heating_source.id}) }}">edit</a>
+
+    {{ include('heating_source/_delete_form.html.twig') }}
+{% endblock %}

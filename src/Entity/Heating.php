@@ -30,7 +30,7 @@ class Heating
     private $sourceType;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\ExtractionType", inversedBy="heatings")
+     * @ORM\ManyToOne(targetEntity="Extraction", inversedBy="heatings")
      */
     private $extractionType;
 
@@ -127,12 +127,12 @@ class Heating
         return $this;
     }
 
-    public function getExtractionType(): ?ExtractionType
+    public function getExtractionType(): ?Extraction
     {
         return $this->extractionType;
     }
 
-    public function setExtractionType(?ExtractionType $extractionType): self
+    public function setExtractionType(?Extraction $extractionType): self
     {
         $this->extractionType = $extractionType;
 

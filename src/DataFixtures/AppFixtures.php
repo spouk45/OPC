@@ -9,7 +9,7 @@
 namespace App\DataFixtures;
 
 
-use App\Entity\ExtractionType;
+use App\Entity\Extraction;
 use App\Entity\HeatingSource;
 use App\Entity\HeatingType;
 use App\Entity\User;
@@ -53,7 +53,7 @@ class AppFixtures extends Fixture
         }
 
         foreach ($this->getExtractionTypeData() as [$name]){
-            $extractionType = new ExtractionType();
+            $extractionType = new Extraction();
             $extractionType->setName($name);
             $manager->persist($extractionType);
         }

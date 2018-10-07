@@ -5,6 +5,8 @@
 {% block body %}
     <h1>Heating index</h1>
 
+
+
     <table class="table">
         <thead>
             <tr>
@@ -36,5 +38,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('heating_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('heating_new') }}">Create new</a>
+
+    <a class="btn btn-info" href="{{ path('component') }}">Gestion des Composant</a>
+
 {% endblock %}

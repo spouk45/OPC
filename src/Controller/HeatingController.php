@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Heating;
 use App\Form\HeatingType;
+use App\Repository\ExtractionTypeRepository;
 use App\Repository\HeatingRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,4 +88,6 @@ class HeatingController extends AbstractController
 
         return $this->redirectToRoute('heating_index');
     }
+
+
 }

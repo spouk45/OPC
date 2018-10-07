@@ -2,21 +2,21 @@
 
 namespace App\Repository;
 
-use App\Entity\ExtractionType;
+use App\Entity\Extraction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method ExtractionType|null find($id, $lockMode = null, $lockVersion = null)
- * @method ExtractionType|null findOneBy(array $criteria, array $orderBy = null)
- * @method ExtractionType[]    findAll()
- * @method ExtractionType[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Extraction|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Extraction|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Extraction[]    findAll()
+ * @method Extraction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class ExtractionTypeRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, ExtractionType::class);
+        parent::__construct($registry, Extraction::class);
     }
 
 //    /**
