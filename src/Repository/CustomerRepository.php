@@ -22,19 +22,19 @@ class CustomerRepository extends ServiceEntityRepository
 //    /**
 //     * @return Customer[] Returns an array of Customer objects
 //     */
-    /*
-    public function findByExampleField($value)
+
+    public function findLikeName($value)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('c.name LIKE :name')
+            ->setParameter('name', '%'.$value.'%')
+            ->orderBy('c.name', 'ASC')
+            ->setMaxResults(50)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Customer

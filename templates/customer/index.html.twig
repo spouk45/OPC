@@ -9,6 +9,13 @@
             <a class="btn btn-primary" href="{{ path('customer_new') }}">Ajouter</a>
         </div>
     </div>
+    <div class="row">
+        <div class="col">
+            {{ form_start(customerSearch) }}
+            {{ form_widget(customerSearch) }}
+            {{ form_end(customerSearch) }}
+        </div>
+    </div>
     <div class="row mt-4" >
         <div class="col">
             <table class="table">
