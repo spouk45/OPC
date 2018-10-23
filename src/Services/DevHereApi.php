@@ -16,7 +16,7 @@ class DevHereApi
 
     /**
      * @param $address
-     * @return bool|string
+     * @return array
      */
     public function geocodeAddress($address): array
     {
@@ -26,10 +26,16 @@ class DevHereApi
         //on formate l'adresse
         $address = urlencode($address . ' France');
         $url = 'https://geocoder.api.here.com/6.2/geocode.json?app_id=' . getenv(self::API_KEY) . '&app_code=' . getenv(self::APP_CODE) . '&searchtext=' . $address;
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $res = curl_exec($ch);
+        curl_close($ch);
+        dd($res);
+
         $json = file_get_contents($url);
 //        //on enregistre les résultats recherchés
         $json = json_decode($json);
-        dump($json);
         if (count($json->Response->View) > 0) {
             $res = $json->Response->View[0]->Result[0];
             $data['location'] = ['lat' => $res->Location->DisplayPosition->Latitude,
