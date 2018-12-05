@@ -1,0 +1,72 @@
+{% block stylesheets %}
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 500px;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div id="map" data-coord="{{ coords }}"></div>
+
+{% endblock %}
+{% block javascripts %}
+    {#<script src="{{ asset('build/mapApi.js') }}"></script>#}
+    {#<script src="{{ asset('build/getCoord.js') }}"></script>#}
+    <script>
+        function initMap() {
+            if (locations != null && locations != [] ) {
+
+                const map = new google.maps.Map(document.getElementById('map'));
+
+                // Create an array of alphabetical characters used to label the markers.
+                const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+                // Add some markers to the map.
+                // Note: The code uses the JavaScript Array.prototype.map() method to
+                // create an array of markers based on a given "locations" array.
+                // The map() method here has nothing to do with the Google Maps API.
+                let bounds = new google.maps.LatLngBounds();
+
+                const markers = locations.map(function (location, i) {
+                    let loc = new google.maps.LatLng(location.lat, location.lng);
+                    bounds.extend(loc);
+
+                    return new google.maps.Marker({
+                        position: location,
+                        label: labels[i % labels.length]
+                    });
+                });
+
+                map.fitBounds(bounds);
+                map.panToBounds(bounds);
+
+                // Add a marker clusterer to manage the markers.
+                const markerCluster = new MarkerClusterer(map, markers,
+                    {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+            } else {
+                console.log("aucune coord récupéré");
+            }
+        }
+
+        // $.post('/customer/coord',function(coord){
+        //     $('#map').attr('data-coord',coord);
+        // });
+        var locations = JSON.parse($('#map').attr('data-coord'));
+
+    </script>
+    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaUI_ArQijMpu9trqK4mPIfCGGqKa_DDg&callback=initMap">
+    </script>
+{% endblock %}

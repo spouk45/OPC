@@ -14,4 +14,3 @@ require('../css/app.scss');
 global.$ = global.jQuery = $;
 require('bootstrap');
 
-

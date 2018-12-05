@@ -11,6 +11,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 class IndexController extends Controller
 {
     /**
@@ -18,7 +19,11 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return $this->render('index.html.twig');
+        $coords = $this->forward('App\Controller\CustomerController::getCoordFor2NextMonthContract');
+        return $this->render('index.html.twig', [
+                'coords' => $coords->getContent(),
+            ]
+        );
     }
 
     /**

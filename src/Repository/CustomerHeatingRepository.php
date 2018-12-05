@@ -3,8 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\CustomerHeating;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @method CustomerHeating|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +21,18 @@ class CustomerHeatingRepository extends ServiceEntityRepository
         parent::__construct($registry, CustomerHeating::class);
     }
 
+    public function findByAnniversaryDate2MonthNext(){
+        $date = new DateTime();
+        $date2 = new DateTime();
+        $date2->modify('+2 month');
+        return $this->createQueryBuilder('ch')
+            ->andWhere('ch.anniversaryDate > :date')
+            ->andWhere('ch.anniversaryDate < :date2')
+            ->setParameter('date',$date)
+            ->setParameter('date2',$date2)
+            ->getQuery()
+            ->getResult();
+    }
 //    /**
 //     * @return CustomerHeating[] Returns an array of CustomerHeating objects
 //     */

@@ -7,6 +7,8 @@
         "ext-curl": "^7.2",
         "ext-iconv": "*",
         "ext-json": "^1.6",
+        "google/apiclient": "^2.2",
+        "guzzlehttp/guzzle": "^6.3",
         "sensio/framework-extra-bundle": "^5.1",
         "symfony/asset": "*",
         "symfony/console": "*",

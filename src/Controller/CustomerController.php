@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Customer;
+use App\Entity\CustomerHeating;
 use App\Form\CustomerSearchType;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
@@ -58,7 +59,7 @@ class CustomerController extends AbstractController
             $resApi = $devHereApi->geocodeAddress($customer->getAdress());
             if($resApi['error'] == null ){
                 $location = $resApi['location'];
-                $customer->setCoordGPS(json_encode($location));
+                $customer->setCoordGPS(($location));
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($customer);
                 $em->flush();
@@ -115,5 +116,21 @@ class CustomerController extends AbstractController
         }
 
         return $this->redirectToRoute('customer_index');
+    }
+    /**
+     * @Route("/coord", name="customers_coords", methods="POST")
+     */
+    public function getCoordFor2NextMonthContract()
+    {
+        $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByAnniversaryDate2MonthNext();
+        $coords = [];
+        if($customerHeatings != null){
+            foreach($customerHeatings as $customerHeating){
+                if($customerHeating->getCustomer()->getCoordGPS() != null){
+                    $coords[]= $customerHeating->getCustomer()->getCoordGPS();
+                }
+            }
+        }
+        return $this->json($coords);
     }
 }

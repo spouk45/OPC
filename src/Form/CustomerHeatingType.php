@@ -34,7 +34,8 @@ class CustomerHeatingType extends AbstractType
             ])
 //            ->add('lastMaintenanceDate',DateType::class,['label'=>'Commentaire'])
             ->add('contractFinish', CheckboxType::class, [
-                'label' => 'Contrat Rompu ?'
+                'label' => 'Contrat Rompu ?',
+                'required' => false,
             ])
 //            ->add('customer',EntityType::class,['label'=>'Client'])
             ->add('heating', EntityType::class, [
