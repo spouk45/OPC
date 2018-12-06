@@ -8,20 +8,43 @@
 
 namespace App\Controller;
 
+use App\Entity\CustomerHeating;
+use App\Services\ExtractCustomer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class IndexController extends Controller
 {
     /**
+     * @param ExtractCustomer $extractCustomer
+     * @return Response
      * @Route("/", name="index")
      */
-    public function index()
+    public function index(ExtractCustomer $extractCustomer)
     {
-        $coords = $this->forward('App\Controller\CustomerController::getCoordFor2NextMonthContract');
+        //$view = $this->forward('App\Controller\CustomerController::showCustomersNeedMaintenanceForMap');
+        $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByContractFinish(false);
+        $customers = $extractCustomer->extractCustomerNeedMaintenance($customerHeatings);
+
+        $encoder = new JsonEncoder();
+        $normalizer = new ObjectNormalizer();
+
+        // all callback parameters are optional (you can omit the ones you don't use)
+        $normalizer->setCircularReferenceHandler(function ($object, string $format = null, array $context = array()) {
+            return $object->getId();
+        });
+
+        $serializer = new Serializer(array($normalizer), array($encoder));
+
+        $jsonContent = $serializer->serialize($customers, 'json');
+        dump($jsonContent);
         return $this->render('index.html.twig', [
-                'coords' => $coords->getContent(),
+                'customers' => $jsonContent,
             ]
         );
     }

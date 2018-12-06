@@ -8,6 +8,7 @@ use App\Form\CustomerSearchType;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use App\Services\DevHereApi;
+use App\Services\ExtractCustomer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -117,20 +118,22 @@ class CustomerController extends AbstractController
 
         return $this->redirectToRoute('customer_index');
     }
-    /**
-     * @Route("/coord", name="customers_coords", methods="POST")
-     */
-    public function getCoordFor2NextMonthContract()
-    {
-        $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByAnniversaryDate2MonthNext();
-        $coords = [];
-        if($customerHeatings != null){
-            foreach($customerHeatings as $customerHeating){
-                if($customerHeating->getCustomer()->getCoordGPS() != null){
-                    $coords[]= $customerHeating->getCustomer()->getCoordGPS();
-                }
-            }
-        }
-        return $this->json($coords);
-    }
+
+
+//    /**
+//     * @param ExtractCustomer $extractCustomer
+//     * @return \Symfony\Component\HttpFoundation\JsonResponse
+//     * @Route("/map", name="customer_delete", methods="GET|POST")
+//     */
+//    public function getCustomersNeedMaintenanceForMap(ExtractCustomer $extractCustomer)
+//    {
+//         // on récupère la liste de client en contrat
+//         $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByContractFinish(false);
+//         $customers = $extractCustomer->extractCustomerNeedMaintenance($customerHeatings);
+//
+//         // on reconstruit un tableau pour avoir seulement les données nécessaires
+//
+//            return $this->json($customers);
+//    }
+
 }
