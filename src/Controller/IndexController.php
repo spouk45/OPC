@@ -36,7 +36,11 @@ class IndexController extends Controller
 
         // all callback parameters are optional (you can omit the ones you don't use)
         $normalizer->setCircularReferenceHandler(function ($object, string $format = null, array $context = array()) {
-            return $object->getId();
+            if( method_exists($object, 'getName')){
+                return $object->getName();
+            }else{
+                return $object->getId();
+            }
         });
 
         $serializer = new Serializer(array($normalizer), array($encoder));

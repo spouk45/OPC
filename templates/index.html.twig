@@ -17,7 +17,7 @@
 
 {% block body %}
     <a href="{{ path('security_login')}}"> Connexion</a>
-    <div id="map" data-coord="{{ customers }}"></div>
+    <div id="map" data-customers="{{ customers }}" ></div>
 
 {% endblock %}
 {% block javascripts %}
@@ -87,7 +87,15 @@
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     }
 
-    var locations = JSON.parse($('#map').attr('data-coord'));
+    function getCoords(customers){
+        let coords = [];
+        customers.forEach(function(customer){
+            coords.push(customer.coordGPS);
+        });
+        return coords;
+    }
+
+    let locations = getCoords(JSON.parse($('#map').attr('data-customers')));
 
 </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">

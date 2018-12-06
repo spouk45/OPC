@@ -45,6 +45,7 @@ class ExtractCustomer
                 }
             }
 
+            sort($customers);
             return $customers;
         }
     }
