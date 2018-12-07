@@ -45,45 +45,24 @@
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     }
 
-    function extractMarker(customersData,bounds){
-        let customers = [];
-        customersData.green.forEach(function(customer){
-            customer.color = 'green';
-            customers.push(customer);
-        });
-        customersData.red.forEach(function(customer){
-            customer.color = 'red';
-            customers.push(customer);
-        });
-        customersData.orange.forEach(function(customer){
-            customer.color = 'orange';
-            customers.push(customer);
-        });
+    function extractMarker(customers,bounds){
+        console.log(customers);
+        console.log(customers.length);
 
         if(customers!= null && customers.length > 0) {
+
             return customers.map(function (customer, i) {
-                let icon = 'green.png';
-                if(customer.color === 'green'){
-                    icon = 'green.png'
-                }
-                if(customer.color === 'red'){
-                    icon = 'red.png'
-                }
-                if(customer.color === 'orange'){
-                    icon = 'orange.png'
-                }
-                let loc = new google.maps.LatLng(customer.coordGPS.lat, customer.coordGPS.lng);
+                let icon = customer.color+'.png';
+
+                let loc = new google.maps.LatLng(customer.location.lat, customer.location.lng);
                 bounds.extend(loc);
                 let marker = new google.maps.Marker({
                     position: loc,
-                    // label: labels[i % labels.length],
-                    title: customer.name + ' ' + customer.firstname,
+                    title: customer.fullName,
                     icon: 'img/'+icon,
                 });
 
-                let date = new Date(customer.customerHeatings[0].contractDate.timestamp);
-                console.log(date);
-                let contentString = customer.adress + '<br>' + date.getDate() + '/' + (date.getMonth() +1);
+                let contentString = '<b>Adresse :</b> '+ customer.adress + '<br> <b>Date d\'anniversaire de contrat : </b>'+ customer.annivContratDate;
                 let infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });

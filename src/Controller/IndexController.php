@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\CustomerHeating;
 use App\Services\ExtractCustomer;
+use App\Services\MySerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,7 +26,7 @@ class IndexController extends Controller
      * @return Response
      * @Route("/", name="index")
      */
-    public function index(ExtractCustomer $extractCustomer)
+    public function index(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
     {
         //$view = $this->forward('App\Controller\CustomerController::showCustomersNeedMaintenanceForMap');
         $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByContractFinish(false);
@@ -35,24 +36,33 @@ class IndexController extends Controller
         // trie par coleur des clients en fonction de sa date de contrat
         $customersFiltered = $extractCustomer->filterCustomersByPeriodMaintenance($customers);
 
-        $encoder = new JsonEncoder();
-        $normalizer = new ObjectNormalizer();
-
-        // all callback parameters are optional (you can omit the ones you don't use)
-        $normalizer->setCircularReferenceHandler(function ($object, string $format = null, array $context = array()) {
-            if( method_exists($object, 'getName')){
-                return $object->getName();
-            }else{
-                return $object->getId();
+        // TODO : à perfectionner
+        $customers = [];
+        if($customersFiltered['red'] != null){
+            foreach ($customersFiltered['red'] as $customer){
+                $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
+                $customerFo['color'] = 'red';
+                $customers[] = $customerFo;
             }
-        });
+        }
+        if($customersFiltered['orange'] != null){
+            foreach ($customersFiltered['orange'] as $customer){
+                $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
+                $customerFo['color'] = 'orange';
+                $customers[] = $customerFo;
+            }
+        }
+        if($customersFiltered['green'] != null){
+            foreach ($customersFiltered['green'] as $customer){
+                $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
+                $customerFo['color'] = 'green';
+                $customers[] = $customerFo;
+            }
+        }
 
-        $serializer = new Serializer(array($normalizer), array($encoder));
-
-
-        $jsonContent = $serializer->serialize($customersFiltered, 'json');
+        $customers = $mySerializer->serialize($customers);
         return $this->render('index.html.twig', [
-                'customers' => $jsonContent,
+                'customers' => $customers,
             ]
         );
     }

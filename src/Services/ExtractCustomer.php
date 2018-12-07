@@ -15,7 +15,7 @@ use DateTime;
 
 class ExtractCustomer
 {
-    const GREEN = '+2 month'; // period between now and limit date maintenance
+    const LIMIT_DATE_MAINTENANCE = '+2 month'; // period between now and limit date maintenance
     const ORANGE = '+1 month';
 
     public function extractCustomerNeedMaintenance(array $customerHeatings): array
@@ -34,10 +34,7 @@ class ExtractCustomer
                 $anniversary = $customerHeating->getAnniversaryDate();
 
                 // on regle la date d'anniversaire sur l'année en cours
-                if ($anniversary->format('Y') < $now->format('Y')) {
-                    $nbYear = $now->format('Y') - $anniversary->format('Y');
-                    $anniversary->modify('+' . $nbYear . ' year');
-                }
+                $anniversary = $this->setAnniversaryDateToActual($anniversary);
 
                 if (
                     ($lastMaintenance < $date6MonthAgo &&  // si la derniere maitenance date de plus 6 mois
@@ -51,15 +48,30 @@ class ExtractCustomer
             sort($customers);
 
 //            return  $this->filterCustomersByPeriodMaintenance($customers);
-            return  $customers;
+            return $customers;
         }
+    }
+
+    public function setAnniversaryDateToActual(DateTime $anniversary): DateTime
+    {
+        $now = new DateTime();
+        if ($anniversary->format('Y') < $now->format('Y')) {
+            $nbYear = $now->format('Y') - $anniversary->format('Y');
+            $anniversary->modify('+' . $nbYear . ' year');
+
+            $temp = new DateTime();
+            $temp->modify('-10 month');
+            if($anniversary < $temp){
+                $anniversary->modify('+1 year');
+            }
+        }
+        return $anniversary;
     }
 
     public function filterCustomersByPeriodMaintenance(array $customers): array
     {
         $now = new DateTime();
         $orange = new DateTime(self::ORANGE);
-        $green = new DateTime(self::GREEN);
 
         $data = ['green' => [], 'orange' => [], 'red' => []];
 
@@ -67,10 +79,12 @@ class ExtractCustomer
         foreach ($customers as $customer) {
             /** @var DateTime $anniversary */
             $anniversary = $customer->getCustomerHeatings()[0]->getAnniversaryDate();
-            $month = $anniversary->format('m');
-            $day = $anniversary->format('d');
-            $year = $now->format('Y');
-            $anniversary = DateTime::createFromFormat('Y-m-d',$year.'-'.$month.'-'.$day);
+//            $month = $anniversary->format('m');
+//            $day = $anniversary->format('d');
+//            $year = $now->format('Y');
+//            $anniversary = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
+            $anniversary = $this->setAnniversaryDateToActual($anniversary);
+            dump($anniversary);
             if ($anniversary < $now) {
                 $data['red'][] = $customer;
             } else if ($anniversary < $orange) {
@@ -79,6 +93,18 @@ class ExtractCustomer
                 $data['green'][] = $customer;
             }
         }
+        return $data;
+    }
+
+    public function createCustomerForJsonExportToMap(Customer $customer): array
+    {
+        $data = [
+            'fullName' => $customer->getName() . ' ' . $customer->getFirstname(),
+            'adress' => $customer->getAdress(),
+            'location' => $customer->getCoordGPS(),
+            'annivContratDate' => $customer->getCustomerHeatings()[0]->getAnniversaryDate()->format('d M'),
+        ];
+
         return $data;
     }
 }
