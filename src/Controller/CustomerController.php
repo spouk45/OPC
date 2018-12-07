@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Customer;
-use App\Entity\CustomerHeating;
 use App\Form\CustomerSearchType;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use App\Services\DevHereApi;
-use App\Services\ExtractCustomer;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

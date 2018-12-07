@@ -30,6 +30,9 @@ class ExtractCustomer
             /** @var CustomerHeating $customerHeating */
             foreach ($customerHeatings as $customerHeating) {
                 $lastMaintenance = $customerHeating->getLastMaintenanceDate();
+                if($lastMaintenance == null){
+                    $lastMaintenance = $customerHeating->getContractDate();
+                }
                 /** @var  DateTime $anniversary */
                 $anniversary = $customerHeating->getAnniversaryDate();
 
@@ -38,7 +41,9 @@ class ExtractCustomer
 
                 if (
                     ($lastMaintenance < $date6MonthAgo &&  // si la derniere maitenance date de plus 6 mois
-                        $anniversary > $now && $anniversary < $dateNext2Month) // si la date d'anniv est dans les 2 mois suivant
+                        $anniversary > $now && // si la date d'anniv est à venir
+                        $anniversary < $dateNext2Month // si la date d'anniv est dans les 2 mois suivant
+                    )
                     || $lastMaintenance < $date10MonthAgo// si la derniere maitenance date de plus 10 mois
                 ) {
                     $customers[$customerHeating->getCustomer()->getId()] = $customerHeating->getCustomer(); // si toutes les conditions : on ajoute le client au tableau
@@ -47,7 +52,6 @@ class ExtractCustomer
 
             sort($customers);
 
-//            return  $this->filterCustomersByPeriodMaintenance($customers);
             return $customers;
         }
     }
@@ -79,12 +83,7 @@ class ExtractCustomer
         foreach ($customers as $customer) {
             /** @var DateTime $anniversary */
             $anniversary = $customer->getCustomerHeatings()[0]->getAnniversaryDate();
-//            $month = $anniversary->format('m');
-//            $day = $anniversary->format('d');
-//            $year = $now->format('Y');
-//            $anniversary = DateTime::createFromFormat('Y-m-d', $year . '-' . $month . '-' . $day);
             $anniversary = $this->setAnniversaryDateToActual($anniversary);
-            dump($anniversary);
             if ($anniversary < $now) {
                 $data['red'][] = $customer;
             } else if ($anniversary < $orange) {
@@ -103,6 +102,7 @@ class ExtractCustomer
             'adress' => $customer->getAdress(),
             'location' => $customer->getCoordGPS(),
             'annivContratDate' => $customer->getCustomerHeatings()[0]->getAnniversaryDate()->format('d M'),
+            'id' => $customer->getId(),
         ];
 
         return $data;

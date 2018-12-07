@@ -62,7 +62,8 @@
                     icon: 'img/'+icon,
                 });
 
-                let contentString = '<b>Adresse :</b> '+ customer.adress + '<br> <b>Date d\'anniversaire de contrat : </b>'+ customer.annivContratDate;
+                let contentString = '<b>Adresse :</b> '+ customer.adress + '<br> <b>Date d\'anniversaire de contrat : </b>'
+                    + customer.annivContratDate + '<br> <a href="/customer/'+customer.id+'">Fiche client</a>';
                 let infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });
