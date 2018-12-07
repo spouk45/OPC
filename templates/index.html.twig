@@ -33,69 +33,80 @@
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        let bounds  = new google.maps.LatLngBounds();
+        const bounds  = new google.maps.LatLngBounds();
 
-        var iconBase = 'https://maps.google.com/mapfiles/kml/shapes/';
-
-
-        var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-            '<div id="bodyContent">'+
-            '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-            'sandstone rock formation in the southern part of the '+
-            'Northern Territory, central Australia. It lies 335&#160;km (208&#160;mi) '+
-            'south west of the nearest large town, Alice Springs; 450&#160;km '+
-            '(280&#160;mi) by road. Kata Tjuta and Uluru are the two major '+
-            'features of the Uluru - Kata Tjuta National Park. Uluru is '+
-            'sacred to the Pitjantjatjara and Yankunytjatjara, the '+
-            'Aboriginal people of the area. It has many springs, waterholes, '+
-            'rock caves and ancient paintings. Uluru is listed as a World '+
-            'Heritage Site.</p>'+
-            '<p>Attribution: Uluru, <a href="https://en.wikipedia.org/w/index.php?title=Uluru&oldid=297882194">'+
-            'https://en.wikipedia.org/w/index.php?title=Uluru</a> '+
-            '(last visited June 22, 2009).</p>'+
-            '</div>'+
-            '</div>';
-
-        var infowindow = new google.maps.InfoWindow({
-            content: contentString
-        });
-
-
-        const markers = locations.map(function(location, i) {
-            let loc = new google.maps.LatLng(location.lat, location.lng);
-            bounds.extend(loc);
-            let marker = new google.maps.Marker({
-                position: location,
-                // label: labels[i % labels.length],
-                title: 'Hello World!',
-                icon: iconBase + 'parking_lot_maps.png',
-            });
-            marker.addListener('click', function() {
-                infowindow.open(map, marker);
-            });
-            return marker;
-        });
+        let markers = extractMarker(customersData,bounds);
 
         map.fitBounds(bounds);
         map.panToBounds(bounds);
 
         // Add a marker clusterer to manage the markers.
-        const markerCluster = new MarkerClusterer(map, markers,
+        let markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
     }
 
-    function getCoords(customers){
-        let coords = [];
-        customers.forEach(function(customer){
-            coords.push(customer.coordGPS);
+    function extractMarker(customersData,bounds){
+        let customers = [];
+        customersData.green.forEach(function(customer){
+            customer.color = 'green';
+            customers.push(customer);
         });
-        return coords;
+        customersData.red.forEach(function(customer){
+            customer.color = 'red';
+            customers.push(customer);
+        });
+        customersData.orange.forEach(function(customer){
+            customer.color = 'orange';
+            customers.push(customer);
+        });
+
+        if(customers!= null && customers.length > 0) {
+            return customers.map(function (customer, i) {
+                let icon = 'green.png';
+                if(customer.color === 'green'){
+                    icon = 'green.png'
+                }
+                if(customer.color === 'red'){
+                    icon = 'red.png'
+                }
+                if(customer.color === 'orange'){
+                    icon = 'orange.png'
+                }
+                let loc = new google.maps.LatLng(customer.coordGPS.lat, customer.coordGPS.lng);
+                bounds.extend(loc);
+                let marker = new google.maps.Marker({
+                    position: loc,
+                    // label: labels[i % labels.length],
+                    title: customer.name + ' ' + customer.firstname,
+                    icon: 'img/'+icon,
+                });
+
+                let date = new Date(customer.customerHeatings[0].contractDate.timestamp);
+                console.log(date);
+                let contentString = customer.adress + '<br>' + date.getDate() + '/' + (date.getMonth() +1);
+                let infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                });
+                return marker;
+            });
+
+        }
     }
 
-    let locations = getCoords(JSON.parse($('#map').attr('data-customers')));
+    // function getCoords(customers){
+    //     let coords = [];
+    //     customers.forEach(function(customer){
+    //         coords.push(customer.coordGPS);
+    //     });
+    //     return coords;
+    // }
+
+    // let locations = getCoords(JSON.parse($('#map').attr('data-customers')));
+    let customersData = JSON.parse($('#map').attr('data-customers'));
 
 </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">

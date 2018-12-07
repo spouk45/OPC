@@ -9,11 +9,14 @@
 namespace App\Services;
 
 
+use App\Entity\Customer;
 use App\Entity\CustomerHeating;
 use DateTime;
 
 class ExtractCustomer
 {
+    const GREEN = '+2 month'; // period between now and limit date maintenance
+    const ORANGE = '+1 month';
 
     public function extractCustomerNeedMaintenance(array $customerHeatings): array
     {
@@ -46,7 +49,36 @@ class ExtractCustomer
             }
 
             sort($customers);
-            return $customers;
+
+//            return  $this->filterCustomersByPeriodMaintenance($customers);
+            return  $customers;
         }
+    }
+
+    public function filterCustomersByPeriodMaintenance(array $customers): array
+    {
+        $now = new DateTime();
+        $orange = new DateTime(self::ORANGE);
+        $green = new DateTime(self::GREEN);
+
+        $data = ['green' => [], 'orange' => [], 'red' => []];
+
+        /** @var Customer $customer */
+        foreach ($customers as $customer) {
+            /** @var DateTime $anniversary */
+            $anniversary = $customer->getCustomerHeatings()[0]->getAnniversaryDate();
+            $month = $anniversary->format('m');
+            $day = $anniversary->format('d');
+            $year = $now->format('Y');
+            $anniversary = DateTime::createFromFormat('Y-m-d',$year.'-'.$month.'-'.$day);
+            if ($anniversary < $now) {
+                $data['red'][] = $customer;
+            } else if ($anniversary < $orange) {
+                $data['orange'][] = $customer;
+            } else {
+                $data['green'][] = $customer;
+            }
+        }
+        return $data;
     }
 }

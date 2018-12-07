@@ -29,7 +29,11 @@ class IndexController extends Controller
     {
         //$view = $this->forward('App\Controller\CustomerController::showCustomersNeedMaintenanceForMap');
         $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByContractFinish(false);
+        // récupération de la liste de client ayant besoin d'une maintenance
         $customers = $extractCustomer->extractCustomerNeedMaintenance($customerHeatings);
+
+        // trie par coleur des clients en fonction de sa date de contrat
+        $customersFiltered = $extractCustomer->filterCustomersByPeriodMaintenance($customers);
 
         $encoder = new JsonEncoder();
         $normalizer = new ObjectNormalizer();
@@ -45,8 +49,8 @@ class IndexController extends Controller
 
         $serializer = new Serializer(array($normalizer), array($encoder));
 
-        $jsonContent = $serializer->serialize($customers, 'json');
-        dump($jsonContent);
+
+        $jsonContent = $serializer->serialize($customersFiltered, 'json');
         return $this->render('index.html.twig', [
                 'customers' => $jsonContent,
             ]
