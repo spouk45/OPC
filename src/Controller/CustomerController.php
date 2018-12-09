@@ -55,7 +55,7 @@ class CustomerController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $customer->makeAdress();
-            $resApi = $devHereApi->geocodeAddress($customer->getAdress());
+            $resApi = $devHereApi->geocodeAddress($customer->getFullAdress());
             if($resApi['error'] == null ){
                 $location = $resApi['location'];
                 $customer->setCoordGPS(($location));

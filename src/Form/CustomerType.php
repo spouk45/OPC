@@ -19,19 +19,13 @@ class CustomerType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('firstname', TextType::class, ['label' => 'Prénom'])
-//            ->add('adress', TextareaType::class, ['label' => 'Adresse'])
+            ->add('complementAdress', TextareaType::class, ['label' => 'Complément adresse'])
             ->add('phone', TelType::class, ['label' => 'Téléphone'])
             ->add('phone2', TelType::class, ['label' => 'Téléphone 2', 'required' => false,])
             ->add('mail', EmailType::class, ['label' => 'Email'])
             ->add('information', TextareaType::class, ['label' => 'Complément d\'information','required' => false])
-//            ->add('coordGPS', TextType::class, ['label' => 'Coordonées GPS'])
             ->add('city', TextType::class, ['label' => 'Ville'])
-//            ->add('department', TextType::class, ['label' => 'Département'])
-//            ->add('region', TextType::class, ['label' => 'Région'])
             ->add('postalCode', IntegerType::class, ['label' => 'Code Postal'])
-            ->add('houseNumber', TextType::class, ['label' => 'Numéro'])
-            ->add('roadType', TextType::class, ['label' => 'Type de voie'])
-            ->add('street', TextType::class, ['label' => 'Rue'])
         ;
     }
 

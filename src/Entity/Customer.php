@@ -33,7 +33,7 @@ class Customer
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $adress;
+    private $fullAdress;
 
     /**
      * @ORM\Column(type="string", length=15)
@@ -89,22 +89,12 @@ class Customer
     private $postalCode;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", nullable=false)
      */
-    private $houseNumber;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $street;
-
-    /**
-     * @ORM\Column(type="string", length=80)
-     */
-    private $roadType;
+    private $complementAdress;
 
     public function makeAdress(){
-       $this->adress = $this->getHouseNumber().' '.$this->getRoadType().' '.$this->getStreet().' '.$this->getPostalCode().' '.$this->getCity();
+       $this->fullAdress = $this->getComplementAdress().' '.$this->getPostalCode().' '.$this->getCity();
     }
 
     public function __construct()
@@ -137,18 +127,6 @@ class Customer
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getAdress(): ?string
-    {
-        return $this->adress;
-    }
-
-    public function setAdress(string $adress): self
-    {
-        $this->adress = $adress;
 
         return $this;
     }
@@ -268,8 +246,6 @@ class Customer
         return $this;
     }
 
-
-
     public function getPostalCode(): ?int
     {
         return $this->postalCode;
@@ -294,40 +270,36 @@ class Customer
         return $this;
     }
 
-    public function getHouseNumber(): ?string
+    /**
+     * @return mixed
+     */
+    public function getFullAdress()
     {
-        return $this->houseNumber;
+        return $this->fullAdress;
     }
 
-    public function setHouseNumber(?string $houseNumber): self
+    /**
+     * @param mixed $fullAdress
+     */
+    public function setFullAdress($fullAdress): void
     {
-        $this->houseNumber = $houseNumber;
-
-        return $this;
+        $this->fullAdress = $fullAdress;
     }
 
-    public function getStreet(): ?string
+    /**
+     * @return mixed
+     */
+    public function getComplementAdress()
     {
-        return $this->street;
+        return $this->complementAdress;
     }
 
-    public function setStreet(string $street): self
+    /**
+     * @param mixed $complementAdress
+     */
+    public function setComplementAdress($complementAdress): void
     {
-        $this->street = $street;
-
-        return $this;
-    }
-
-    public function getRoadType(): ?string
-    {
-        return $this->roadType;
-    }
-
-    public function setRoadType(string $roadType): self
-    {
-        $this->roadType = $roadType;
-
-        return $this;
+        $this->complementAdress = $complementAdress;
     }
 
 

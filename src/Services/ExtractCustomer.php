@@ -99,7 +99,7 @@ class ExtractCustomer
     {
         $data = [
             'fullName' => $customer->getName() . ' ' . $customer->getFirstname(),
-            'adress' => $customer->getAdress(),
+            'adress' => $customer->getFullAdress(),
             'location' => $customer->getCoordGPS(),
             'annivContratDate' => $customer->getCustomerHeatings()[0]->getAnniversaryDate()->format('d M'),
             'id' => $customer->getId(),
