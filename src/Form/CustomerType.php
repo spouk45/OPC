@@ -4,6 +4,9 @@ namespace App\Form;
 
 use App\Entity\Customer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
@@ -26,6 +29,26 @@ class CustomerType extends AbstractType
             ->add('information', TextareaType::class, ['label' => 'Complément d\'information','required' => false])
             ->add('city', TextType::class, ['label' => 'Ville'])
             ->add('postalCode', IntegerType::class, ['label' => 'Code Postal'])
+            ->add('contractDate', DateType::class, [
+                'label' => 'Date de signature du contrat',
+                'widget' => 'single_text',
+                'required' => false,
+            ])
+            ->add('anniversaryDate', BirthdayType::class, [
+                'label' => 'Date d\'anniversaire de l\'entretien',
+                'widget' => 'single_text',
+                'required' => false,
+            ])
+            ->add('lastMaintenanceDate', DateType::class, [
+                'label' => 'Date de dernier entretien',
+                'widget' => 'single_text',
+                'required' => false,
+            ])
+//            ->add('lastMaintenanceDate',DateType::class,['label'=>'Commentaire'])
+            ->add('contractFinish', CheckboxType::class, [
+                'label' => 'Contrat Rompu ?',
+                'required' => false,
+            ])
         ;
     }
 

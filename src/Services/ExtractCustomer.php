@@ -10,7 +10,6 @@ namespace App\Services;
 
 
 use App\Entity\Customer;
-use App\Entity\CustomerHeating;
 use DateTime;
 
 class ExtractCustomer
@@ -18,23 +17,22 @@ class ExtractCustomer
     const LIMIT_DATE_MAINTENANCE = '+2 month'; // period between now and limit date maintenance
     const ORANGE = '+1 month';
 
-    public function extractCustomerNeedMaintenance(array $customerHeatings): array
+    public function extractCustomerNeedMaintenance(array $customers): array
     {
-        if (!empty(array_filter($customerHeatings))) {
-            $customers = [];
-
+        $customersNeedMaintenance = [];
+        if (!empty(array_filter($customers))) {
             $now = new DateTime();
             $dateNext2Month = new DateTime('+2 month');
             $date6MonthAgo = new DateTime('-6 month');
             $date10MonthAgo = new DateTime('-10 month');
-            /** @var CustomerHeating $customerHeating */
-            foreach ($customerHeatings as $customerHeating) {
-                $lastMaintenance = $customerHeating->getLastMaintenanceDate();
+            /** @var Customer $customer */
+            foreach ($customers as $customer) {
+                $lastMaintenance = $customer->getLastMaintenanceDate();
                 if($lastMaintenance == null){
-                    $lastMaintenance = $customerHeating->getContractDate();
+                    $lastMaintenance = $customer->getContractDate();
                 }
                 /** @var  DateTime $anniversary */
-                $anniversary = $customerHeating->getAnniversaryDate();
+                $anniversary = $customer->getAnniversaryDate();
 
                 // on regle la date d'anniversaire sur l'année en cours
                 $anniversary = $this->setAnniversaryDateToActual($anniversary);
@@ -46,14 +44,11 @@ class ExtractCustomer
                     )
                     || $lastMaintenance < $date10MonthAgo// si la derniere maitenance date de plus 10 mois
                 ) {
-                    $customers[$customerHeating->getCustomer()->getId()] = $customerHeating->getCustomer(); // si toutes les conditions : on ajoute le client au tableau
+                    $customersNeedMaintenance[] = $customer; // si toutes les conditions : on ajoute le client au tableau
                 }
             }
-
-            sort($customers);
-
-            return $customers;
         }
+        return $customersNeedMaintenance;
     }
 
     public function setAnniversaryDateToActual(DateTime $anniversary): DateTime
@@ -82,7 +77,7 @@ class ExtractCustomer
         /** @var Customer $customer */
         foreach ($customers as $customer) {
             /** @var DateTime $anniversary */
-            $anniversary = $customer->getCustomerHeatings()[0]->getAnniversaryDate();
+            $anniversary = $customer->getAnniversaryDate();
             $anniversary = $this->setAnniversaryDateToActual($anniversary);
             if ($anniversary < $now) {
                 $data['red'][] = $customer;
@@ -99,9 +94,9 @@ class ExtractCustomer
     {
         $data = [
             'fullName' => $customer->getName() . ' ' . $customer->getFirstname(),
-            'adress' => $customer->getFullAdress(),
+            'fullAdress' => $customer->getFullAdress(),
             'location' => $customer->getCoordGPS(),
-            'annivContratDate' => $customer->getCustomerHeatings()[0]->getAnniversaryDate()->format('d M'),
+            'annivContratDate' => $customer->getAnniversaryDate()->format('d M'),
             'id' => $customer->getId(),
         ];
 

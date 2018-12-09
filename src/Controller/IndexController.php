@@ -8,6 +8,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Customer;
 use App\Entity\CustomerHeating;
 use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
@@ -24,16 +25,15 @@ class IndexController extends Controller
      */
     public function index(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
     {
-        //$view = $this->forward('App\Controller\CustomerController::showCustomersNeedMaintenanceForMap');
-        $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByContractFinish(false);
+        $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
         // récupération de la liste de client ayant besoin d'une maintenance
-        $customers = $extractCustomer->extractCustomerNeedMaintenance($customerHeatings);
+        $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
 
         // trie par coleur des clients en fonction de sa date de contrat
-        $customersFiltered = $extractCustomer->filterCustomersByPeriodMaintenance($customers);
+        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customers);
 
         $customers = [];
-        foreach ($customersFiltered as $color => $value) {
+        foreach ($customersNeedMaintenanceColored as $color => $value) {
             foreach ($value as $customer) {
                 $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
                 $customerFo['color'] = $color;

@@ -24,25 +24,10 @@ class CustomerHeatingType extends AbstractType
             ->add('model', TextType::class, ['label' => 'Model'])
             ->add('serial', TextType::class, ['label' => 'Numéro de série'])
             ->add('comment', TextareaType::class, ['label' => 'Commentaire'])
-            ->add('contractDate', DateType::class, [
-                'label' => 'Date de signature du contrat',
-                'widget' => 'single_text'
-            ])
-            ->add('anniversaryDate', BirthdayType::class, [
-                'label' => 'Date d\'anniversaire de l\'entretien',
-                'widget' => 'single_text',
-            ])
-//            ->add('lastMaintenanceDate',DateType::class,['label'=>'Commentaire'])
-            ->add('contractFinish', CheckboxType::class, [
-                'label' => 'Contrat Rompu ?',
-                'required' => false,
-            ])
-//            ->add('customer',EntityType::class,['label'=>'Client'])
             ->add('heating', EntityType::class, [
                 'label' => 'Produit',
                 'class' => Heating::class,
                 'choice_label' => 'designation',
-
             ]);
     }
 

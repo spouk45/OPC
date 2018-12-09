@@ -93,6 +93,27 @@ class Customer
      */
     private $complementAdress;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $contractDate;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $anniversaryDate;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $contractFinish;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastMaintenanceDate;
+
+
     public function makeAdress(){
        $this->fullAdress = $this->getComplementAdress().' '.$this->getPostalCode().' '.$this->getCity();
     }
@@ -302,5 +323,52 @@ class Customer
         $this->complementAdress = $complementAdress;
     }
 
+    public function getContractDate(): ?\DateTimeInterface
+    {
+        return $this->contractDate;
+    }
+
+    public function setContractDate(?\DateTimeInterface $contractDate): self
+    {
+        $this->contractDate = $contractDate;
+
+        return $this;
+    }
+
+    public function getAnniversaryDate(): ?\DateTimeInterface
+    {
+        return $this->anniversaryDate;
+    }
+
+    public function setAnniversaryDate(?\DateTimeInterface $anniversaryDate): self
+    {
+        $this->anniversaryDate = $anniversaryDate;
+
+        return $this;
+    }
+
+    public function getContractFinish(): ?bool
+    {
+        return $this->contractFinish;
+    }
+
+    public function setContractFinish(?bool $contractFinish): self
+    {
+        $this->contractFinish = $contractFinish;
+
+        return $this;
+    }
+
+    public function getLastMaintenanceDate(): ?\DateTimeInterface
+    {
+        return $this->lastMaintenanceDate;
+    }
+
+    public function setLastMaintenanceDate(?\DateTimeInterface $lastMaintenanceDate): self
+    {
+        $this->lastMaintenanceDate = $lastMaintenanceDate;
+
+        return $this;
+    }
 
 }

@@ -36,25 +36,6 @@ class CustomerHeating
      */
     private $comment;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $contractDate;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $anniversaryDate;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $lastMaintenanceDate;
-
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
-    private $contractFinish;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="customers")
@@ -117,54 +98,6 @@ class CustomerHeating
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getContractDate(): ?\DateTimeInterface
-    {
-        return $this->contractDate;
-    }
-
-    public function setContractDate(?\DateTimeInterface $contractDate): self
-    {
-        $this->contractDate = $contractDate;
-
-        return $this;
-    }
-
-    public function getAnniversaryDate(): ?\DateTimeInterface
-    {
-        return $this->anniversaryDate;
-    }
-
-    public function setAnniversaryDate(?\DateTimeInterface $anniversaryDate): self
-    {
-        $this->anniversaryDate = $anniversaryDate;
-
-        return $this;
-    }
-
-    public function getLastMaintenanceDate(): ?\DateTimeInterface
-    {
-        return $this->lastMaintenanceDate;
-    }
-
-    public function setLastMaintenanceDate(?\DateTimeInterface $lastMaintenanceDate): self
-    {
-        $this->lastMaintenanceDate = $lastMaintenanceDate;
-
-        return $this;
-    }
-
-    public function getContractFinish(): ?bool
-    {
-        return $this->contractFinish;
-    }
-
-    public function setContractFinish(?bool $contractFinish): self
-    {
-        $this->contractFinish = $contractFinish;
 
         return $this;
     }
