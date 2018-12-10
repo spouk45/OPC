@@ -30,7 +30,28 @@ class IndexController extends Controller
         $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
 
         // trie par coleur des clients en fonction de sa date de contrat
-        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customers);
+        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
+
+        return $this->render('index.html.twig', [
+                'customersNeedMaintenanceColored' => $customersNeedMaintenanceColored,
+            ]
+        );
+    }
+
+    /**
+     * @param ExtractCustomer $extractCustomer
+     * @param MySerializer $mySerializer
+     * @return Response
+     * @Route("/map", name="map")
+     */
+    public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
+    {
+        $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
+        // récupération de la liste de client ayant besoin d'une maintenance
+        $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
+
+        // trie par coleur des clients en fonction de sa date de contrat
+        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
 
         $customers = [];
         foreach ($customersNeedMaintenanceColored as $color => $value) {
@@ -42,8 +63,9 @@ class IndexController extends Controller
         }
 
         $customers = $mySerializer->serialize($customers);
-        return $this->render('index.html.twig', [
+        return $this->render('map.html.twig', [
                 'customers' => $customers,
+                'apiKey' => getenv('API_KEY_GOOGLE_MAPS'),
             ]
         );
     }

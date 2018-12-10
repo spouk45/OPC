@@ -113,8 +113,13 @@ class Customer
      */
     private $lastMaintenanceDate;
 
+    public function getFullname()
+    {
+        return $this->name.' '.$this->firstname;
+    }
 
-    public function makeAdress(){
+    public function makeAdress()
+    {
        $this->fullAdress = $this->getComplementAdress().' '.$this->getPostalCode().' '.$this->getCity();
     }
 
