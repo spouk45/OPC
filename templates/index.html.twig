@@ -2,15 +2,18 @@
 
 {% block body %}
 <a href="{{ path('security_login') }}"> Connexion</a>
+
 <section>
     <div class="container">
+        <a class="btn btn-info" href="{{ path('map') }}">Voir sur la carte</a>
         <h2>Liste des maintenances clients à venir</h2>
         <table class="table">
             <thead>
             <tr>
                 <th>FullName</th>
                 <th>Ville</th>
-                <th>date d'anniversaire de maintenance</th>
+                <th>Date d'anniversaire de maintenance</th>
+                <th>Fiche client</th>
             </tr>
             </thead>
             <tbody>
@@ -30,6 +33,7 @@
                         <td>{{ customer.fullname }}</td>
                         <td>{{ customer.city }}</td>
                         <td>{{ customer.anniversaryDate|date("d/m") }}</td>
+                        <td><a href="{{ path('customer_show',{'id':customer.id}) }}">voir</a>
                     </tr>
                 {% endfor %}
             {% endfor %}
