@@ -113,6 +113,11 @@ class Customer
      */
     private $lastMaintenanceDate;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\InterventionReport", mappedBy="customer")
+     */
+    private $interventionReports;
+
     public function getFullname()
     {
         return $this->name.' '.$this->firstname;
@@ -126,6 +131,7 @@ class Customer
     public function __construct()
     {
         $this->customerHeatings = new ArrayCollection();
+        $this->interventionReports = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -372,6 +378,37 @@ class Customer
     public function setLastMaintenanceDate(?\DateTimeInterface $lastMaintenanceDate): self
     {
         $this->lastMaintenanceDate = $lastMaintenanceDate;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|InterventionReport[]
+     */
+    public function getInterventionReports(): Collection
+    {
+        return $this->interventionReports;
+    }
+
+    public function addInterventionReport(InterventionReport $interventionReport): self
+    {
+        if (!$this->interventionReports->contains($interventionReport)) {
+            $this->interventionReports[] = $interventionReport;
+            $interventionReport->setCustomer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInterventionReport(InterventionReport $interventionReport): self
+    {
+        if ($this->interventionReports->contains($interventionReport)) {
+            $this->interventionReports->removeElement($interventionReport);
+            // set the owning side to null (unless already changed)
+            if ($interventionReport->getCustomer() === $this) {
+                $interventionReport->setCustomer(null);
+            }
+        }
 
         return $this;
     }

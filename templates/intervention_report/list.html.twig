@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}InterventionReport index{% endblock %}
+
+{% block body %}
+    <h1>Historique de rapport d'intervention: {{ intervention_report.customer.fullname }}</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>PlannedDate</th>
+                <th>RealisedDate</th>
+                <th>Comment</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for intervention_report in intervention_reports %}
+            <tr>
+                <td>{{ intervention_report.id }}</td>
+                <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ intervention_report.comment }}</td>
+                <td>
+                    <a href="{{ path('intervention_report_show', {'id': intervention_report.id}) }}">show</a>
+                    <a href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('intervention_report_new', {'customerId': customer.id}) }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New InterventionReport{% endblock %}
+
+{% block body %}
+    <h1>Create new InterventionReport</h1>
+
+    {{ include('intervention_report/_form.html.twig') }}
+
+    <a href="{{ path('intervention_report_list', {'customer': customerId}) }}">back to list</a>
+{% endblock %}
