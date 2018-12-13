@@ -7,7 +7,7 @@
 
     {{ include('intervention_report/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('intervention_report_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('intervention_report_list',{'customer': intervention_report.customer.id} ) }}">back to list</a>
 
     {{ include('intervention_report/_delete_form.html.twig') }}
 {% endblock %}

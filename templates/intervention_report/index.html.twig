@@ -7,21 +7,19 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>PlannedDate</th>
-                <th>RealisedDate</th>
-                <th>Comment</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Type d'intervention</th>
+            <th>Date plannifié</th>
+            <th>Date de réalisation</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for intervention_report in intervention_reports %}
             <tr>
-                <td>{{ intervention_report.id }}</td>
+                <td>{{ intervention_report.typeInterventionReport.name }}</td>
                 <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ intervention_report.comment }}</td>
                 <td>
                     <a href="{{ path('intervention_report_show', {'id': intervention_report.id}) }}">show</a>
                     <a href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}">edit</a>

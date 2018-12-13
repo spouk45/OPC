@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Entity\InterventionReport;
+use App\Form\InterventionReportEditType;
 use App\Form\InterventionReportType;
 use App\Repository\InterventionReportRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -46,9 +47,7 @@ class InterventionReportController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $interventionReport->setCustomer($customer);
             $plannedOrRealised = $form->get('plannedOrRealised')->getViewData();
-//            if (!$plannedOrRealised) {
-//                $interventionReport->setPlannedDate($form->get('dateForSelected')->getViewData());
-//            }
+            // si planifié ou realisé selectionné, on set la date du param correspondant
             $plannedOrRealised ? $interventionReport->setRealisedDate($form->get('dateForSelected')->getNormData()) :
                 $interventionReport->setPlannedDate($form->get('dateForSelected')->getNormData());
             $em = $this->getDoctrine()->getManager();
@@ -78,13 +77,13 @@ class InterventionReportController extends AbstractController
      */
     public function edit(Request $request, InterventionReport $interventionReport): Response
     {
-        $form = $this->createForm(InterventionReportType::class, $interventionReport);
+        $form = $this->createForm(InterventionReportEditType::class, $interventionReport);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('intervention_report_edit', ['id' => $interventionReport->getId()]);
+            return $this->redirectToRoute('intervention_report_list', ['customer' => $interventionReport->getCustomer()->getId()]);
         }
 
         return $this->render('intervention_report/edit.html.twig', [
