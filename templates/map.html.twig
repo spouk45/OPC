@@ -25,7 +25,6 @@
 <script>
     function initMap() {
         const map = new google.maps.Map(document.getElementById('map'));
-
         // Create an array of alphabetical characters used to label the markers.
         // const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
@@ -46,11 +45,7 @@
     }
 
     function extractMarker(customers,bounds){
-        console.log(customers);
-        console.log(customers.length);
-
         if(customers!= null && customers.length > 0) {
-
             return customers.map(function (customer, i) {
                 let icon = customer.color+'.png';
 
@@ -77,15 +72,6 @@
         }
     }
 
-    // function getCoords(customers){
-    //     let coords = [];
-    //     customers.forEach(function(customer){
-    //         coords.push(customer.coordGPS);
-    //     });
-    //     return coords;
-    // }
-
-    // let locations = getCoords(JSON.parse($('#map').attr('data-customers')));
     let customersData = JSON.parse($('#map').attr('data-customers'));
 
 </script>

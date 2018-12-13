@@ -10,12 +10,13 @@ namespace App\Services;
 
 
 use App\Entity\Customer;
+use App\Repository\InterventionReportRepository;
 use DateTime;
 
 class ExtractCustomer
 {
     const LIMIT_DATE_MAINTENANCE = '+2 month'; // period between now and limit date maintenance
-    const ORANGE = '+1 month';
+    const WARNING_PERIOD = '+1 month';
 
     public function extractCustomerNeedMaintenance(array $customers): array
     {
@@ -67,21 +68,29 @@ class ExtractCustomer
         return $anniversary;
     }
 
-    public function filterCustomersByPeriodMaintenance(array $customers): array
+    /**
+     * @param array $customers
+     * @param InterventionReportRepository $interventionReportRepository
+     * @return array
+     */
+    public function filterCustomersByPeriodMaintenance(array $customers,InterventionReportRepository $interventionReportRepository): array
     {
         $now = new DateTime();
-        $orange = new DateTime(self::ORANGE);
+        $warningPeriod = new DateTime(self::WARNING_PERIOD);
 
-        $data = ['green' => [], 'orange' => [], 'red' => []];
+        $data = ['green' => [], 'orange' => [], 'red' => [], 'blue' =>[]];
 
         /** @var Customer $customer */
         foreach ($customers as $customer) {
             /** @var DateTime $anniversary */
             $anniversary = $customer->getAnniversaryDate();
             $anniversary = $this->setAnniversaryDateToActual($anniversary);
-            if ($anniversary < $now) {
+            $lastMaintenancePlannedDate = $interventionReportRepository->findLastPlannedMaintenance($customer);
+            if($lastMaintenancePlannedDate != null){ //comparer si planifier ou non
+                $data['blue'][] = $customer;
+            } else if ($anniversary < $now) {
                 $data['red'][] = $customer;
-            } else if ($anniversary < $orange) {
+            } else if ($anniversary < $warningPeriod) {
                 $data['orange'][] = $customer;
             } else {
                 $data['green'][] = $customer;

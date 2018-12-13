@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Entity\CustomerHeating;
+use App\Repository\InterventionReportRepository;
 use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -20,18 +21,20 @@ class IndexController extends Controller
 {
     /**
      * @param ExtractCustomer $extractCustomer
+     * @param MySerializer $mySerializer
+     * @param InterventionReportRepository $interventionReportRepository
      * @return Response
      * @Route("/", name="index")
      */
-    public function index(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
+    public function index(ExtractCustomer $extractCustomer, MySerializer $mySerializer,InterventionReportRepository $interventionReportRepository)
     {
         $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
         // récupération de la liste de client ayant besoin d'une maintenance
         $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
 
         // trie par coleur des clients en fonction de sa date de contrat
-        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
-
+        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance,$interventionReportRepository);
+        dump($customersNeedMaintenanceColored);
         return $this->render('index.html.twig', [
                 'customersNeedMaintenanceColored' => $customersNeedMaintenanceColored,
             ]
@@ -41,17 +44,18 @@ class IndexController extends Controller
     /**
      * @param ExtractCustomer $extractCustomer
      * @param MySerializer $mySerializer
+     * @param InterventionReportRepository $interventionReportRepository
      * @return Response
      * @Route("/map", name="map")
      */
-    public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
+    public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer,InterventionReportRepository $interventionReportRepository)
     {
         $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
         // récupération de la liste de client ayant besoin d'une maintenance
         $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
 
         // trie par coleur des clients en fonction de sa date de contrat
-        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
+        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance,$interventionReportRepository);
 
         $customers = [];
         foreach ($customersNeedMaintenanceColored as $color => $value) {
@@ -77,5 +81,13 @@ class IndexController extends Controller
     {
         return $this->render('Admin/index.html.twig');
     }
+
+    /**
+     * @param Customer $customer
+     * @param InterventionReportRepository $interventionReportRepository
+     * @return Response
+     * @Route("/test/{id}", name="test")
+     */
+
 
 }

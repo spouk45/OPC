@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Customer;
 use App\Entity\InterventionReport;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
@@ -19,6 +20,18 @@ class InterventionReportRepository extends ServiceEntityRepository
         parent::__construct($registry, InterventionReport::class);
     }
 
+    public function findLastPlannedMaintenance(Customer $customer): ?InterventionReport
+    {
+        return $this->createQueryBuilder('i')
+            ->andWhere('i.customer = :customer')
+            ->andWhere('i.plannedDate IS NOT NULL')
+            ->andWhere('i.realisedDate IS NULL')
+            ->setParameter('customer', $customer)
+            ->orderBy('i.plannedDate', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return InterventionReport[] Returns an array of InterventionReport objects
 //     */
@@ -34,6 +47,8 @@ class InterventionReportRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+
     */
 
     /*
