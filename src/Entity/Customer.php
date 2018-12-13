@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Repository\InterventionReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -411,6 +412,12 @@ class Customer
         }
 
         return $this;
+    }
+
+    public function getPlannedMaintenanceDate(InterventionReportRepository $interventionReportRepository)
+    {
+        return $interventionReportRepository->findLastPlannedMaintenance($this);
+
     }
 
 }

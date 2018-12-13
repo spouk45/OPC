@@ -58,7 +58,11 @@
                 });
 
                 let contentString = '<b>Adresse :</b> '+ customer.fullAdress + '<br> <b>Date d\'anniversaire de contrat : </b>'
-                    + customer.annivContratDate + '<br> <a href="/customer/'+customer.id+'">Fiche client</a>';
+                    + customer.annivContratDate + '<br> <p class="mt-1 text-center"><a href="/customer/'+customer.id+'">Fiche client</a></p>';
+                if(customer.color == 'blue'){
+                    contentString = '<b> Plannifié le :</b> '+ customer.planned + '<br>'+ contentString ;
+                }
+
                 let infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });

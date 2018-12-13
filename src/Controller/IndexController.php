@@ -16,6 +16,7 @@ use App\Services\MySerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class IndexController extends Controller
 {
@@ -34,7 +35,7 @@ class IndexController extends Controller
 
         // trie par coleur des clients en fonction de sa date de contrat
         $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance,$interventionReportRepository);
-        dump($customersNeedMaintenanceColored);
+
         return $this->render('index.html.twig', [
                 'customersNeedMaintenanceColored' => $customersNeedMaintenanceColored,
             ]
@@ -59,8 +60,14 @@ class IndexController extends Controller
 
         $customers = [];
         foreach ($customersNeedMaintenanceColored as $color => $value) {
+            /** @var Customer $customer */
             foreach ($value as $customer) {
                 $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
+                if($color == "blue"){
+                    /** @var DateTime $planned */
+                   $planned = $customer->getPlannedMaintenanceDate($interventionReportRepository)->getPlannedDate();
+                   $customerFo['planned'] = $planned->format('d/m/Y');
+                }
                 $customerFo['color'] = $color;
                 $customers[] = $customerFo;
             }
