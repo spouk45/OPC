@@ -73,7 +73,7 @@ class ExtractCustomer
      * @param InterventionReportRepository $interventionReportRepository
      * @return array
      */
-    public function filterCustomersByPeriodMaintenance(array $customers,InterventionReportRepository $interventionReportRepository): array
+    public function filterCustomersByPeriodMaintenance(array $customers): array
     {
         $now = new DateTime();
         $warningPeriod = new DateTime(self::WARNING_PERIOD);
@@ -85,8 +85,8 @@ class ExtractCustomer
             /** @var DateTime $anniversary */
             $anniversary = $customer->getAnniversaryDate();
             $anniversary = $this->setAnniversaryDateToActual($anniversary);
-            $lastMaintenancePlannedDate = $interventionReportRepository->findLastPlannedMaintenance($customer);
-            if($lastMaintenancePlannedDate != null){ //comparer si planifier ou non
+
+            if($customer->getPlannedMaintenanceDate() != null ){ //comparer si planifier ou non
                 $data['blue'][] = $customer;
             } else if ($anniversary < $now) {
                 $data['red'][] = $customer;

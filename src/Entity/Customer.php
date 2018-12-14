@@ -119,6 +119,8 @@ class Customer
      */
     private $interventionReports;
 
+    private $plannedMaintenanceDate;
+
     public function getFullname()
     {
         return $this->name.' '.$this->firstname;
@@ -414,10 +416,22 @@ class Customer
         return $this;
     }
 
-    public function getPlannedMaintenanceDate(InterventionReportRepository $interventionReportRepository)
+    /**
+     * @return mixed
+     */
+    public function getPlannedMaintenanceDate()
     {
-        return $interventionReportRepository->findLastPlannedMaintenance($this);
-
+        return $this->plannedMaintenanceDate;
     }
+
+    /**
+     * @param mixed $plannedMaintenanceDate
+     */
+    public function setPlannedMaintenanceDate($plannedMaintenanceDate): void
+    {
+        $this->plannedMaintenanceDate = $plannedMaintenanceDate;
+    }
+
+
 
 }
