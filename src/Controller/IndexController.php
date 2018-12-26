@@ -42,7 +42,6 @@ class IndexController extends Controller
 
         // trie par couleur des clients en fonction de sa date de contrat
         $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
-
         return $this->render('index.html.twig', [
                 'customersNeedMaintenanceColored' => $customersNeedMaintenanceColored,
             ]

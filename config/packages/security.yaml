@@ -42,6 +42,8 @@ security:
         # Là dans ce cas seul les utilisateurs ayant le rôle ROLE_ADMIN
         # peuvent acceder à toutes les pages commençant par /admin
         - { path: '^/admin', roles: ROLE_ADMIN }
+        - { path: '^/login', roles: IS_AUTHENTICATED_ANONYMOUSLY  }
+        - { path: '^((?!login).)*$', roles: ROLE_USER  }
 
 
     encoders:
