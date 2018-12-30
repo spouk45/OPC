@@ -4,12 +4,14 @@
 
 <section>
     <div class="container">
-        <a class="btn btn-info" href="{{ path('map') }}">Voir sur la carte</a>
-        <h2>Liste des maintenances clients à venir</h2>
-        <table class="table">
-            <thead>
+    <h2>Liste des maintenances clients à venir</h2>
+        <div class="text-center">
+            <a class="btn btn-outline-primary m-3 font-weight-bold" href="{{ path('map') }}">Voir sur la carte</a>
+        </div>
+        <table class="table text-center">
+            <thead class=" thead-dark">
             <tr>
-                <th>FullName</th>
+                <th>Client</th>
                 <th>Ville</th>
                 <th>Date d'anniversaire de maintenance</th>
                 <th>Fiche client</th>
@@ -34,7 +36,7 @@
                         <td>{{ customer.fullname }}</td>
                         <td>{{ customer.city }}</td>
                         <td>{{ customer.anniversaryDate|date("d/m") }}</td>
-                        <td><a href="{{ path('customer_show',{'id':customer.id}) }}">voir</a>
+                        <td><a href="{{ path('customer_show',{'id':customer.id}) }}"><img class="icone" src="img/fiche.png" alt="voir"></a>
                     </tr>
                 {% endfor %}
             {% endfor %}
@@ -44,78 +46,4 @@
 </section>
 
 {% endblock %}
-{% block javascripts %}
 
-    <script>
-        function initMap() {
-            const map = new google.maps.Map(document.getElementById('map'));
-
-            // Create an array of alphabetical characters used to label the markers.
-            // const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-            // Add some markers to the map.
-            // Note: The code uses the JavaScript Array.prototype.map() method to
-            // create an array of markers based on a given "locations" array.
-            // The map() method here has nothing to do with the Google Maps API.
-            const bounds = new google.maps.LatLngBounds();
-
-            let markers = extractMarker(customersData, bounds);
-
-            map.fitBounds(bounds);
-            map.panToBounds(bounds);
-
-            // Add a marker clusterer to manage the markers.
-            let markerCluster = new MarkerClusterer(map, markers,
-                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-        }
-
-        function extractMarker(customers, bounds) {
-            console.log(customers);
-            console.log(customers.length);
-
-            if (customers != null && customers.length > 0) {
-
-                return customers.map(function (customer, i) {
-                    let icon = customer.color + '.png';
-
-                    let loc = new google.maps.LatLng(customer.location.lat, customer.location.lng);
-                    bounds.extend(loc);
-                    let marker = new google.maps.Marker({
-                        position: loc,
-                        title: customer.fullName,
-                        icon: 'img/' + icon,
-                    });
-
-                    let contentString = '<b>Adresse :</b> ' + customer.fullAdress + '<br> <b>Date d\'anniversaire de contrat : </b>'
-                        + customer.annivContratDate + '<br> <a href="/customer/' + customer.id + '">Fiche client</a>';
-                    let infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-
-                    marker.addListener('click', function () {
-                        infowindow.open(map, marker);
-                    });
-                    return marker;
-                });
-
-            }
-        }
-
-        // function getCoords(customers){
-        //     let coords = [];
-        //     customers.forEach(function(customer){
-        //         coords.push(customer.coordGPS);
-        //     });
-        //     return coords;
-        // }
-
-        // let locations = getCoords(JSON.parse($('#map').attr('data-customers')));
-        let customersData = JSON.parse($('#map').attr('data-customers'));
-
-    </script>
-    <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
-    </script>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaUI_ArQijMpu9trqK4mPIfCGGqKa_DDg&callback=initMap">
-    </script>
-{% endblock %}

@@ -1,24 +1,10 @@
 {% extends 'base.html.twig' %}
 {% block stylesheets %}
-    <style>
-        /* Always set the map height explicitly to define the size of the div
-         * element that contains the map. */
-        #map {
-            height: 500px;
-        }
-        /* Optional: Makes the sample page fill the window. */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('build/map.css') }}">
 {% endblock %}
 
 {% block body %}
-    <a href="{{ path('security_login')}}"> Connexion</a>
     <div id="map" data-customers="{{ customers }}" ></div>
-
 {% endblock %}
 {% block javascripts %}
 

@@ -1,4 +1,45 @@
 body {
-    background-color:  #d9d9d9;
-;
+  background-color:  $backgroundColor;
+  color: $textColor1;
+}
+
+
+
+$tableColor : black;
+$table-warning: $warning;
+
+h1,h2,h3,h4,h5,h6{
+  color : $colorTitle;
+}
+
+h1,h2{
+  text-align: center;
+  margin-top: 20px;
+}
+
+.middleContainer{
+  height: calc(100vh - 60px);
+}
+
+table{
+  color: $tableColor;
+  th{
+    border: none !important;
+    background-color: $dark;
+    color: $primary;
+  }
+
+}
+
+.table-primary, .table-primary > th, .table-primary > td{
+  background-color: rgba($blue,0.3);
+}
+
+.table-warning, .table-warning > th, .table-warning > td{
+  background-color: rgba($yellow,0.3);
+}
+
+.icone{
+  width:30px;
+  height: auto;
 }

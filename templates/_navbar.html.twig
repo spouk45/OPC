@@ -1,0 +1,40 @@
+{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" >
+        <!-- Brand -->
+        <a class="navbar-brand" href="/">Tableau de bord</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+            <!-- Links -->
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Clients
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('customer_index') }}">Clients</a>
+                        <a class="dropdown-item" href="{{ path('customer_new') }}">Nouveau Client</a>
+                        <a class="dropdown-item" href="#">Link 3</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <div class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                        Configuration
+                    </div>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('heating_index') }}">Gestion des systèmes de chauffes</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto" >
+                <li class="nav-item">
+                    <a class="btn btn-outline-primary nav-link" href="{{ path('security_logout') }}">Déconnection</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+{%  endif %}
