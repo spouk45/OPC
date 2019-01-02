@@ -3,9 +3,11 @@
 {% block title %}New InterventionReport{% endblock %}
 
 {% block body %}
-    <h1>Create new InterventionReport</h1>
+    <div class="container">
+    <h1>Nouvelle intervention</h1>
 
     {{ include('intervention_report/_form.html.twig') }}
 
-    <a href="{{ path('intervention_report_list', {'customer': customerId}) }}">back to list</a>
+    <a class="btn btn-outline-info" href="{{ path('intervention_report_list', {'customer': customerId}) }}">Retour</a>
+    </div>
 {% endblock %}

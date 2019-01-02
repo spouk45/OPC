@@ -16,12 +16,12 @@ class InterventionReportEditType extends AbstractType
     {
         $builder
             ->add('plannedDate', DateType::class, [
-                'label' => 'Date de plannification',
+                'label' => 'Plannifier le :',
                 'widget' => 'single_text',
                 'required' => false,
             ])
             ->add('realisedDate', DateType::class, [
-                'label' => 'Date de realisation de l\'intervention',
+                'label' => 'Réalisé le :',
                 'widget' => 'single_text',
                 'required' => false,])
             ->add('comment')

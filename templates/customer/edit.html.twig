@@ -3,10 +3,18 @@
 {% block title %}Edit Customer{% endblock %}
 
 {% block body %}
-    <h1>Edit Customer</h1>
+    <div class="container">
 
-    {{ include('customer/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('customer_index') }}">back to list</a>
+        <h1>Edition du client</h1>
+        <div class="row">
+            <div class="col">
+                {{ include('customer/_form.html.twig', {'button_label': 'Valider'}) }}
+            </div>
+        </div>
+
+
+        <a class="btn btn-outline-info mb-4" href="{{ path('customer_index') }}">Retour</a>
+    </div>
 
 {% endblock %}

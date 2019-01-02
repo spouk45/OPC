@@ -3,32 +3,51 @@
 {% block title %}InterventionReport{% endblock %}
 
 {% block body %}
-    <h1>InterventionReport</h1>
+    <div class="container">
+        <h1 class="mb-4">InterventionReport</h1>
+        <div class="text-right mb-2">
+        {{ include('intervention_report/_delete_form.html.twig') }}
+        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ intervention_report.id }}</td>
-            </tr>
-            <tr>
-                <th>PlannedDate</th>
-                <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>RealisedDate</th>
-                <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Comment</th>
-                <td>{{ intervention_report.comment }}</td>
-            </tr>
-        </tbody>
-    </table>
+        <div class="row">
+            <div class="col-lg-6 mx-auto">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <th class="w-50 p-2">Type d'intervention</th>
+                        <td class="p-2">{{ intervention_report.typeInterventionReport.name }}</td>
+                    </tr>
+                    <tr>
+                        <th class="w-50 p-2">Date plannifiée</th>
+                        <td class="p-2">{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('d M Y') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th class="w-50 p-2">Date de réalisation</th>
+                        <td class="p-2">{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('d M Y') : '' }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th class="text-center">Commentaire</th>
+                    </tr>
+                    <tr>
+                        <td>{{ intervention_report.comment }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-outline-info" href="{{ path('intervention_report_list',{'customer': intervention_report.customer.id} ) }}">Retour</a>
+            <a class="btn btn-primary" href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}">Valider</a>
+        </div>
 
-    <a href="{{ path('intervention_report_list',{'customer': intervention_report.customer.id} ) }}">back to list</a>
 
-    <a href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}">edit</a>
-
-    {{ include('intervention_report/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

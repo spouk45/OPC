@@ -3,6 +3,7 @@
 {% block title %}CustomerHeating index{% endblock %}
 
 {% block body %}
+    <div class="container">
     <h1>CustomerHeating index</h1>
 
     <table class="table">
@@ -33,8 +34,8 @@
                 <td>{{ customer_heating.lastMaintenanceDate ? customer_heating.lastMaintenanceDate|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ customer_heating.contractFinish ? 'Yes' : 'No' }}</td>
                 <td>
-                    <a href="{{ path('customer_heating_show', {'id': customer_heating.id}) }}">show</a>
-                    <a href="{{ path('customer_heating_edit', {'id': customer_heating.id}) }}">edit</a>
+                    <a href="{{ path('customer_heating_show', {'id': customer_heating.id}) }}"><img class="icone" src="/img/fiche.png"></a>
+                    <a href="{{ path('customer_heating_edit', {'id': customer_heating.id}) }}"><img class="icone" src="/img/edit.png"></a>
                 </td>
             </tr>
         {% else %}
@@ -46,4 +47,5 @@
     </table>
 
     <a href="{{ path('customer_heating_new') }}">Create new</a>
+    </div>
 {% endblock %}

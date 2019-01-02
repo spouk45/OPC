@@ -22,7 +22,7 @@ class CustomerType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('firstname', TextType::class, ['label' => 'Prénom'])
-            ->add('complementAdress', TextareaType::class, ['label' => 'Complément adresse'])
+            ->add('complementAdress', TextareaType::class, ['label' => 'N° et rue'])
             ->add('phone', TelType::class, ['label' => 'Téléphone'])
             ->add('phone2', TelType::class, ['label' => 'Téléphone 2', 'required' => false,])
             ->add('mail', EmailType::class, ['label' => 'Email'])
@@ -35,7 +35,7 @@ class CustomerType extends AbstractType
                 'required' => false,
             ])
             ->add('anniversaryDate', BirthdayType::class, [
-                'label' => 'Date d\'anniversaire de l\'entretien',
+                'label' => 'Anniversaire de l\'entretien',
                 'widget' => 'single_text',
                 'required' => false,
             ])

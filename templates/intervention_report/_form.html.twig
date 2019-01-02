@@ -1,4 +1,41 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{% if(form.plannedOrRealised is defined) %}
+    <div class="row">
+        <div class="col">
+            {{ form_widget(form.plannedOrRealised , {'attr':{'class':'form-check-inline mb-3' }}) }}
+        </div>
+    </div>
+{% endif %}
+<div class="row">
+    {% if(form.dateForSelected is defined) %}
+        {% set dateNow = "now"|date("m-d-Y")  %}
+        <div class="col-sm-4">
+            {{ form_label(form.dateForSelected) }}
+            {{ form_widget(form.dateForSelected , {'attr':{'class':'mb-3' }}) }}
+        </div>
+    {% endif %}
+    {% if(form.plannedDate is defined) %}
+        <div class="col-sm-4">
+            {{ form_label(form.plannedDate) }}
+            {{ form_widget(form.plannedDate , {'attr':{'class':'mb-3' }}) }}
+        </div>
+    {% endif %}
+    {% if(form.realisedDate is defined) %}
+        <div class="col-sm-4">
+            {{ form_label(form.realisedDate) }}
+            {{ form_widget(form.realisedDate , {'attr':{'class':'mb-3' }}) }}
+        </div>
+    {% endif %}
+    <div class="col-sm-4">
+        {{ form_label(form.typeInterventionReport) }}
+        {{ form_widget(form.typeInterventionReport , {'attr':{'class':'mb-3' }}) }}
+    </div>
+</div>
+{{ form_label(form.comment) }}
+{{ form_widget(form.comment,{'attr':{'rows':10 ,class : 'mb-3'}}) }}
+<div class="row">
+    <div class="col text-center">
+        <button class="btn btn-primary">{{ button_label|default('Ajouter') }}</button>
+    </div>
+</div>
 {{ form_end(form) }}

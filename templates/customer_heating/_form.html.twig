@@ -1,4 +1,33 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    {{ form_start(form) }}
+<div class="row mb-4">
+    <div class="col">
+        {{ form_label(form.heating) }}
+        {{ form_widget(form.heating) }}
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-4">
+        {{ form_label(form.mark) }}
+        {{ form_widget(form.mark) }}
+    </div>
+    <div class="col-md-4">
+        {{ form_label(form.model) }}
+        {{ form_widget(form.model) }}
+    </div>
+
+    <div class="col-md-4">
+        {{ form_label(form.serial) }}
+        {{ form_widget(form.serial) }}
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col">
+        {{ form_label(form.comment) }}
+        {{ form_widget(form.comment,{'attr':{'rows':10}}) }}
+    </div>
+</div>
+{{ form_widget(form) }}
+<div class="text-center">
+    <button class="btn btn-primary">{{ button_label|default('Ajouter') }}</button>
+</div>
 {{ form_end(form) }}

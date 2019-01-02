@@ -85,7 +85,7 @@ class InterventionReportController extends AbstractController
 
             return $this->redirectToRoute('intervention_report_list', ['customer' => $interventionReport->getCustomer()->getId()]);
         }
-
+        dump($interventionReport);
         return $this->render('intervention_report/edit.html.twig', [
             'intervention_report' => $interventionReport,
             'form' => $form->createView(),

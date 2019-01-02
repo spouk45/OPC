@@ -30,7 +30,6 @@ class InterventionReportType extends AbstractType
             ->add('dateForSelected', DateType::class, [
                 'label' => 'Date',
                 'widget' => 'single_text',
-                'required' => false,
                 'mapped' => false,
                 'required' => true,
                 ])

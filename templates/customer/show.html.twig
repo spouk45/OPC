@@ -3,63 +3,100 @@
 {% block title %}Customer{% endblock %}
 
 {% block body %}
-    <h1>Fiche client</h1>
-
-
-
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Nom</th>
-            <td>{{ customer.name }}</td>
-        </tr>
-        <tr>
-            <th>Firstname</th>
-            <td>{{ customer.firstname }}</td>
-        </tr>
-        <tr>
-            <th>Adress</th>
-            <td>{{ customer.fullAdress }}</td>
-        </tr>
-        <tr>
-            <th>Phone</th>
-            <td>{{ customer.phone }}</td>
-        </tr>
-        <tr>
-            <th>Phone2</th>
-            <td>{{ customer.phone2 }}</td>
-        </tr>
-        <tr>
-            <th>Mail</th>
-            <td>{{ customer.mail }}</td>
-        </tr>
-        <tr>
-            <th>Information</th>
-            <td>{{ customer.information }}</td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="row mx-auto">
-
-    {% for customerHeating in customer.customerHeatings %}
-        <div class="col-3">
-        <ul>
-            <li> mark : {{ customerHeating.mark }}</li>
-            <li> model : {{ customerHeating.model }}</li>
-            <li> serial : {{ customerHeating.serial }}</li>
-            <li> comment : {{ customerHeating.comment }}</li>
-            <li> designation : {{ customerHeating.heating.designation }}</li>
-        </ul>
+    <div class="container">
+        <h1>Fiche client</h1>
+        {{ include('customer/_delete_form.html.twig') }}
+        <div class="mx-auto mb-2">
+            <a class="btn btn-primary" href="{{ path('customer_edit', {'id': customer.id}) }}">Modifier</a>
         </div>
 
-    {% endfor %}
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th colspan="2" class="text-center">Informations client</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <p>
+                        {{ customer.name }} {{ customer.firstname }}<br>
+                        {{ customer.complementAdress }}<br>
+                        {{ customer.postalCode }} {{ customer.city }}
+                    </p>
+                </td>
+                <td>
+                    <p>
+                        {{ customer.phone }}<br>
+                        {{ customer.phone2 }}<br>
+                        {{ customer.mail }}
+                    </p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th class="text-center">Commentaire</th>
+            </tr>
+            <tr>
+                <td>{{ customer.information }}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <h2 class="mt-5 mb-3">Information matériel</h2>
+
+        <div class="row mb-3">
+            <div class="col text-center text-lg-left mb-2">
+                <a class="btn btn-primary" href="{{ path('customer_heating_new', {'id': customer.id}) }}">Ajouter un
+                    produit</a>
+            </div>
+            <div class="col text-center text-lg-center mb-2">
+                <a class=" btn btn-primary" href="{{ path('intervention_report_list', {'customer': customer.id}) }}">Historique
+                    d'intervention</a>
+            </div>
+            <div class="col text-center text-lg-right">
+                <a class="btn btn-primary" href="{{ path('intervention_report_new', {'customer': customer.id}) }}">Nouvelle
+                    intervention</a>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                {% for customerHeating in customer.customerHeatings %}
+                    <table class="table table-sm text-center mb-4">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th class="text-center" colspan="3">{{ customerHeating.heating.designation }}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <th>Marque</th>
+                            <th>Model</th>
+                            <th>N° de série</th>
+                        </tr>
+                        <tr>
+                            <td>{{ customerHeating.mark }}</td>
+                            <td>{{ customerHeating.model }}</td>
+                            <td>{{ customerHeating.serial }}</td>
+
+                        </tr>
+                        <tr>
+                            <th colspan="3">Commentaire</th>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><p>{{ customerHeating.comment }}</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="text-center mb-4">
+            <a class="btn btn-outline-info" href="{{ path('customer_index') }}">Retour à la liste</a>
+        </div>
     </div>
-    <a class="btn btn-info" href="{{ path('customer_index') }}">back to list</a>
-
-    <a class="btn btn-primary" href="{{ path('customer_edit', {'id': customer.id}) }}">edit</a>
-    <a class="btn btn-primary" href="{{ path('customer_heating_new', {'id': customer.id}) }}">Ajouter un produit</a>
-    <a class="btn btn-primary" href="{{ path('intervention_report_list', {'customer': customer.id}) }}">Historique d'intervention</a>
-    <a class="btn btn-primary" href="{{ path('intervention_report_new', {'customer': customer.id}) }}">Nouvelle intervention</a>
-
-    {{ include('customer/_delete_form.html.twig') }}
 {% endblock %}

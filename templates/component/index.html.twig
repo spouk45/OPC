@@ -3,15 +3,18 @@
 {% block title %}Gestion des composants{% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col">
-            {% include 'component/extraction/_table_extraction.html.twig' %}
-        </div>
-        <div class="col">
-            {% include 'component/heating_source/_table_source.html.twig' %}
-        </div>
-        <div class="col">
-            {% include 'component/heating_type/_table_heatingType.html.twig' %}
+    <div class="container">
+        <div class="mb-4"></div>
+        <div class="row">
+            <div class=" col-12 col-sm-4">
+                {% include 'component/extraction/_table_extraction.html.twig' %}
+            </div>
+            <div class="col-12 col-sm-4">
+                {% include 'component/heating_source/_table_source.html.twig' %}
+            </div>
+            <div class="col-12 col-sm-4">
+                {% include 'component/heating_type/_table_heatingType.html.twig' %}
+            </div>
         </div>
     </div>
 

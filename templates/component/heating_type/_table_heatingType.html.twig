@@ -1,9 +1,7 @@
-    <h1>Type de sytèmes</h1>
-
     <table class="table">
         <thead>
             <tr>
-                <th>Nom</th>
+                <th class="text-center">Type de sytèmes</th>
             </tr>
         </thead>
         <tbody>
@@ -13,40 +11,28 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="3">no records found</td>
+                <td colspan="3">Aucun résultat</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-    <div class="text-center">
+    <div class="text-center mb-4">
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newHeating">
             Ajouter
         </button>
     </div>
     <!-- The Modal -->
     <div class="modal fade" id="newHeating">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-centered text-center">
             <div class="modal-content">
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Modal Heading</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
                 <div class="modal-body">
                     {{ form_start(formHeatingType) }}
-                    {{ form_widget(formHeatingType) }}
-                    <button class="btn">{{ button_label|default('Valider') }}</button>
+                    {{ form_label(formHeatingType.name) }}
+                    {{ form_widget(formHeatingType.name) }}
+                    <button class="btn btn-primary mt-4">{{ button_label|default('Valider') }}</button>
                     {{ form_end(formHeatingType) }}
 
                 </div>
-
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-
             </div>
         </div>
     </div>

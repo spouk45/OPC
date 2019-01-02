@@ -3,18 +3,18 @@
 {% block title %}Nouveau client{% endblock %}
 
 {% block body %}
-    <div class="container">
+    <div class="container mb-4">
         <div class="row">
             <div class="col">
                 <h1 class="text-center">Nouveau client</h1>
             </div>
         </div>
+        {{ include('customer/_form.html.twig') }}
         <div class="row">
             <div class="col">
-    {{ include('customer/_form.html.twig') }}
+            <a class="btn btn-outline-info" href="{{ path('customer_index') }}">Retour</a>
             </div>
         </div>
-    <a class="btn btn-info" href="{{ path('customer_index') }}">Retour à la liste</a>
     </div>
 {% endblock %}
 {% block javascripts %}

@@ -3,35 +3,50 @@
 {% block title %}InterventionReport index{% endblock %}
 
 {% block body %}
-    <h1>InterventionReport index</h1>
-
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Type d'intervention</th>
-            <th>Date plannifié</th>
-            <th>Date de réalisation</th>
-            <th>actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for intervention_report in intervention_reports %}
-            <tr>
-                <td>{{ intervention_report.typeInterventionReport.name }}</td>
-                <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('intervention_report_show', {'id': intervention_report.id}) }}">show</a>
-                    <a href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('intervention_report_new', {'customer': customer.id}) }}">Create new</a>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>Rapport d'interventions</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table class="table text-center">
+                    <thead>
+                    <tr>
+                        <th>Type d'intervention</th>
+                        <th>Date plannifié</th>
+                        <th>Date de réalisation</th>
+                        <th>actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for intervention_report in intervention_reports %}
+                        <tr>
+                            <td>{{ intervention_report.typeInterventionReport.name }}</td>
+                            <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('d M Y') : '' }}</td>
+                            <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('d M Y') : '' }}</td>
+                            <td>
+                                <a href="{{ path('intervention_report_show', {'id': intervention_report.id}) }}"><img
+                                            class="icone" src="/img/fiche.png"></a>
+                                <a href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}"><img
+                                            class="icone" src="/img/edit.png"></a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5">Aucune intervention trouvée</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-between ">
+                <a class="d-inline-block btn btn-outline-info" href="{{ path('customer_show',{'id': customer.id}) }}">Retour</a>
+                <a class="d-inline-block btn btn-primary" href="{{ path('intervention_report_new', {'customer': customer.id}) }}">Ajouter</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

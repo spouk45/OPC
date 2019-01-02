@@ -1,6 +1,75 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <div class="text-center">
-        <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+
+<div class="row mb-3">
+    <div class="col-sm-4">
+        {{ form_label(form.name) }}
+        {{ form_widget(form.name) }}
     </div>
-{{ form_end(form) }}
+    <div class="col-sm-4">
+        {{ form_label(form.firstname) }}
+        {{ form_widget(form.firstname) }}
+    </div>
+    <div class="col-sm-4">
+        {{ form_label(form.mail) }}
+        {{ form_widget(form.mail) }}
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-6">
+        {{ form_label(form.phone) }}
+        {{ form_widget(form.phone) }}
+    </div>
+    <div class="col-sm-6">
+        {{ form_label(form.phone2) }}
+        {{ form_widget(form.phone2) }}
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-sm-6">
+        {{ form_label(form.postalCode) }}
+        {{ form_widget(form.postalCode) }}
+    </div>
+    <div class="col-sm-6">
+        {{ form_label(form.city) }}
+        {{ form_widget(form.city) }}
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        {{ form_label(form.complementAdress) }}
+        {{ form_widget(form.complementAdress) }}
+    </div>
+</div>
+<div class="row mb-3 ">
+    <div class="col-md-3">
+        {{ form_label(form.contractDate) }}
+        {{ form_widget(form.contractDate) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_label(form.anniversaryDate) }}
+        {{ form_widget(form.anniversaryDate) }}
+    </div>
+    <div class="col-md-3">
+        {{ form_label(form.lastMaintenanceDate) }}
+        {{ form_widget(form.lastMaintenanceDate) }}
+    </div>
+    <div class="col-md-3 d-flex align-items-end">
+        {{ form_label(form.contractFinish) }}
+        {{ form_widget(form.contractFinish) }}
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col">
+        {{ form_label(form.information) }}
+        {{ form_widget(form.information,{attr : {'rows' : '10'}}) }}
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="text-center">
+            <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+

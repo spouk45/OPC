@@ -1,12 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New CustomerHeating{% endblock %}
+{% block title %}Ajouter un système au client{% endblock %}
 
 {% block body %}
-    <h1>Create new CustomerHeating</h1>
+    <div class="container">
+        <h1>Ajout un système de production au client</h1>
+        {{ include('customer_heating/_form.html.twig') }}
 
-    {{ include('customer_heating/_form.html.twig') }}
+        <div class="mb-2 d-flex justify-content-between">
+            <a class="btn btn-outline-info" href="{{ path('customer_show', {'id': customer.id} ) }}">Retour</a>
+        </div>
+    </div>
 
-
-    <a href="{{ path('customer_show', {'id': customer.id} ) }}">Retour</a>
 {% endblock %}
