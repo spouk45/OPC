@@ -18,6 +18,7 @@ Encore
      * and one CSS file (e.g. app.scss) if you JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
+    .addEntry('gallery', './assets/js/gallery.js')
     .addStyleEntry('map', './assets/css/map.scss')
     .addStyleEntry('galery', './assets/css/galery.scss')
     //.addEntry('getCoord', './assets/js/getCoord.js')

@@ -102,40 +102,26 @@
             {% for key,image in customer.imagesLink %}
 
             <div class="col-4">
-                    <img class="img-thumbnail img-fluid hover-shadow" src="/uploads/images/{{ image.name }}" onclick="openModal();currentSlide({{ key }})">
-
+                    <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid hover-shadow thumb" src="/uploads/images/{{ image.name }}">
             </div>
             {% endfor %}
         </div>
 
         <!-- The Modal/Lightbox -->
         <div id="myModal" class="modal">
-            <span class="close cursor" onclick="closeModal()">&times;</span>
+            <span class="close cursor">&times;</span>
             <div class="modal-content">
-
+                {% set tableLength = customer.imagesLink|length %}
+                {% for key,image in customer.imagesLink %}
                 <div class="mySlides">
-                    <div class="numbertext">1 / 4</div>
-                    <img src="img1_wide.jpg" style="width:100%">
+                    <div class="numbertext">{{ key }} / {{ tableLength }}</div>
+                    <img class="img-thumbnail img-fluid hover-shadow" src="/uploads/images/{{ image.name }}">
                 </div>
-
-                <div class="mySlides">
-                    <div class="numbertext">2 / 4</div>
-                    <img src="img2_wide.jpg" style="width:100%">
-                </div>
-
-                <div class="mySlides">
-                    <div class="numbertext">3 / 4</div>
-                    <img src="img3_wide.jpg" style="width:100%">
-                </div>
-
-                <div class="mySlides">
-                    <div class="numbertext">4 / 4</div>
-                    <img src="img4_wide.jpg" style="width:100%">
-                </div>
+                {% endfor %}
 
                 <!-- Next/previous controls -->
-                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                <a class="prev">&#10094;</a>
+                <a class="next">&#10095;</a>
 
                 <!-- Caption text -->
                 <div class="caption-container">
@@ -143,20 +129,17 @@
                 </div>
 
                 <!-- Thumbnail image controls -->
-                <div class="column">
-                    <img class="demo" src="img1.jpg" onclick="currentSlide(1)" alt="Nature">
-                </div>
+                <div class="container-fluid bg-dark">
+                    <div class="row">
+                {% for key,image in customer.imagesLink %}
 
-                <div class="column">
-                    <img class="demo" src="img2.jpg" onclick="currentSlide(2)" alt="Snow">
-                </div>
+                        <div class="col-3">
+                            <img data-currentSlide="{{ key }}"
+                                 class="demo img-fluid" src="/uploads/images/{{ image.name }}" alt="{{ image.name }}">
+                        </div>
 
-                <div class="column">
-                    <img class="demo" src="img3.jpg" onclick="currentSlide(3)" alt="Mountains">
-                </div>
-
-                <div class="column">
-                    <img class="demo" src="img4.jpg" onclick="currentSlide(4)" alt="Lights">
+                {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -168,46 +151,7 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-<script>
-    // Open the Modal
-    function openModal() {
-        document.getElementById('myModal').style.display = "block";
-    }
+    <script src="{{ asset('build/gallery.js') }}">
 
-    // Close the Modal
-    function closeModal() {
-        document.getElementById('myModal').style.display = "none";
-    }
-
-    var slideIndex = 1;
-    showSlides(slideIndex);
-
-    // Next/previous controls
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-
-    // Thumbnail image controls
-    function currentSlide(n) {
-        showSlides(slideIndex = n);
-    }
-
-    function showSlides(n) {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
-        var dots = document.getElementsByClassName("demo");
-        var captionText = document.getElementById("caption");
-        if (n > slides.length) {slideIndex = 1}
-        if (n < 1) {slideIndex = slides.length}
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " active";
-        captionText.innerHTML = dots[slideIndex-1].alt;
-    }
-</script>
+    </script>
 {% endblock %}

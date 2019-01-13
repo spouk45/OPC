@@ -8,12 +8,6 @@
   clear: both;
 }
 
-/* Create four equal columns that floats next to eachother */
-.column {
-  float: left;
-  width: 25%;
-}
-
 /* The Modal (background) */
 .modal {
   display: none;
@@ -111,8 +105,7 @@ img.demo {
   opacity: 0.6;
 }
 
-.active,
-.demo:hover {
+.active,.demo:hover {
   opacity: 1;
 }
 
