@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use App\Repository\InterventionReportRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -121,6 +121,21 @@ class Customer
 
     private $plannedMaintenanceDate;
 
+    /**
+     * not mapped
+     * @Assert\File(
+     *     maxSize = "2M",
+     *     mimeTypes = {"image/jpeg", "image/png" ,"image/gif"},
+     * )
+     */
+    private $images;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="customer")
+     */
+    private $imagesLink;
+
+
     public function getFullname()
     {
         return $this->name.' '.$this->firstname;
@@ -135,6 +150,7 @@ class Customer
     {
         $this->customerHeatings = new ArrayCollection();
         $this->interventionReports = new ArrayCollection();
+        $this->imagesLink = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -432,6 +448,41 @@ class Customer
         $this->plannedMaintenanceDate = $plannedMaintenanceDate;
     }
 
+    /**
+     * @return Collection|Image[]
+     */
+    public function getImagesLink(): Collection
+    {
+        return $this->imagesLink;
+    }
+    public function addImagesLink(Image $imagesLink): self
+    {
+        if (!$this->imagesLink->contains($imagesLink)) {
+            $this->imagesLink[] = $imagesLink;
+            $imagesLink->setAd($this);
+        }
+        return $this;
+    }
+    public function removeImagesLink(Image $imagesLink): self
+    {
+        if ($this->imagesLink->contains($imagesLink)) {
+            $this->imagesLink->removeElement($imagesLink);
+            // set the owning side to null (unless already changed)
+            if ($imagesLink->getAd() === $this) {
+                $imagesLink->setAd(null);
+            }
+        }
+        return $this;
+    }
+    public function getImages(): ?array
+    {
+        return $this->images;
+    }
+    public function setImages(array $images): self
+    {
+        $this->images = $images;
+        return $this;
+    }
 
 
 }

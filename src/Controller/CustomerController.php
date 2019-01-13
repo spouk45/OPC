@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Customer;
+use App\Entity\Image;
 use App\Form\CustomerSearchType;
 use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
+use App\Services\FileUploader;
 use App\Services\DevHereApi;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,10 +46,11 @@ class CustomerController extends AbstractController
     /**
      * @param Request $request
      * @param DevHereApi $devHereApi
+     * @param FileUploader $fileUploader
      * @return Response
      * @Route("/new", name="customer_new", methods="GET|POST")
      */
-    public function new(Request $request, DevHereApi $devHereApi): Response
+    public function new(Request $request, DevHereApi $devHereApi,FileUploader $fileUploader): Response
     {
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
@@ -59,7 +63,21 @@ class CustomerController extends AbstractController
             if($resApi['error'] == null ){
                 $location = $resApi['location'];
                 $customer->setCoordGPS(($location));
+
+                $files = $form->get('images')->getData();
                 $em = $this->getDoctrine()->getManager();
+
+                if (!empty($files)) {
+                    /** @var UploadedFile $file */
+                    foreach ($files as $file) {
+                        $fileName = $fileUploader->upload($file);
+                        $imagesToAdd = new Image();
+                        $imagesToAdd->setName($fileName);
+                        $customer->addImagesLink($imagesToAdd);
+                        $em->persist($imagesToAdd);
+                    }
+                }
+
                 $em->persist($customer);
                 $em->flush();
                 $this->addFlash('success','client ajouté avec succès');

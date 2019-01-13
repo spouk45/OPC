@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addStyleEntry('map', './assets/css/map.scss')
+    .addStyleEntry('galery', './assets/css/galery.scss')
     //.addEntry('getCoord', './assets/js/getCoord.js')
     //.addEntry('page1', './assets/js/page1.js')
     //.addEntry('page2', './assets/js/page2.js')

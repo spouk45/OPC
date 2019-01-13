@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\BirthdayType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -49,6 +50,13 @@ class CustomerType extends AbstractType
                 'label' => 'Contrat Rompu ?',
                 'required' => false,
             ])
+            ->add('images', FileType::class,
+                [
+                    'label' => 'Images',
+                    'required'=>false,
+                    'multiple' => true,
+                    'mapped'=>false,
+                ])
         ;
     }
 
