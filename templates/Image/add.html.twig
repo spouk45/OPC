@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'images{% endblock %}
+{% block stylesheets %}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <h1>Ajout d'images</h1>
+        <div class="row">
+            <div class="col">
+                {{ form_start(form) }}
+                {{ form_label(form.images) }}
+                {{ form_widget(form.images) }}
+                <div class="text-center mt-4" >
+                    <button class="btn btn-primary">{{ button_label|default('Ajouter') }}</button>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+
+
+        <a class="btn btn-outline-info mb-4" href="{{ path('show_images',{ 'id': customer.id}) }}">Retour</a>
+    </div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/galery.css') }}">
+{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+        <h1> Gallery {{ customer.fullName }}</h1>
+        <div class="row mt-4 mb-4">
+            <div class="col text-center">
+                <a class="btn btn-primary" href="{{ path('add_image', {'id': customer.id}) }}">Ajouter</a>
+            </div>
+        </div>
+
+        <div class="row">
+            {% for key,image in customer.imagesLink if customer.imagesLink %}
+                <div class="col-12 col-md-6 col-lg-3">
+                    <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid myImg gallery mb-3"
+                         src="/uploads/images/{{ image.name }}" alt="{{ image.originalName }}">
+                </div>
+            {% else %}
+                <div class="col">
+                    <p class="text-center">Aucune photo trouvée</p>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+
+    <div class="text-center mb-4 mt-4">
+        <a class="btn btn-outline-info" href="{{ path('customer_show', {'id': customer.id}) }}">Retour à la
+            liste</a>
+    </div>
+    </div>
+
+
+    <!-- The Modal -->
+    <div class="container-fluid">
+        <div id="myModal" class="modal">
+            <span id="closeModal" class="close">&times;</span>
+            <img class="modal-content " id="img01">
+            <div id="caption"></div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('build/gallery.js') }}">
+
+    </script>
+{% endblock %}
