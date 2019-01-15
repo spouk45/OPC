@@ -56,8 +56,8 @@ class ImageController extends AbstractController
 
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
-                'notice',
-                'Images ajoutés avec succès.'
+                'success',
+                'Images ajoutés avec success.'
             );
             }
             return $this->redirectToRoute('show_images', ['id' => $customer->getId()]);
