@@ -17,15 +17,22 @@ class FileUploader
     }
     /**
      * @param UploadedFile|File $file
-     * @return string
+     * @return array
      */
-    public function upload($file)
+    public function upload($file):array
     {
         $fileName = uniqid() . '.' . $file->guessExtension();
         $file->move(
             $this->targetDirectory,
             $fileName
         );
-        return $fileName;
+        /** UploadedFile $file */
+
+        $data = [
+            'originalName' => $file->getClientOriginalName(),
+            'fileName' => $fileName,
+        ];
+
+        return $data;
     }
 }

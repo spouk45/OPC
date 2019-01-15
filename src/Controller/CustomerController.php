@@ -9,6 +9,7 @@ use App\Form\CustomerType;
 use App\Repository\CustomerRepository;
 use App\Services\FileUploader;
 use App\Services\DevHereApi;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
@@ -102,14 +103,36 @@ class CustomerController extends AbstractController
     }
 
     /**
+     * @param Request $request
+     * @param Customer $customer
+     * @param FileUploader $fileUploader
+     * @return Response
      * @Route("/{id}/edit", name="customer_edit", methods="GET|POST")
      */
-    public function edit(Request $request, Customer $customer): Response
+    public function edit(Request $request, Customer $customer, FileUploader $fileUploader): Response
     {
         $form = $this->createForm(CustomerType::class, $customer);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $files = $form->get('images')->getData();
+            $em = $this->getDoctrine()->getManager();
+
+            if (!empty($files)) {
+                /** @var UploadedFile $file */
+                foreach ($files as $file) {
+                    /** @var array $newFile */
+                    $newFile = $fileUploader->upload($file);
+                    $imagesToAdd = new Image();
+                    $imagesToAdd->setName($newFile['fileName']);
+                    $imagesToAdd->setOriginalName($newFile['originalName']);
+                    $imagesToAdd->setUploadDate(new DateTime());
+                    $customer->addImagesLink($imagesToAdd);
+                    $em->persist($imagesToAdd);
+                }
+            }
+
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);

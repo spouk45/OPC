@@ -101,47 +101,11 @@
         <div class="row">
             {% for key,image in customer.imagesLink %}
 
-            <div class="col-4">
-                    <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid hover-shadow thumb" src="/uploads/images/{{ image.name }}">
-            </div>
+                <div class="col-4">
+                    <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid myImg"
+                         src="/uploads/images/{{ image.name }}" alt="{{ image.originalName }}">
+                </div>
             {% endfor %}
-        </div>
-
-        <!-- The Modal/Lightbox -->
-        <div id="myModal" class="modal">
-            <span class="close cursor">&times;</span>
-            <div class="modal-content">
-                {% set tableLength = customer.imagesLink|length %}
-                {% for key,image in customer.imagesLink %}
-                <div class="mySlides">
-                    <div class="numbertext">{{ key }} / {{ tableLength }}</div>
-                    <img class="img-thumbnail img-fluid hover-shadow" src="/uploads/images/{{ image.name }}">
-                </div>
-                {% endfor %}
-
-                <!-- Next/previous controls -->
-                <a class="prev">&#10094;</a>
-                <a class="next">&#10095;</a>
-
-                <!-- Caption text -->
-                <div class="caption-container">
-                    <p id="caption"></p>
-                </div>
-
-                <!-- Thumbnail image controls -->
-                <div class="container-fluid bg-dark">
-                    <div class="row">
-                {% for key,image in customer.imagesLink %}
-
-                        <div class="col-3">
-                            <img data-currentSlide="{{ key }}"
-                                 class="demo img-fluid" src="/uploads/images/{{ image.name }}" alt="{{ image.name }}">
-                        </div>
-
-                {% endfor %}
-                    </div>
-                </div>
-            </div>
         </div>
 
 
@@ -149,6 +113,17 @@
             <a class="btn btn-outline-info" href="{{ path('customer_index') }}">Retour à la liste</a>
         </div>
     </div>
+
+    <!-- The Modal -->
+    <div class="container-fluid">
+        <div id="myModal" class="modal">
+            <span id="closeModal" class="close">&times;</span>
+            <img class="modal-content " id="img01">
+            <div id="caption"></div>
+        </div>
+    </div>
+
+
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('build/gallery.js') }}">

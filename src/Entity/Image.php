@@ -21,6 +21,17 @@ class Image
      */
     private $customer;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $originalName;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $uploadDate;
+
+
     public function getId()
     {
         return $this->id;
@@ -34,13 +45,46 @@ class Image
         $this->name = $name;
         return $this;
     }
-    public function getAd(): ?Customer
+
+    public function getOriginalName(): ?string
+    {
+        return $this->originalName;
+    }
+
+    public function setOriginalName(string $originalName): self
+    {
+        $this->originalName = $originalName;
+
+        return $this;
+    }
+
+    public function getUploadDate(): ?\DateTimeInterface
+    {
+        return $this->uploadDate;
+    }
+
+    public function setUploadDate(\DateTimeInterface $uploadDate): self
+    {
+        $this->uploadDate = $uploadDate;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCustomer()
     {
         return $this->customer;
     }
-    public function setAd(?Customer $customer): self
+
+    /**
+     * @param mixed $customer
+     */
+    public function setCustomer($customer): void
     {
         $this->customer = $customer;
-        return $this;
     }
+
+
 }

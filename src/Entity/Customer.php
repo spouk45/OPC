@@ -459,7 +459,7 @@ class Customer
     {
         if (!$this->imagesLink->contains($imagesLink)) {
             $this->imagesLink[] = $imagesLink;
-            $imagesLink->setAd($this);
+            $imagesLink->setCustomer($this);
         }
         return $this;
     }
@@ -468,8 +468,8 @@ class Customer
         if ($this->imagesLink->contains($imagesLink)) {
             $this->imagesLink->removeElement($imagesLink);
             // set the owning side to null (unless already changed)
-            if ($imagesLink->getAd() === $this) {
-                $imagesLink->setAd(null);
+            if ($imagesLink->getCustomer() === $this) {
+                $imagesLink->setCustomer(null);
             }
         }
         return $this;
