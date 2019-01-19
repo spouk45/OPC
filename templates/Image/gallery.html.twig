@@ -16,8 +16,12 @@
         <div class="row">
             {% for key,image in customer.imagesLink if customer.imagesLink %}
                 <div class="col-12 col-md-6 col-lg-2">
-                    <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid myImg gallery mb-3"
-                         src="/uploads/images/{{ image.name }}" alt="{{ image.originalName }}">
+                    <figure class="mb-3">
+                        <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid myImg gallery"
+                             src="/uploads/images/{{ image.name }}" alt="{{ image.originalName }}">
+                        <figcaption><p class="text-center font-weight-light">{{ image.uploadDate | date ("d/m/Y") }}</p></figcaption>
+                    </figure>
+
                 </div>
             {% else %}
                 <div class="col">

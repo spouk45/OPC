@@ -29,10 +29,9 @@ class FileUploader
         /** UploadedFile $file */
 
         $data = [
-            'originalName' => $file->getClientOriginalName(),
+            'originalName' => preg_replace('/\.'.$file->getClientOriginalExtension().'/','',$file->getClientOriginalName()),
             'fileName' => $fileName,
         ];
-
         return $data;
     }
 }
