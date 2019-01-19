@@ -123,10 +123,10 @@ class Customer
 
     /**
      * not mapped
-     * @Assert\File(
-     *     maxSize = "2M",
-     *     mimeTypes = {"image/jpeg", "image/png" ,"image/gif"},
-     * )
+     *
+     * @Assert\All({
+     *     @Assert\Image(mimeTypesMessage="Ce fichier n'est pas une image valide", maxSize = "10M")
+     * })
      */
     private $images;
 

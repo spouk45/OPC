@@ -30,7 +30,7 @@ class ImageController extends AbstractController
                 'label' => 'Images',
                 'required' => true,
                 'multiple' => true,
-                'mapped' => false,
+                'mapped' => true,
             ])
             ->getForm();
 
@@ -40,7 +40,6 @@ class ImageController extends AbstractController
 
             $files = $form->get('images')->getData();
             $em = $this->getDoctrine()->getManager();
-
             if (!empty($files)) {
                 /** @var UploadedFile $file */
                 foreach ($files as $file) {
@@ -77,10 +76,7 @@ class ImageController extends AbstractController
      */
     function gallery(Customer $customer,  ImageRepository $imageRepository)
     {
-//        $images = $imageRepository->findByCustomer($customer);
-
         return $this->render('image/gallery.html.twig', [
-//            'images' => $images,
             'customer' => $customer,
         ]);
     }

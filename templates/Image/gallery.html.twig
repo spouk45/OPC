@@ -15,7 +15,7 @@
 
         <div class="row">
             {% for key,image in customer.imagesLink if customer.imagesLink %}
-                <div class="col-12 col-md-6 col-lg-3">
+                <div class="col-12 col-md-6 col-lg-2">
                     <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid myImg gallery mb-3"
                          src="/uploads/images/{{ image.name }}" alt="{{ image.originalName }}">
                 </div>
