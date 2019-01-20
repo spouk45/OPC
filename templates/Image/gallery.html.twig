@@ -6,6 +6,8 @@
 {% endblock %}
 {% block body %}
     <div class="container-fluid">
+
+
         <h1> Gallery {{ customer.fullName }}</h1>
         <div class="row mt-4 mb-4">
             <div class="col text-center">
@@ -13,15 +15,24 @@
             </div>
         </div>
 
+        {% if  customer.imagesLink %}
+            <div class="sticky-top text-right mr-5 mb-4">
+                <img id="deleteImg" src="{{ asset('img/trash-can.png') }}" width="50" class="mr-4 ico"
+                     data-toggle="modal" data-target="#deleteModal">
+                <img id="selector" src="{{ asset('img/selector.ico') }}" width="50" class="ico">
+            </div>
+        {% endif %}
+
         <div class="row">
             {% for key,image in customer.imagesLink if customer.imagesLink %}
-                <div class="col-12 col-md-6 col-lg-2">
+                <div class="col-12 col-md-6 col-lg-2 blockImg">
                     <figure class="mb-3">
-                        <img data-currentSlide="{{ key }}" class="img-thumbnail img-fluid myImg gallery"
-                             src="/uploads/images/{{ image.name }}" alt="{{ image.originalName }}">
-                        <figcaption><p class="text-center font-weight-light">{{ image.uploadDate | date ("d/m/Y") }}</p></figcaption>
+                        <img data-id="{{ image.id }}" data-currentSlide="{{ key }}"
+                             class="img-thumbnail img-fluid myImg gallery"
+                             src="/uploads/images/{{ image.name }}" alt="image">
+                        <figcaption><p class="text-center font-weight-light">{{ image.uploadDate | date ("d/m/Y") }}</p>
+                        </figcaption>
                     </figure>
-
                 </div>
             {% else %}
                 <div class="col">
@@ -49,9 +60,30 @@
         </div>
     </div>
 
+
+    <!-- The confirmation Modal -->
+    <div class="container">
+        <div id="deleteModal" class="modal ">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <p class="text-center">Etes vous sur de vouloir supprimer la selection ?</p>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer d-flex justify-content-around">
+                                <div><button id="back" class="btn btn-outline-primary">Annuler</button></div>
+                        <div><button id="confirm" class="btn btn-outline-primary">Valider</button></div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
 {% block javascripts %}
-    <script src="{{ asset('build/gallery.js') }}">
-
-    </script>
+    <script src="{{ asset('build/gallery.js') }}"></script>
 {% endblock %}

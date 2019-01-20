@@ -1,20 +1,46 @@
 //$widthImage : 500px;
 //$heightImage : $widthImage * 9 / 16;
+@import "config";
 
 .myImg {
   cursor: pointer;
   transition: 0.3s;
-}
-//
-//.gallery{
-//  width : $widthImage;
-//  height: $heightImage;
-//}
 
-.myImg:hover {opacity: 0.7;}
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &.active{
+    //border-style: dashed;
+    //border-color: red;
+    border: 3px dashed $primary;
+    opacity: 0.2;
+  }
+
+}
+
+#deleteImg{
+  display: none;
+}
+
+.ico{
+  filter: invert(50%);
+  &:hover{
+    filter: invert(90%);
+    cursor: pointer;
+  }
+  &.active{
+    filter: invert(90%);
+
+    &:hover{
+      filter: invert(50%);
+    }
+  }
+}
+
 
 /* The Modal (background) */
-.modal {
+#myModal.modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -26,16 +52,25 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+
+  /* Modal Content (image) */
+  .modal-content {
+    margin: auto;
+    display: block;
+    max-width: 80vw;
+    max-height: 80vh;
+    width: auto;
+  }
+
+  .modal-content, #caption {
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+  }
+
 }
 
-/* Modal Content (image) */
-.modal-content {
-  margin: auto;
-  display: block;
-  max-width: 80vw;
-  max-height: 80vh;
-  width: auto;
-}
 
 /* Caption of Modal Image */
 #caption {
@@ -46,14 +81,6 @@
   color: #ccc;
   padding: 10px 0;
   //height: 150px;
-}
-
-/* Add Animation */
-.modal-content, #caption {
-  -webkit-animation-name: zoom;
-  -webkit-animation-duration: 0.6s;
-  animation-name: zoom;
-  animation-duration: 0.6s;
 }
 
 @-webkit-keyframes zoom {
