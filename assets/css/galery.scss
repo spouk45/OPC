@@ -72,6 +72,12 @@
 }
 
 
+#deleteModal{
+  .modal-content{
+      background-color: $dark;
+  }
+}
+
 /* Caption of Modal Image */
 #caption {
   margin: auto;

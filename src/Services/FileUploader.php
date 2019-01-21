@@ -34,4 +34,5 @@ class FileUploader
         ];
         return $data;
     }
+
 }

@@ -51,12 +51,12 @@ $('#deleteImg').click(function () {
     });
 
     // open confirmation modal
-
+    $('#deleteForm #imagesToDelete').val(JSON.stringify(selectedImgId));
     // process post delete
 
-    tab.each(function () {
-        $(this).parents('.blockImg').remove();
-    });
+    // tab.each(function () {
+    //     $(this).parents('.blockImg').remove();
+    // });
     selectedImgId = [];
 
 });
@@ -64,4 +64,13 @@ $('#deleteImg').click(function () {
 
 $('#deleteModal span.close').click(function(){
     $('#deleteModal').hide();
+});
+
+$('#back').click(function(){
+    $('#deleteModal').modal('hide');
+});
+
+$('#confirm').click(function(){
+    // delete action
+
 });

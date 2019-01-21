@@ -74,7 +74,14 @@
                     <!-- Modal footer -->
                     <div class="modal-footer d-flex justify-content-around">
                                 <div><button id="back" class="btn btn-outline-primary">Annuler</button></div>
-                        <div><button id="confirm" class="btn btn-outline-primary">Valider</button></div>
+                        <div>
+                            <form id="deleteForm" method="post" class="text-right mb-2" action="{{ path('delete_images', {'id': customer.id}) }}">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" id="imagesToDelete" name="imagesToDelete" value="">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ customer.id) }}">
+                                <button id="confirm" class="btn btn-outline-primary">Valider</button>
+                            </form>
+                        </div>
                     </div>
 
                 </div>
