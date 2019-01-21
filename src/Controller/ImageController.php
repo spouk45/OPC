@@ -7,11 +7,12 @@ use App\Entity\Image;
 use App\Repository\ImageRepository;
 use App\Services\FileUploader;
 use DateTime;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -60,7 +61,7 @@ class ImageController extends AbstractController
             $this->getDoctrine()->getManager()->flush();
             $this->addFlash(
                 'success',
-                'Images ajoutés avec success.'
+                'Images ajoutées avec succès.'
             );
             }
             return $this->redirectToRoute('show_images', ['id' => $customer->getId()]);
@@ -106,15 +107,20 @@ class ImageController extends AbstractController
                 $image = $imageRepository->findOneById($imageId);
                 dump($image);
                 try {
-                    $fileSystem->remove(['/public/uploads/images/'.$image->getName()]);
+                    if(is_file($this->getParameter('images_directory').'/'.$image->getName())){
+                        $file = new File($this->getParameter('images_directory').'/'.$image->getName());
+                        $fileSystem->remove($file);
+                    }
                 }catch (Exception $e){
                     $e->getMessage();
-                    dd("error");
                 }
-                dd("ok");
                 $em->remove($image);
             }
             $em->flush();
+            $this->addFlash(
+                'success',
+                'Images supprimées avec succès.'
+            );
         }
 
         return $this->redirectToRoute('show_images',['id'=> $customer->getId()]);
