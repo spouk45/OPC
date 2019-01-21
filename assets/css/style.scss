@@ -3,8 +3,6 @@ body {
   color: $textColor1;
 }
 
-
-
 $tableColor : black;
 $table-warning: $warning;
 
@@ -42,4 +40,13 @@ table{
 .icone{
   width:30px;
   height: auto;
+}
+
+#configurationImg{
+  width:40px;
+  filter:invert(60%);
+
+  &:hover{
+    filter:invert(90%);
+  }
 }

@@ -1,19 +1,27 @@
 $backgroundColor : #4d4d4d;
 $textColor1: #cc8800; // orange
+$primary: $textColor1;
+
+$info: lighten($primary,30%);
+$table-bg: darken(white,10%);
+$dark: darken($backgroundColor,10%);
+$colorTitle : white;
+
+
+// nav
+$dropdown-bg: darken($dark,5%);
+$dropdown-link-color: $primary;
+
+//$dropdown-border-color
 
 /* bootstrap */
-$primary: $textColor1;
 //$secondary:     $gray-600 !default;
 //$success:       $green !default;
-$info: lighten($primary,30%);
 //$warning: yellow;
 //$danger:  red;
 //$light:         $gray-100 !default;
-$dark: darken($backgroundColor,10%);
 //
-$table-bg: darken(white,10%);
 
-$colorTitle : white;
 
 // Thumbnails
 $thumbnail-border-color : $textColor1;

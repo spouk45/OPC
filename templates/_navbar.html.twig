@@ -1,5 +1,5 @@
 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    <nav class="navbar navbar-expand-sm bg-dark navbar-dark" >
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
         <!-- Brand -->
         <a class="navbar-brand" href="/">Tableau de bord</a>
 
@@ -21,20 +21,23 @@
                         <a class="dropdown-item" href="#">Link 3</a>
                     </div>
                 </li>
-                <li class="nav-item dropdown">
-                    <div class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        Configuration
-                    </div>
+
+
+            </ul>
+            <ul class="navbar-nav ml-auto bg-dark">
+                <li class="nav-item dropdown dropleft">
+                    <a class="mr-5 align-middle" href="#" id="navbardrop" data-toggle="dropdown">
+                        <img id="configurationImg" src="{{ asset('img/configuration.png') }}">
+                    </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="{{ path('heating_index') }}">Gestion des systèmes de chauffes</a>
+                        <a class="dropdown-item" href="#">Paramètres</a>
                     </div>
                 </li>
-            </ul>
-            <ul class="navbar-nav ml-auto" >
                 <li class="nav-item">
                     <a class="btn btn-outline-primary nav-link" href="{{ path('security_logout') }}">Déconnection</a>
                 </li>
             </ul>
         </div>
     </nav>
-{%  endif %}
+{% endif %}
