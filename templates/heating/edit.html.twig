@@ -3,11 +3,20 @@
 {% block title %}Edit Heating{% endblock %}
 
 {% block body %}
-    <h1>Edit Heating</h1>
+    <h1>Edition</h1>
+    <div class="container">
+        <div class="text-right">
+            {{ include('heating/_delete_form.html.twig') }}
+        </div>
+        {{ include('heating/_form.html.twig', {'button_label': 'Valider'}) }}
+        <div class="text-left mt-4">
+            <a class="btn btn-info" href="{{ path('heating_index') }}">Retour à la liste</a>
+        </div>
 
-    {{ include('heating/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('heating_index') }}">back to list</a>
-
-    {{ include('heating/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('build/generateHeatingName.js') }}">
+    </script>
 {% endblock %}

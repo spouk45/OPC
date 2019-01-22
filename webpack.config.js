@@ -19,6 +19,7 @@ Encore
      */
     .addEntry('app', './assets/js/app.js')
     .addEntry('gallery', './assets/js/gallery.js')
+    .addEntry('generateHeatingName', './assets/js/generateHeatingName.js')
     .addStyleEntry('map', './assets/css/map.scss')
     .addStyleEntry('galery', './assets/css/galery.scss')
     //.addEntry('getCoord', './assets/js/getCoord.js')

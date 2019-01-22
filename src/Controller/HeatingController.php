@@ -48,14 +48,6 @@ class HeatingController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="heating_show", methods="GET")
-     */
-    public function show(Heating $heating): Response
-    {
-        return $this->render('heating/show.html.twig', ['heating' => $heating]);
-    }
-
-    /**
      * @Route("/{id}/edit", name="heating_edit", methods="GET|POST")
      */
     public function edit(Request $request, Heating $heating): Response
