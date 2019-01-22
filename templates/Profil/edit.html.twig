@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Profil</h1>
+        {{ include('Profil/_form.html.twig', {'button_label': 'Valider'}) }}
+
+        <a href="{{ path('user_index') }}">Retour à la liste</a>
+
+
+    </div>
+{% endblock %}
