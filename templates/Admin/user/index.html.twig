@@ -6,10 +6,12 @@
     <div class="container">
 
         <h1>Liste des utilisateurs</h1>
+    <div class="text-center mb-4 mt-4">
+        <a class="btn btn-primary" href="{{ path('user_new') }}">Ajouter</a>
 
-        <a href="{{ path('user_new') }}">Ajouter</a>
+    </div>
 
-        <table class="table">
+        <table class="table table-striped thead-dark">
             <thead>
             <tr>
                 <th>Nom complet</th>
@@ -31,7 +33,7 @@
                         {% endfor %}
                     </td>
                     <td>
-                        <a href="{{ path('user_edit', {'id': user.id}) }}">edit</a>
+                        <a href="{{ path('user_edit', {'id': user.id}) }}"><img class="icone" src="/img/edit.png"></a>
                     </td>
                 </tr>
             {% else %}

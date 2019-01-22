@@ -1,4 +1,16 @@
 {{ form_start(form) }}
+<div class="row mb-3">
+    <div class="col-sm-6">
+        {{ form_label(form.fullName) }}
+        {{ form_widget(form.fullName) }}
+    </div>
+    <div class="col-sm-6">
+        {{ form_label(form.username) }}
+        {{ form_widget(form.username) }}
+    </div>
+</div>
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Valider') }}</button>
+<div class="text-center">
+    <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+</div>
 {{ form_end(form) }}

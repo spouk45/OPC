@@ -62,15 +62,24 @@ class UserController extends AbstractController
     /**
      * @Route("/Admin/user/{id}/edit", name="user_edit", methods="GET|POST")
      */
-    public function edit(Request $request, User $user): Response
+    public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $this->getDoctrine()->getManager()->flush();
-            dd($user);
-            return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+            try {
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'Utilisateur modifié avec succès.');
+            } catch (UniqueConstraintViolationException $e) {
+                $this->addFlash('danger', 'Nom d\'utilisateur déjà existant');
+                return $this->render('Admin/user/new.html.twig', [
+                    'user' => $user,
+                    'form' => $form->createView(),
+                ]);
+            }
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('Admin/user/edit.html.twig', [
@@ -82,12 +91,25 @@ class UserController extends AbstractController
     /**
      * @Route("/Admin/user/{id}", name="user_delete", methods="DELETE")
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, User $user, UserRepository $userRepository): Response
     {
+        if (in_array('ROLE_ADMIN', $user->getRoles())) {
+            $usersWithAdminRole = $userRepository->createQueryBuilder('u')
+                ->where('u.roles LIKE :role')
+                ->setParameter('role', '%ROLE_ADMIN%')
+                ->getQuery()
+                ->getResult();
+            if (count($usersWithAdminRole) < 2) {
+                $this->addFlash('danger', 'Vous ne pouvez pas supprimer le seul admin.');
+                return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+            }
+        }
+
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
+            $this->addFlash('success', 'Utilisateur supprimé avec succès.');
         }
 
         return $this->redirectToRoute('user_index');
@@ -96,15 +118,24 @@ class UserController extends AbstractController
     /**
      * @Route("/profil", name="user_profil"), methods="GET|POST"
      */
-    public function profil(UserInterface $user,Request $request)
+    public function profil(UserInterface $user, Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
+        /** @var User $user */
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $this->getDoctrine()->getManager()->flush();
-            dd($user);
-            return $this->redirectToRoute('user_edit', ['id' => $user->getId()]);
+            $user->setPassword($passwordEncoder->encodePassword($user, $user->getPassword()));
+            try {
+                $this->getDoctrine()->getManager()->flush();
+                $this->addFlash('success', 'Profil modifié avec succès.');
+            } catch (UniqueConstraintViolationException $e) {
+                $this->addFlash('danger', 'Nom d\'utilisateur déjà existant');
+                return $this->render('Profil/edit.html.twig', [
+                    'user' => $user,
+                    'form' => $form->createView(),
+                ]);
+            }
         }
 
         return $this->render('Profil/edit.html.twig', [
