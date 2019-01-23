@@ -8,7 +8,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Configuration;
 use App\Entity\Customer;
+use App\Repository\ConfigurationRepository;
 use App\Repository\InterventionReportRepository;
 use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
@@ -29,7 +31,7 @@ class IndexController extends Controller
     /**
      * @param ExtractCustomer $extractCustomer
      * @return Response
-     * @Route("/", name="index")
+     * @Route("/customerNeedMaintenance", name="customerNeedMaintenance")
      */
     public function index(ExtractCustomer $extractCustomer)
     {
@@ -42,7 +44,7 @@ class IndexController extends Controller
 
         // trie par couleur des clients en fonction de sa date de contrat
         $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
-        return $this->render('index.html.twig', [
+        return $this->render('customerNeedMaintenance.html.twig', [
                 'customersNeedMaintenanceColored' => $customersNeedMaintenanceColored,
             ]
         );
@@ -88,13 +90,6 @@ class IndexController extends Controller
         );
     }
 
-    /**
-     * @Route("/admin", name="admin")
-     */
-    public function admin()
-    {
-        return $this->render('Admin/index.html.twig');
-    }
 
     private function addPlannedMaintenanceToCustomer(Array $customers)
     {
@@ -108,5 +103,24 @@ class IndexController extends Controller
         return $customers;
     }
 
+    /**
+     * @Route("/", name="index")
+     */
+    public function controlConfig(ConfigurationRepository $configurationRepository)
+    {
+        // vérification des paramètres
+        $configs = [
+//            $configurationRepository->findOneByName('API_KEY_GOOGLE_GEOCODING'),
+            $configurationRepository->findOneByName('API_KEY_GOOGLE_MAPS'),
+            $configurationRepository->findOneByName('API_KEY_DEV_HERE'),
+            $configurationRepository->findOneByName('APP_CODE_DEV_HERE'),
+            ];
 
+        foreach ($configs as $config){
+            if($config == null || $config->getValue() == null){
+                return $this->redirectToRoute('config_editOrUpdate');
+            }
+        }
+        return $this->redirectToRoute('customerNeedMaintenance');
+    }
 }

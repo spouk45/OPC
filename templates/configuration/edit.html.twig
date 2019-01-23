@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètre{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Paramètres</h1>
+        <div class="row">
+            <div class="col">
+                <table class="table table-striped thead-dark text-center">
+                    <tr>
+                        <th>Paramètre</th>
+                        <th>Valeur</th>
+                        <th>Action</th>
+                    </tr>
+                    {{ form_start(formApiKeyGoogleMaps) }}
+                    <tr>
+                        <td class="align-middle">API_KEY_GOOGLE_MAPS</td>
+                        <td>{{ form_widget(formApiKeyGoogleMaps.value) }}</td>
+                        <td>
+                            <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+                        </td>
+                    </tr>
+                    {{ form_end(formApiKeyGoogleMaps) }}
+                    {{ form_start(formApiKeyDevHere) }}
+                    <tr>
+                        <td class="align-middle">API_KEY_DEV_HERE</td>
+                        <td>{{ form_widget(formApiKeyDevHere.value) }}</td>
+                        <td>
+                            <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+                        </td>
+                    </tr>
+                    {{ form_end(formApiKeyDevHere) }}
+                    {{ form_start(formAppCodeDevHere) }}
+                    <tr>
+                        <td class="align-middle">APP_CODE_DEV_HERE</td>
+                        <td>{{ form_widget(formAppCodeDevHere.value) }}</td>
+                        <td>
+                            <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+                        </td>
+                    </tr>
+                    {{ form_end(formAppCodeDevHere) }}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
