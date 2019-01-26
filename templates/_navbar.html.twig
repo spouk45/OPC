@@ -31,7 +31,7 @@
                     </a>
                     <div class="dropdown-menu">
                         {% if is_granted('ROLE_ADMIN') %}
-                             <a class="dropdown-item" href="#">Paramètres</a>
+                             <a class="dropdown-item" href="{{ path('config_editOrUpdate') }}">Paramètres</a>
                             <a class="dropdown-item" href="{{ path('heating_index') }}">Gestion des systèmes de chauffes</a>
                             <a class="dropdown-item" href="{{ path('user_index') }}">Utilisateurs</a>
                          {% endif %}

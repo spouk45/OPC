@@ -70,7 +70,6 @@ class ExtractCustomer
 
     /**
      * @param array $customers
-     * @param InterventionReportRepository $interventionReportRepository
      * @return array
      */
     public function filterCustomersByPeriodMaintenance(array $customers): array

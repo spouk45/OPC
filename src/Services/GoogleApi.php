@@ -9,12 +9,17 @@
 namespace App\Services;
 
 
+use Symfony\Component\HttpFoundation\Session\Session;
+
 class GoogleApi
 {
     const API_KEY = 'API_KEY_GOOGLE_GEOCODING';
-    public function geocoding($adress)
+    private $apiKey;
+
+    public function __construct()
     {
-        $data = [];
-        return $data;
+        $session = new Session();
+        $this->apiKey = $session->get('configs')['API_KEY_GOOGLE_GEOCODING'];
     }
+
 }

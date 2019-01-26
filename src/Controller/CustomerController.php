@@ -51,7 +51,7 @@ class CustomerController extends AbstractController
      * @return Response
      * @Route("/new", name="customer_new", methods="GET|POST")
      */
-    public function new(Request $request, DevHereApi $devHereApi,FileUploader $fileUploader): Response
+    public function new(Request $request, DevHereApi $devHereApi): Response
     {
         $customer = new Customer();
         $form = $this->createForm(CustomerType::class, $customer);
@@ -64,21 +64,7 @@ class CustomerController extends AbstractController
             if($resApi['error'] == null ){
                 $location = $resApi['location'];
                 $customer->setCoordGPS(($location));
-
-                $files = $form->get('images')->getData();
                 $em = $this->getDoctrine()->getManager();
-
-                if (!empty($files)) {
-                    /** @var UploadedFile $file */
-                    foreach ($files as $file) {
-                        $fileName = $fileUploader->upload($file);
-                        $imagesToAdd = new Image();
-                        $imagesToAdd->setName($fileName);
-                        $customer->addImagesLink($imagesToAdd);
-                        $em->persist($imagesToAdd);
-                    }
-                }
-
                 $em->persist($customer);
                 $em->flush();
                 $this->addFlash('success','client ajouté avec succès');
@@ -157,22 +143,5 @@ class CustomerController extends AbstractController
 
         return $this->redirectToRoute('customer_index');
     }
-
-
-//    /**
-//     * @param ExtractCustomer $extractCustomer
-//     * @return \Symfony\Component\HttpFoundation\JsonResponse
-//     * @Route("/map", name="customer_delete", methods="GET|POST")
-//     */
-//    public function getCustomersNeedMaintenanceForMap(ExtractCustomer $extractCustomer)
-//    {
-//         // on récupère la liste de client en contrat
-//         $customerHeatings = $this->getDoctrine()->getRepository(CustomerHeating::class)->findByContractFinish(false);
-//         $customers = $extractCustomer->extractCustomerNeedMaintenance($customerHeatings);
-//
-//         // on reconstruit un tableau pour avoir seulement les données nécessaires
-//
-//            return $this->json($customers);
-//    }
 
 }

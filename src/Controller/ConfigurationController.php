@@ -7,6 +7,7 @@ use App\Form\ConfigurationType;
 use App\Repository\ConfigurationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -68,6 +69,11 @@ class ConfigurationController extends AbstractController
                 $em->persist($lastConfiguration);
                 $em->flush();
 
+                $session = new Session();
+                $configs = $session->get('configs');
+                $configs[$name] = $value;
+                $session->set('configs',$configs);
+
                 return $this->redirectToRoute('config_editOrUpdate');
             }
         }
@@ -77,6 +83,11 @@ class ConfigurationController extends AbstractController
             'formApiKeyDevHere' => $formApiKeyDevHere->createView(),
             'formAppCodeDevHere' => $formAppCodeDevHere->createView(),
         ]);
+    }
+
+    public function addParams()
+    {
+
     }
 
 }

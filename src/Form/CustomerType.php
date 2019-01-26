@@ -50,13 +50,7 @@ class CustomerType extends AbstractType
                 'label' => 'Contrat Rompu ?',
                 'required' => false,
             ])
-            ->add('images', FileType::class,
-                [
-                    'label' => 'Images',
-                    'required'=>false,
-                    'multiple' => true,
-                    'mapped'=>false,
-                ])
+
         ;
     }
 

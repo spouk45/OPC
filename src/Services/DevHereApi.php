@@ -13,12 +13,20 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class DevHereApi
 {
-    const API_KEY = 'API_KEY_DEV_HERE';
-    const APP_CODE = 'APP_CODE_DEV_HERE';
+    private $apiKey;
+    private $appCode;
     const CERT_SSL_IS_ACTIVE = 'CERT_SSL_IS_ACTIVE';
+
+    public function __construct()
+    {
+        $session = new Session();
+        $this->apiKey = $session->get('configs')['API_KEY_DEV_HERE'];
+        $this->appCode = $session->get('configs')['APP_CODE_DEV_HERE'];
+    }
 
     /**
      * @param $address
@@ -31,7 +39,7 @@ class DevHereApi
         $data = ['location' => '', 'error' => ''];
         //on formate l'adresse
         $address = urlencode($address . ' France');
-        $url = 'https://geocoder.api.here.com/6.2/geocode.json?app_id=' . getenv(self::API_KEY) . '&app_code=' . getenv(self::APP_CODE) . '&searchtext=' . $address;
+        $url = 'https://geocoder.api.here.com/6.2/geocode.json?app_id=' . $this->apiKey . '&app_code=' . $this->appCode . '&searchtext=' . $address;
 
         try {
 
@@ -39,8 +47,8 @@ class DevHereApi
             $option = [
                 'verify' => getenv(self::CERT_SSL_IS_ACTIVE) == '1' ? true : false,
                 'headers' => [
-                    'Accept'     => 'application/json',
-                    ]
+                    'Accept' => 'application/json',
+                ]
             ];
             $res = $client->request('GET', $url, $option);
 
@@ -63,16 +71,16 @@ class DevHereApi
             ];
         } catch (Exception $e) {
             $data['error'] = $e->getMessage();
-        } catch (RequestException  $e){
+        } catch (RequestException  $e) {
             dump($e->getMessage());
-            if($code = $e->getResponse() && $code = $e->getResponse()->getStatusCode()){
-                $data['error'] = 'Une erreur est survenue. Code: ' . $code;
-            }else{
+            if ($code = $e->getResponse() && $code = $e->getResponse()->getStatusCode()) {
+                $data['error'] = 'API DEV HERE : Une erreur est survenue. Code: ' . $code;
+            } else {
                 $data['error'] = $e->getMessage();
             }
 
         } catch (GuzzleException $e) {
-            $data['error'] = $e->getMessage() ;
+            $data['error'] = $e->getMessage();
         }
         return $data;
     }

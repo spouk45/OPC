@@ -9,6 +9,7 @@
 namespace App\DataFixtures;
 
 
+use App\Entity\Configuration;
 use App\Entity\Extraction;
 use App\Entity\HeatingSource;
 use App\Entity\HeatingType;
@@ -16,6 +17,7 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 class AppFixtures extends Fixture
 {
@@ -40,22 +42,29 @@ class AppFixtures extends Fixture
             $this->addReference($username, $user);
         }
 
-        foreach ($this->getHeatingTypeData() as [$name]){
+        foreach ($this->getHeatingTypeData() as [$name]) {
             $heatingType = new HeatingType();
             $heatingType->setName($name);
             $manager->persist($heatingType);
         }
 
-        foreach ($this->getHeatingSourceData() as [$name]){
+        foreach ($this->getHeatingSourceData() as [$name]) {
             $heatingSource = new HeatingSource();
             $heatingSource->setName($name);
             $manager->persist($heatingSource);
         }
 
-        foreach ($this->getExtractionTypeData() as [$name]){
+        foreach ($this->getExtractionTypeData() as [$name]) {
             $extractionType = new Extraction();
             $extractionType->setName($name);
             $manager->persist($extractionType);
+        }
+
+        foreach ($this->getParamData() as [$name,$value]) {
+            $configuration = new Configuration();
+            $configuration->setName($name);
+            $configuration->setValue($value);
+            $manager->persist($configuration);
         }
 
         $manager->flush();
@@ -65,8 +74,8 @@ class AppFixtures extends Fixture
     {
         return [
             // $userData = [$fullname, $username, $password, $email, $roles];
-           // ['Jane Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', ['ROLE_ADMIN']],
-           // ['Tom Doe', 'tom_admin', 'kitten', 'tom_admin@symfony.com', ['ROLE_ADMIN']],
+            // ['Jane Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', ['ROLE_ADMIN']],
+            // ['Tom Doe', 'tom_admin', 'kitten', 'tom_admin@symfony.com', ['ROLE_ADMIN']],
             ['greg', 'admin', 'admin', 'greg@mongreg.fr', ['ROLE_ADMIN']],
         ];
     }
@@ -95,4 +104,15 @@ class AppFixtures extends Fixture
         ];
     }
 
+    private function getParamData():array
+    {
+        return [
+            // $userData = [$paramName, $value];
+            ['API_KEY_GOOGLE_MAPS', ''],
+            ['API_KEY_DEV_HERE', ''],
+            ['APP_CODE_DEV_HERE', ''],
+        ];
+    }
+
 }
+

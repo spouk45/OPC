@@ -16,6 +16,7 @@ use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -58,6 +59,7 @@ class IndexController extends Controller
      */
     public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
     {
+        $session = new Session();
         $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
         // récupération de la liste de client ayant besoin d'une maintenance
         $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
@@ -85,7 +87,7 @@ class IndexController extends Controller
         $customers = $mySerializer->serialize($customers);
         return $this->render('map.html.twig', [
                 'customers' => $customers,
-                'apiKey' => getenv('API_KEY_GOOGLE_MAPS'),
+                'apiKey' => $session->get('configs')['API_KEY_GOOGLE_MAPS'],
             ]
         );
     }
@@ -108,19 +110,14 @@ class IndexController extends Controller
      */
     public function controlConfig(ConfigurationRepository $configurationRepository)
     {
-        // vérification des paramètres
-        $configs = [
-//            $configurationRepository->findOneByName('API_KEY_GOOGLE_GEOCODING'),
-            $configurationRepository->findOneByName('API_KEY_GOOGLE_MAPS'),
-            $configurationRepository->findOneByName('API_KEY_DEV_HERE'),
-            $configurationRepository->findOneByName('APP_CODE_DEV_HERE'),
-            ];
-
+        $session = new Session();
+        $configs = $configurationRepository->findAll();
+        $dataConfigs = [];
         foreach ($configs as $config){
-            if($config == null || $config->getValue() == null){
-                return $this->redirectToRoute('config_editOrUpdate');
-            }
+            $dataConfigs[$config->getName()]= $config->getValue();
         }
+        $session->set('configs', $dataConfigs);
+
         return $this->redirectToRoute('customerNeedMaintenance');
     }
 }
