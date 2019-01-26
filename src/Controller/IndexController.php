@@ -113,9 +113,25 @@ class IndexController extends Controller
         $session = new Session();
         $configs = $configurationRepository->findAll();
         $dataConfigs = [];
+
         foreach ($configs as $config){
             $dataConfigs[$config->getName()]= $config->getValue();
         }
+
+        $error = [];
+        if(!isset($dataConfigs['API_KEY_GOOGLE_MAPS'])){
+            $error[] = 'API_KEY_GOOGLE_MAPS';
+        }
+        if(!isset($dataConfigs['API_KEY_DEV_HERE'])){
+            $error[] = 'API_KEY_DEV_HERE';
+        }
+        if(!isset($dataConfigs['APP_CODE_DEV_HERE'])){
+            $error[] = 'APP_CODE_DEV_HERE';
+        }
+        if(count($error) > 0){
+            $this->addFlash('danger','Les clés : '.implode(', ',$error).' n\'existent pas dans la base.');
+        }
+
         $session->set('configs', $dataConfigs);
 
         return $this->redirectToRoute('customerNeedMaintenance');
