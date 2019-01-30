@@ -7,7 +7,6 @@
 {% block body %}
     <div class="container">
         <h1>Fiche client</h1>
-        {{ include('customer/_delete_form.html.twig') }}
         <div class="mx-auto mb-2 d-flex justify-content-between">
             <a class="btn btn-primary" href="{{ path('customer_edit', {'id': customer.id}) }}">Modifier</a>
             <a class="btn btn-primary" href="{{ path('show_images', {'id': customer.id}) }}">Gallery photo</a>

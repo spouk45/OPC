@@ -101,24 +101,6 @@ class CustomerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            $files = $form->get('images')->getData();
-            $em = $this->getDoctrine()->getManager();
-
-            if (!empty($files)) {
-                /** @var UploadedFile $file */
-                foreach ($files as $file) {
-                    /** @var array $newFile */
-                    $newFile = $fileUploader->upload($file);
-                    $imagesToAdd = new Image();
-                    $imagesToAdd->setName($newFile['fileName']);
-                    $imagesToAdd->setOriginalName($newFile['originalName']);
-                    $imagesToAdd->setUploadDate(new DateTime());
-                    $customer->addImagesLink($imagesToAdd);
-                    $em->persist($imagesToAdd);
-                }
-            }
-
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);

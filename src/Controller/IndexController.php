@@ -39,7 +39,7 @@ class IndexController extends Controller
         $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
         // récupération de la liste de client ayant besoin d'une maintenance
         $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
-
+dump($customersNeedMaintenance);
         // ajout des lastmaintenance date à chaque customer
         $this->addPlannedMaintenanceToCustomer($customersNeedMaintenance);
 
@@ -106,6 +106,8 @@ class IndexController extends Controller
     }
 
     /**
+     * @param ConfigurationRepository $configurationRepository
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      * @Route("/", name="index")
      */
     public function controlConfig(ConfigurationRepository $configurationRepository)

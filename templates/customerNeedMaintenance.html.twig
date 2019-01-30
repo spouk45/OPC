@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
 <section>
     <div class="container">
     <h2>Liste des maintenances clients à venir</h2>
@@ -14,6 +13,7 @@
                 <th>Client</th>
                 <th>Ville</th>
                 <th>Date d'anniversaire de maintenance</th>
+                <th>Date de maintenance planifié</th>
                 <th>Fiche client</th>
             </tr>
             </thead>
@@ -36,6 +36,7 @@
                         <td>{{ customer.fullname }}</td>
                         <td>{{ customer.city }}</td>
                         <td>{{ customer.anniversaryDate|date("d/m") }}</td>
+                        <td>{{ customer.plannedMaintenanceDate|date("d/m/Y") }}</td>
                         <td><a href="{{ path('customer_show',{'id':customer.id}) }}"><img class="icone" src="img/fiche.png" alt="voir"></a>
                     </tr>
                 {% endfor %}

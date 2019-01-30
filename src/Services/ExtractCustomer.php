@@ -29,9 +29,9 @@ class ExtractCustomer
             /** @var Customer $customer */
             foreach ($customers as $customer) {
                 $lastMaintenance = $customer->getLastMaintenanceDate();
-                if($lastMaintenance == null){
-                    $lastMaintenance = $customer->getContractDate();
-                }
+//                if($lastMaintenance == null){
+//                    $lastMaintenance = $customer->getContractDate();
+//                }
                 /** @var  DateTime $anniversary */
                 $anniversary = $customer->getAnniversaryDate();
 
