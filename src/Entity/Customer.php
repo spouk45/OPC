@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -100,7 +101,13 @@ class Customer
     private $contractDate;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 12,
+     *      minMessage = "You must be at least {{ limit }}cm tall to enter",
+     *      maxMessage = "You cannot be taller than {{ limit }}cm to enter"
+     * )
      */
     private $anniversaryDate;
 
@@ -119,7 +126,6 @@ class Customer
      */
     private $interventionReports;
 
-    private $plannedMaintenanceDate;
 
     /**
      * not mapped
@@ -135,15 +141,20 @@ class Customer
      */
     private $imagesLink;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $plannedMaintenanceDate;
+
 
     public function getFullname()
     {
-        return $this->name.' '.$this->firstname;
+        return $this->name . ' ' . $this->firstname;
     }
 
     public function makeAdress()
     {
-       $this->fullAdress = $this->getComplementAdress().' '.$this->getPostalCode().' '.$this->getCity();
+        $this->fullAdress = $this->getComplementAdress() . ' ' . $this->getPostalCode() . ' ' . $this->getCity();
     }
 
     public function __construct()
@@ -365,12 +376,12 @@ class Customer
         return $this;
     }
 
-    public function getAnniversaryDate(): ?\DateTimeInterface
+    public function getAnniversaryDate(): ?int
     {
         return $this->anniversaryDate;
     }
 
-    public function setAnniversaryDate(?\DateTimeInterface $anniversaryDate): self
+    public function setAnniversaryDate(?int $anniversaryDate): self
     {
         $this->anniversaryDate = $anniversaryDate;
 
@@ -435,7 +446,7 @@ class Customer
     /**
      * @return mixed
      */
-    public function getPlannedMaintenanceDate()
+    public function getPlannedMaintenanceDate(): ?DateTime
     {
         return $this->plannedMaintenanceDate;
     }
@@ -443,7 +454,7 @@ class Customer
     /**
      * @param mixed $plannedMaintenanceDate
      */
-    public function setPlannedMaintenanceDate($plannedMaintenanceDate): void
+    public function setPlannedMaintenanceDate(DateTime $plannedMaintenanceDate): void
     {
         $this->plannedMaintenanceDate = $plannedMaintenanceDate;
     }
@@ -455,6 +466,7 @@ class Customer
     {
         return $this->imagesLink;
     }
+
     public function addImagesLink(Image $imagesLink): self
     {
         if (!$this->imagesLink->contains($imagesLink)) {
@@ -463,6 +475,7 @@ class Customer
         }
         return $this;
     }
+
     public function removeImagesLink(Image $imagesLink): self
     {
         if ($this->imagesLink->contains($imagesLink)) {
@@ -474,15 +487,37 @@ class Customer
         }
         return $this;
     }
+
     public function getImages(): ?array
     {
         return $this->images;
     }
+
     public function setImages(array $images): self
     {
         $this->images = $images;
         return $this;
     }
 
+    public function getAnniversaryMonth(): ?String
+    {
+        $months = [
+            1 => 'Janvier',
+            2 => 'Février'  ,
+            3 => 'Mars'  ,
+            4 => 'Avril',
+            5 => 'Mai' ,
+            6 => 'Juin',
+            7 => 'Juillet',
+            8 => 'Août',
+            9 => 'Septembre',
+            10 => 'Octobre',
+            11 => 'Novembre',
+            12 => 'Décembre'
+        ];
 
+        $month = $months[$this->anniversaryDate];
+
+        return !$month ? null : $month;
+    }
 }

@@ -54,6 +54,11 @@ class InterventionReportController extends AbstractController
             $em->persist($interventionReport);
             $em->flush();
 
+            // mise à jour du plannedMaintenanceDate du client
+            $customer->setPlannedMaintenanceDate($interventionReport->getPlannedDate());
+            $em->persist($customer);
+            $em->flush();
+
             return $this->redirectToRoute('intervention_report_list', ['customer' => $customer->getId()]);
         }
 
@@ -82,6 +87,23 @@ class InterventionReportController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+
+            // si maintenance à été modifié
+            if($interventionReport->getTypeInterventionReport() == "maintenance" &&
+                $interventionReport->getCustomer()->getPlannedMaintenanceDate() != $interventionReport->getPlannedDate()){
+                $em = $this->getDoctrine()->getManager();
+                /** @var Customer $customer */
+                $customer = $interventionReport->getCustomer();
+                $customer->setPlannedMaintenanceDate($interventionReport->getPlannedDate());
+                $em->persist($customer);
+                $em->flush();
+            }
+
+            // si status à été modifié en réalisé
+
+
+            // si status à été modifié en plannifié
+            
 
             return $this->redirectToRoute('intervention_report_list', ['customer' => $interventionReport->getCustomer()->getId()]);
         }

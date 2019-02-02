@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Customer;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -35,8 +36,60 @@ class CustomerRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findNeedMaintenanceForMap($numberOfMonthBeforeAlert = 3)
+    {
+        // récupération du numéro de mois
+        $date = new DateTime();
+        $month = (int) $date->format('M');
+
+        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
+        $customers = $this->createQueryBuilder('c')
+            ->andWhere('c.contractFinish = false')
+            ->andWhere('c.lastMaintenanceDate < :dateMin')
+            ->andWhere('c.plannedMaintenanceDate IS NULL')
+            ->setParameter('dateMin', $dateMin)
+            ->orderBy('c.name', 'ASC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getResult()
+            ;
 
 
+        $data = [];
+        return $customers;
+    }
+
+    public function findNeedMaintenance()
+    {
+        // récupération du numéro de mois
+        $date = new DateTime();
+        $month = (int) $date->format('M');
+
+//        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
+        $customers = $this->createQueryBuilder('c')
+            ->andWhere('c.contractFinish = false')
+            ->orderBy('c.name', 'ASC')
+            ->setMaxResults(100)
+            ->getQuery()
+            ->getResult()
+        ;
+
+        $data = [];
+        $data['plannedMaintenance'] = [];
+        /** @var Customer $customer */
+        foreach ($customers as $customer){
+            if($customer->getPlannedMaintenanceDate() != null){
+                $data['plannedMaintenance'][] = $customer;
+            }else{
+                $data[$customer->getAnniversaryDate()][] = $customer;
+            }
+        }
+        usort($data['plannedMaintenance'],function($a,$b){
+            return strcmp($a->getPlannedMaintenanceDate(),$b->getPlannedMaintenanceDate());
+        });
+
+        return $data;
+    }
     /*
     public function findOneBySomeField($value): ?Customer
     {

@@ -12,6 +12,7 @@ use App\Entity\Configuration;
 use App\Entity\Customer;
 use App\Repository\ConfigurationRepository;
 use App\Repository\InterventionReportRepository;
+use App\Services\DateUtils;
 use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -30,23 +31,24 @@ class IndexController extends Controller
     }
 
     /**
-     * @param ExtractCustomer $extractCustomer
+     * @param DateUtils $DateUtils
      * @return Response
      * @Route("/customerNeedMaintenance", name="customerNeedMaintenance")
      */
-    public function index(ExtractCustomer $extractCustomer)
+    public function index(DateUtils $DateUtils)
     {
-        $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
-        // récupération de la liste de client ayant besoin d'une maintenance
-        $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
-dump($customersNeedMaintenance);
-        // ajout des lastmaintenance date à chaque customer
-        $this->addPlannedMaintenanceToCustomer($customersNeedMaintenance);
+        $customersFiltered = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenance();
+        $customersPlanned = $customersFiltered['plannedMaintenance'];
+        unset($customersFiltered['plannedMaintenance']);
+        $customersByMonth = $customersFiltered;
 
+        dump($customersPlanned);
+        dump($customersByMonth);
         // trie par couleur des clients en fonction de sa date de contrat
-        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
         return $this->render('customerNeedMaintenance.html.twig', [
-                'customersNeedMaintenanceColored' => $customersNeedMaintenanceColored,
+                'customersByMonth' => $customersByMonth,
+                'customersPlanned' => $customersPlanned,
+                'dateUtils' => $DateUtils,
             ]
         );
     }
@@ -60,7 +62,7 @@ dump($customersNeedMaintenance);
     public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
     {
         $session = new Session();
-        $customers = $this->getDoctrine()->getRepository(Customer::class)->findByContractFinish(false);
+        $customers = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenanceForMap(false);
         // récupération de la liste de client ayant besoin d'une maintenance
         $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
 

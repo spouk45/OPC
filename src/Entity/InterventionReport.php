@@ -9,6 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class InterventionReport
 {
+    const CHOICE = [
+        'Maintenance' => 'Maintenance',
+        'Dépannage' => 'Dépannage',
+        'Autre' => 'Autre',
+        ];
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -16,11 +21,6 @@ class InterventionReport
      */
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\TypeInterventionReport", inversedBy="interventionReport")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $typeInterventionReport;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -43,22 +43,16 @@ class InterventionReport
      */
     private $customer;
 
+    /**
+     * @ORM\Column(type="string",nullable=false)
+     */
+    private $typeInterventionReport = 0;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTypeInterventionReport(): ?typeInterventionReport
-    {
-        return $this->typeInterventionReport;
-    }
-
-    public function setTypeInterventionReport(typeInterventionReport $typeInterventionReport): self
-    {
-        $this->typeInterventionReport = $typeInterventionReport;
-
-        return $this;
-    }
 
     public function getPlannedDate(): ?\DateTimeInterface
     {
@@ -104,6 +98,18 @@ class InterventionReport
     public function setCustomer(?Customer $customer): self
     {
         $this->customer = $customer;
+
+        return $this;
+    }
+
+    public function getTypeInterventionReport(): ?String
+    {
+        return $this->typeInterventionReport;
+    }
+
+    public function setTypeInterventionReport(string $typeInterventionReport): self
+    {
+        $this->typeInterventionReport = $typeInterventionReport;
 
         return $this;
     }

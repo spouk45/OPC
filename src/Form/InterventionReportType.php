@@ -34,11 +34,15 @@ class InterventionReportType extends AbstractType
                 'required' => true,
                 ])
             ->add('comment')
-            ->add('typeInterventionReport', EntityType::class, [
-                'label' => 'Type d\'intervention',
-                'class' => TypeInterventionReport::class,
-                'choice_label' => 'name',
-                'attr' => ['class' => 'text-capitalize'],
+//            ->add('typeInterventionReport', EntityType::class, [
+//                'label' => 'Type d\'intervention',
+//                'class' => TypeInterventionReport::class,
+//                'choice_label' => 'name',
+//                'attr' => ['class' => 'text-capitalize'],
+//            ])
+            ->add('typeInterventionReport',ChoiceType::class,[
+                'choices' => InterventionReport::CHOICE,
+
             ]);
     }
 

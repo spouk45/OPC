@@ -23,7 +23,7 @@
                     <tbody>
                     {% for intervention_report in intervention_reports %}
                         <tr>
-                            <td>{{ intervention_report.typeInterventionReport.name }}</td>
+                            <td>{{ intervention_report.typeInterventionReport }}</td>
                             <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('d M Y') : '' }}</td>
                             <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('d M Y') : '' }}</td>
                             <td>

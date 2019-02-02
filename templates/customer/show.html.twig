@@ -13,8 +13,8 @@
         </div>
 
 
-        <table class="table">
-            <thead class="thead-dark">
+        <table class="table text-center">
+            <thead class="thead-dark" >
             <tr>
                 <th colspan="2" class="text-center">Informations client</th>
             </tr>
@@ -38,11 +38,34 @@
             </tr>
             </tbody>
         </table>
-        <table class="table">
+        <table class="table text-center">
+            <thead class="thead-dark">
+            <tr>
+                <th colspan="2" class="text-center">Contrat</th>
+            </tr>
+            </thead>
             <tbody>
+            <tr>
+                 <td><p>Dernière maintenance : {{ customer.lastMaintenanceDate | date('d/m/Y') }}</p></td>
+                <td><p>Mois d'anniversaire : {{ customer.anniversaryMonth }}</p></td>
+           </tr>
+           <tr>
+                <td><p>Signature du contrat : {{ customer.contractDate | date('d/m/Y') }}</p></td>
+                <td><p>Contrat rompu ? - {% if customer.contractFinish  %} oui {% else %} non {% endif %} </p></td>
+            </tr>
+            <tr>
+                <td><p>Date de maintenance plannifiée : {{ customer.plannedMaintenanceDate | date('d/m/Y') }}</p></td>
+                <td><p>Date de dernière maintenance : {{ customer.lastMaintenanceDate | date('d/m/Y') }}</p></td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="table">
+            <thead class="thead-dark">
             <tr>
                 <th class="text-center">Commentaire</th>
             </tr>
+            </thead>
+            <tbody>
             <tr>
                 <td>{{ customer.information }}</td>
             </tr>

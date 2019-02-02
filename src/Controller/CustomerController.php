@@ -47,7 +47,6 @@ class CustomerController extends AbstractController
     /**
      * @param Request $request
      * @param DevHereApi $devHereApi
-     * @param FileUploader $fileUploader
      * @return Response
      * @Route("/new", name="customer_new", methods="GET|POST")
      */
@@ -102,8 +101,8 @@ class CustomerController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('customer_edit', ['id' => $customer->getId()]);
+            $this->addFlash('success','client modifié avec succès');
+            return $this->redirectToRoute('customer_show', ['id' => $customer->getId()]);
         }
 
         return $this->render('customer/edit.html.twig', [
