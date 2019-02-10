@@ -402,6 +402,9 @@ class Customer
 
     public function getLastMaintenanceDate(): ?\DateTimeInterface
     {
+        if($this->lastMaintenanceDate == null){
+            return $this->getContractDate();
+        }
         return $this->lastMaintenanceDate;
     }
 

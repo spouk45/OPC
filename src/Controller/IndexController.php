@@ -43,14 +43,8 @@ class IndexController extends Controller
         unset($customersFiltered['outdated']);
         $customersByMonth = $customersFiltered;
         $date = new DateTime();
-        dump($date);
-        dump($date->format('m'));
         $monthActual = (int) $date->format('m');
 
-        dump($monthActual);
-
-//        dump($customersPlanned);
-//        dump($customersByMonth);
         // trie par couleur des clients en fonction de sa date de contrat
         return $this->render('customerNeedMaintenance.html.twig', [
                 'customersByMonth' => $customersByMonth,
