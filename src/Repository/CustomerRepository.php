@@ -83,11 +83,13 @@ class CustomerRepository extends ServiceEntityRepository
 
         $data = [];
         $data['plannedMaintenance'] = [];
-        $data['urgent'] = [];
+        $data['outdated'] = [];
+        $date = new DateTime();
+
         /** @var Customer $customer */
         foreach ($customers as $customer) {
             // calcul de lastmaintenance > 12 mois
-            $interval = $customer->getLastMaintenanceDate()->diff(new DateTime());
+            $interval = $customer->getLastMaintenanceDate()->diff($date);
             if ($customer->getPlannedMaintenanceDate() != null) {
                 $data['plannedMaintenance'][] = $customer;
             } else {

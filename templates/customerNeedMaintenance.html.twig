@@ -45,8 +45,9 @@
                                         {% for key,customer in customersByMonth[monthActual] %}
                                             <div class="row tbody
                                             {% if monthActual == monthStart %}bg-warning
-                                            {% elseif monthActual < 11 and monthActual == monthStart + 1 %}bg-success
-                                            {% elseif monthActual == 12 and monthActual == 1 %}bg-success
+                                            {% elseif monthStart == 11 and (monthActual == 12 or monthActual == 1) %}bg-success
+                                            {% elseif monthStart == 12 and (monthActual == 1 or monthActual == 2 ) %}bg-success
+                                            {% elseif monthActual  ==  monthStart + 1 or monthActual  ==  monthStart + 2 %}bg-success
 
                                             {% else %}
                                                     bg-light

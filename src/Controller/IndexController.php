@@ -44,7 +44,6 @@ class IndexController extends Controller
         $customersByMonth = $customersFiltered;
         $date = new DateTime();
         $monthActual = (int) $date->format('m');
-
         // trie par couleur des clients en fonction de sa date de contrat
         return $this->render('customerNeedMaintenance.html.twig', [
                 'customersByMonth' => $customersByMonth,
@@ -98,17 +97,17 @@ class IndexController extends Controller
     }
 
 
-    private function addPlannedMaintenanceToCustomer(Array $customers)
-    {
-        /** @var Customer $customerNeedMaintenance */
-        foreach ($customers as $customer) {
-            $interventionReport = $this->interventionReportRepository->findLastPlannedMaintenance($customer);
-            $plannedDate = null;
-            $interventionReport != null ? $plannedDate = $interventionReport->getPlannedDate() : null;
-            $customer->setPlannedMaintenanceDate($plannedDate);
-        }
-        return $customers;
-    }
+//    private function addPlannedMaintenanceToCustomer(Array $customers)
+//    {
+//        /** @var Customer $customerNeedMaintenance */
+//        foreach ($customers as $customer) {
+//            $interventionReport = $this->interventionReportRepository->findLastPlannedMaintenance($customer);
+//            $plannedDate = null;
+//            $interventionReport != null ? $plannedDate = $interventionReport->getPlannedDate() : null;
+//            $customer->setPlannedMaintenanceDate($plannedDate);
+//        }
+//        return $customers;
+//    }
 
     /**
      * @param ConfigurationRepository $configurationRepository
