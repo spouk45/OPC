@@ -8,18 +8,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Configuration;
 use App\Entity\Customer;
 use App\Repository\ConfigurationRepository;
 use App\Repository\InterventionReportRepository;
 use App\Services\DateUtils;
 use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class IndexController extends Controller
 {
@@ -39,16 +38,26 @@ class IndexController extends Controller
     {
         $customersFiltered = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenance();
         $customersPlanned = $customersFiltered['plannedMaintenance'];
+        $customersOutdated = $customersFiltered['outdated'];
         unset($customersFiltered['plannedMaintenance']);
+        unset($customersFiltered['outdated']);
         $customersByMonth = $customersFiltered;
+        $date = new DateTime();
+        dump($date);
+        dump($date->format('m'));
+        $monthActual = (int) $date->format('m');
 
-        dump($customersPlanned);
-        dump($customersByMonth);
+        dump($monthActual);
+
+//        dump($customersPlanned);
+//        dump($customersByMonth);
         // trie par couleur des clients en fonction de sa date de contrat
         return $this->render('customerNeedMaintenance.html.twig', [
                 'customersByMonth' => $customersByMonth,
                 'customersPlanned' => $customersPlanned,
+                'customersOutdated' => $customersOutdated,
                 'dateUtils' => $DateUtils,
+                'monthActual' =>  $monthActual,
             ]
         );
     }

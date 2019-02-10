@@ -39,8 +39,6 @@ class CustomerRepository extends ServiceEntityRepository
     public function findNeedMaintenanceForMap($numberOfMonthBeforeAlert = 3)
     {
         // récupération du numéro de mois
-        $date = new DateTime();
-        $month = (int) $date->format('M');
 
         $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
         $customers = $this->createQueryBuilder('c')
@@ -56,37 +54,50 @@ class CustomerRepository extends ServiceEntityRepository
 
 
         $data = [];
-        return $customers;
+        $data['plannedMaintenance']= [];
+        /** @var Customer $customer */
+        foreach ($customers as $customer){
+            if($customer->getPlannedMaintenanceDate() != null){
+                $data['plannedMaintenance'][]=$customer;
+            }else{
+                $data[$customer->getAnniversaryDate()][]= $customer;
+            }
+        }
+
+        return $data;
     }
 
     public function findNeedMaintenance()
     {
         // récupération du numéro de mois
-        $date = new DateTime();
-        $month = (int) $date->format('M');
 
 //        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
         $customers = $this->createQueryBuilder('c')
             ->andWhere('c.contractFinish = false')
-            ->orderBy('c.name', 'ASC')
-            ->setMaxResults(100)
+            ->orderBy('c.plannedMaintenanceDate', 'ASC')
+            ->orderBy('c.lastMaintenanceDate', 'ASC')
+            ->setMaxResults(300)
             ->getQuery()
             ->getResult()
         ;
 
         $data = [];
         $data['plannedMaintenance'] = [];
+        $data['urgent'] = [];
         /** @var Customer $customer */
-        foreach ($customers as $customer){
-            if($customer->getPlannedMaintenanceDate() != null){
+        foreach ($customers as $customer) {
+            // calcul de lastmaintenance > 12 mois
+            $interval = $customer->getLastMaintenanceDate()->diff(new DateTime());
+            if ($customer->getPlannedMaintenanceDate() != null) {
                 $data['plannedMaintenance'][] = $customer;
-            }else{
-                $data[$customer->getAnniversaryDate()][] = $customer;
+            } else {
+                if($interval->days > 365){
+                    $data['outdated'][] = $customer;
+                }else{
+                    $data[$customer->getAnniversaryDate()][] = $customer;
+                }
             }
         }
-        usort($data['plannedMaintenance'],function($a,$b){
-            return strcmp($a->getPlannedMaintenanceDate(),$b->getPlannedMaintenanceDate());
-        });
 
         return $data;
     }
