@@ -4,67 +4,70 @@
 {% endblock %}
 
 {% block body %}
-    <div id="map" data-customers="{{ customers }}" ></div>
+    <div id="map" data-customers="{{ customers }}"></div>
 {% endblock %}
 {% block javascripts %}
 
-<script>
-    function initMap() {
-        const map = new google.maps.Map(document.getElementById('map'));
-        // Create an array of alphabetical characters used to label the markers.
-        // const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    <script>
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById('map'));
+            // Create an array of alphabetical characters used to label the markers.
+            // const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-        // Add some markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "locations" array.
-        // The map() method here has nothing to do with the Google Maps API.
-        const bounds  = new google.maps.LatLngBounds();
+            // Add some markers to the map.
+            // Note: The code uses the JavaScript Array.prototype.map() method to
+            // create an array of markers based on a given "locations" array.
+            // The map() method here has nothing to do with the Google Maps API.
+            const bounds = new google.maps.LatLngBounds();
 
-        let markers = extractMarker(customersData,bounds);
+            let markers = extractMarker(customersData, bounds);
 
-        map.fitBounds(bounds);
-        map.panToBounds(bounds);
+            map.fitBounds(bounds);
+            map.panToBounds(bounds);
 
-        // Add a marker clusterer to manage the markers.
-        let markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-    }
-
-    function extractMarker(customers,bounds){
-        if(customers!= null && customers.length > 0) {
-            return customers.map(function (customer, i) {
-                let icon = customer.color+'.png';
-
-                let loc = new google.maps.LatLng(customer.location.lat, customer.location.lng);
-                bounds.extend(loc);
-                let marker = new google.maps.Marker({
-                    position: loc,
-                    title: customer.fullName,
-                    icon: 'img/'+icon,
-                });
-
-                let contentString = '<b>Adresse :</b> '+ customer.fullAdress + '<br> <b>Date d\'anniversaire de contrat : </b>'
-                    + customer.annivContratDate + '<br> <p class="mt-1 text-center"><a href="/customer/'+customer.id+'">Fiche client</a></p>';
-                if(customer.color == 'blue'){
-                    contentString = '<b> Plannifié le :</b> '+ customer.planned + '<br>'+ contentString ;
-                }
-
-                let infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                marker.addListener('click', function () {
-                    infowindow.open(map, marker);
-                });
-                return marker;
-            });
-
+            // Add a marker clusterer to manage the markers.
+            let markerCluster = new MarkerClusterer(map, markers,
+                {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'}
+            );
         }
-    }
 
-    let customersData = JSON.parse($('#map').attr('data-customers'));
+        function extractMarker(data, bounds) {
+            let markers = [];
+            for (let color in data) {
+                console.log(color);
+                for (let k in data[color]) {
+                    let customer = data[color][k];
+                    let icon = color + '.png';
+                    let loc = new google.maps.LatLng(customer.location.lat, customer.location.lng);
+                    bounds.extend(loc);
+                    let marker = new google.maps.Marker({
+                        position: loc,
+                        title: customer.fullName,
+                        icon: 'img/' + icon,
+                    });
+                    let contentString = '<b>Adresse :</b> ' + customer.fullAdress + '<br> <b>Date d\'anniversaire de contrat : </b>'
+                        + customer.annivContratDate + '<br> <b>Denière maintenance : </b> '+ customer.lastMaintenanceDate +
+                        '<p class="mt-1 text-center"><a href="/customer/' + customer.id + '">Fiche client</a></p>';
+                    if (color == 'blue') {
+                        contentString = '<b> Plannifié le :</b> ' + customer.planned + '<br>' + contentString;
+                    }
 
-</script>
+                    let infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    marker.addListener('click', function () {
+                        infowindow.open(map, marker);
+                    });
+                    markers.push(marker);
+                }
+            }
+            return markers;
+        }
+
+        let customersData = JSON.parse($('#map').attr('data-customers'));
+
+    </script>
     <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
     </script>
     <script async defer

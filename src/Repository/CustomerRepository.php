@@ -6,6 +6,7 @@ use App\Entity\Customer;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * @method Customer|null find($id, $lockMode = null, $lockVersion = null)
@@ -36,31 +37,82 @@ class CustomerRepository extends ServiceEntityRepository
         ;
     }
 
-    public function findNeedMaintenanceForMap($numberOfMonthBeforeAlert = 3)
+    public function findNeedMaintenanceForMap()
     {
         // récupération du numéro de mois
 
-        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
-        $customers = $this->createQueryBuilder('c')
-            ->andWhere('c.contractFinish = false')
-            ->andWhere('c.lastMaintenanceDate < :dateMin')
-            ->andWhere('c.plannedMaintenanceDate IS NULL')
-            ->setParameter('dateMin', $dateMin)
-            ->orderBy('c.name', 'ASC')
-            ->setMaxResults(100)
-            ->getQuery()
-            ->getResult()
-            ;
+//        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
+//        $customers = $this->createQueryBuilder('c')
+//            ->andWhere('c.contractFinish = false')
+//            ->andWhere('c.lastMaintenanceDate < :dateMin')
+//            ->andWhere('c.plannedMaintenanceDate IS NULL')
+//            ->setParameter('dateMin', $dateMin)
+//            ->orderBy('c.name', 'ASC')
+//            ->setMaxResults(100)
+//            ->getQuery()
+//            ->getResult()
+//            ;
+//
+//
+//        $data = [];
+//        $data['plannedMaintenance']= [];
+//        /** @var Customer $customer */
+//        foreach ($customers as $customer){
+//            if($customer->getPlannedMaintenanceDate() != null){
+//                $data['plannedMaintenance'][]=$customer;
+//            }else{
+//                $data[$customer->getAnniversaryDate()][]= $customer;
+//            }
+//        }
+        $date = new DateTime();
+        $monthActual = (int) $date->format('m');
+        $monthActual == 12 ? $nextMonth = 1 : $nextMonth = $monthActual + 1;
 
+        $customerFiltered = $this->findNeedMaintenance();
 
-        $data = [];
-        $data['plannedMaintenance']= [];
-        /** @var Customer $customer */
-        foreach ($customers as $customer){
-            if($customer->getPlannedMaintenanceDate() != null){
-                $data['plannedMaintenance'][]=$customer;
-            }else{
-                $data[$customer->getAnniversaryDate()][]= $customer;
+        $warning = [];
+        $success = [];
+        if(isset($customerFiltered[$monthActual])){
+            $warning = $customerFiltered[$monthActual];
+        }
+        if(isset($customerFiltered[$nextMonth])){
+            $success = $customerFiltered[$nextMonth];
+        }
+
+        // regroupement des customers par color
+        $group['blue'] =  $customerFiltered['plannedMaintenance'];
+        $group['red'] = $customerFiltered['outdated'];
+        $group['orange'] = $warning;
+        $group['green'] =  $success;
+
+//        $data = [
+//            'fullName' => $customer->getName() . ' ' . $customer->getFirstname(),
+//            'fullAdress' => $customer->getFullAdress(),
+//            'location' => $customer->getCoordGPS(),
+//            'annivContratDate' => $customer->getAnniversaryDate()->format('d M'),
+//            'id' => $customer->getId(),
+//        ];
+
+        // contruction des données pour JSON
+        $data = [
+            'blue' => [],
+            'red' => [],
+            'orange' => [],
+            'green' => [],
+            ];
+        foreach ($group as $color => $customers){
+
+            /** @var  Customer $customer */
+            foreach ($customers as $customer){
+                $data[$color][] = [
+                    'fullName' => $customer->getName() . ' ' . $customer->getFirstname(),
+                    'fullAdress' => $customer->getFullAdress(),
+                    'location' => $customer->getCoordGPS(),
+                    'annivContratDate' => $customer->getAnniversaryMonth(),
+                    'lastMaintenanceDate' => $customer->getLastMaintenanceDate()->format('d M Y'),
+                    'planned' => $customer->getPlannedMaintenanceDate() !== null ? $customer->getPlannedMaintenanceDate()->format('d M Y') : null,
+                    'id' => $customer->getId(),
+                ];
             }
         }
 

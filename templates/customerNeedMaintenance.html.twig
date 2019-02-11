@@ -61,7 +61,6 @@
                                                                 class="icone" src="img/fiche.png" alt="voir"></a>
                                                 </div>
                                             </div>
-                                            {#{% endfor %}#}
                                         {% endfor %}
                                     {% endif %}
 
@@ -70,21 +69,6 @@
                                         {% set monthActual = 1 %}
                                     {% endif %}
                                 {% endfor %}
-                                {#{% for key,customers in customersByMonth %}#}
-                                {#<nav class="navbar navbar-expand-sm thead2 sticky-top justify-content-center">#}
-                                {#{{ dateUtils.monthToString(key) }}#}
-                                {#</nav>#}
-                                {#{% for customer in customers %}#}
-                                {#<div class="row bg-light tbody">#}
-                                {#<div class="col-3 cell">{{ customer.name }}</div>#}
-                                {#<div class="col-3 cell">{{ customer.city }}</div>#}
-                                {#<div class="col-3 cell">{{ customer.lastMaintenanceDate|date("d/m/Y") }}</div>#}
-                                {#<div class="col-3 cell"><a#}
-                                {#href="{{ path('customer_show',{'id':customer.id}) }}"><img#}
-                                {#class="icone" src="img/fiche.png" alt="voir"></a></div>#}
-                                {#</div>#}
-                                {#{% endfor %}#}
-                                {#{% endfor %}#}
                             </div>
                         </div>
                     </div>

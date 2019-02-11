@@ -64,30 +64,32 @@ class IndexController extends Controller
     public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
     {
         $session = new Session();
+//        $customers = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenanceForMap(false);
+//        // récupération de la liste de client ayant besoin d'une maintenance
+//        $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
+//
+//        // ajout des lastmaintenance date à chaque customer
+//        $this->addPlannedMaintenanceToCustomer($customersNeedMaintenance);
+//        // trie par coleur des clients en fonction de sa date de contrat
+//        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
+//
+//        $customers = [];
+//        foreach ($customersNeedMaintenanceColored as $color => $value) {
+//            /** @var Customer $customer */
+//            foreach ($value as $customer) {
+//                $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
+//                if ($color == "blue") {
+//                    /** @var DateTime $planned */
+//                    $planned = $customer->getPlannedMaintenanceDate();
+//                    $customerFo['planned'] = $planned->format('d/m/Y');
+//                }
+//                $customerFo['color'] = $color;
+//                $customers[] = $customerFo;
+//            }
+//        }
+//
+//        $customers = $mySerializer->serialize($customers);
         $customers = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenanceForMap(false);
-        // récupération de la liste de client ayant besoin d'une maintenance
-        $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
-
-        // ajout des lastmaintenance date à chaque customer
-        $this->addPlannedMaintenanceToCustomer($customersNeedMaintenance);
-        // trie par coleur des clients en fonction de sa date de contrat
-        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
-
-        $customers = [];
-        foreach ($customersNeedMaintenanceColored as $color => $value) {
-            /** @var Customer $customer */
-            foreach ($value as $customer) {
-                $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
-                if ($color == "blue") {
-                    /** @var DateTime $planned */
-                    $planned = $customer->getPlannedMaintenanceDate();
-                    $customerFo['planned'] = $planned->format('d/m/Y');
-                }
-                $customerFo['color'] = $color;
-                $customers[] = $customerFo;
-            }
-        }
-
         $customers = $mySerializer->serialize($customers);
         return $this->render('map.html.twig', [
                 'customers' => $customers,
