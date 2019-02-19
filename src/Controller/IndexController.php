@@ -10,6 +10,7 @@ namespace App\Controller;
 
 use App\Entity\Customer;
 use App\Repository\ConfigurationRepository;
+use App\Repository\CustomerRepository;
 use App\Repository\InterventionReportRepository;
 use App\Services\DateUtils;
 use App\Services\MySerializer;
@@ -33,7 +34,7 @@ class IndexController extends Controller
      * @return Response
      * @Route("/customerNeedMaintenance", name="customerNeedMaintenance")
      */
-    public function index(DateUtils $DateUtils)
+    public function needMaintenance(DateUtils $DateUtils)
     {
         $customersFiltered = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenance();
         $customersPlanned = $customersFiltered['plannedMaintenance'];
@@ -42,14 +43,44 @@ class IndexController extends Controller
         unset($customersFiltered['outdated']);
         $customersByMonth = $customersFiltered;
         $date = new DateTime();
-        $monthActual = (int) $date->format('m');
+        $monthActual = (int)$date->format('m');
         // trie par couleur des clients en fonction de sa date de contrat
         return $this->render('customerNeedMaintenance.html.twig', [
                 'customersByMonth' => $customersByMonth,
                 'customersPlanned' => $customersPlanned,
                 'customersOutdated' => $customersOutdated,
                 'dateUtils' => $DateUtils,
-                'monthActual' =>  $monthActual,
+                'monthActual' => $monthActual,
+            ]
+        );
+    }
+
+    /**
+     * @return Response
+     * @param CustomerRepository $customerRepository
+     * @Route("/dashboard", name="dashboard")
+     */
+    public function dashboard(CustomerRepository $customerRepository)
+    {
+        $nbCustomers = $customerRepository->countCustomers();
+        $nbCustomersOnContract = $customerRepository->countCustomers([
+            'field' => 'contractFinish',
+            'value' => false
+        ]);
+        $nbCustomersNotOnContract = $nbCustomers - $nbCustomersOnContract;
+        $nbPlannedMaintenanceDate = $customerRepository->countPlannedDate();
+        $nbCustomersToPlan = $customerRepository->countCustomerToPlanIn2NextMonth();
+        $nbCustomerDontHaveMaintenanceSinceOneYear = $customerRepository->countCustomerDontHaveMaintenanceSinceOneYear();
+        $nbCoordGPSNull = $customerRepository->countCoordGPSNull();
+        $nbCustomersByAnniversaryDate = $customerRepository->getCountByAnniversaryDate();
+        dump($nbCustomers);
+        dump($nbPlannedMaintenanceDate);
+        dump($nbCustomersToPlan);
+        dump($nbCustomerDontHaveMaintenanceSinceOneYear);
+        dump($nbCoordGPSNull);
+        dump($nbCustomersByAnniversaryDate);
+        dd($nbCustomersOnContract);
+        return $this->render('customerNeedMaintenance.html.twig', [
             ]
         );
     }
@@ -59,7 +90,7 @@ class IndexController extends Controller
      * @return Response
      * @Route("/map", name="map")
      */
-    public function map( MySerializer $mySerializer)
+    public function map(MySerializer $mySerializer)
     {
         $session = new Session();
 
@@ -83,22 +114,22 @@ class IndexController extends Controller
         $configs = $configurationRepository->findAll();
         $dataConfigs = [];
 
-        foreach ($configs as $config){
-            $dataConfigs[$config->getName()]= $config->getValue();
+        foreach ($configs as $config) {
+            $dataConfigs[$config->getName()] = $config->getValue();
         }
 
         $error = [];
-        if(!isset($dataConfigs['API_KEY_GOOGLE_MAPS'])){
+        if (!isset($dataConfigs['API_KEY_GOOGLE_MAPS'])) {
             $error[] = 'API_KEY_GOOGLE_MAPS';
         }
-        if(!isset($dataConfigs['API_KEY_DEV_HERE'])){
+        if (!isset($dataConfigs['API_KEY_DEV_HERE'])) {
             $error[] = 'API_KEY_DEV_HERE';
         }
-        if(!isset($dataConfigs['APP_CODE_DEV_HERE'])){
+        if (!isset($dataConfigs['APP_CODE_DEV_HERE'])) {
             $error[] = 'APP_CODE_DEV_HERE';
         }
-        if(count($error) > 0){
-            $this->addFlash('danger','Les clés : '.implode(', ',$error).' n\'existent pas dans la base.');
+        if (count($error) > 0) {
+            $this->addFlash('danger', 'Les clés : ' . implode(', ', $error) . ' n\'existent pas dans la base.');
         }
 
         $session->set('configs', $dataConfigs);
