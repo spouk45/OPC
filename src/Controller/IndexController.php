@@ -12,7 +12,6 @@ use App\Entity\Customer;
 use App\Repository\ConfigurationRepository;
 use App\Repository\InterventionReportRepository;
 use App\Services\DateUtils;
-use App\Services\ExtractCustomer;
 use App\Services\MySerializer;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,39 +55,14 @@ class IndexController extends Controller
     }
 
     /**
-     * @param ExtractCustomer $extractCustomer
      * @param MySerializer $mySerializer
      * @return Response
      * @Route("/map", name="map")
      */
-    public function map(ExtractCustomer $extractCustomer, MySerializer $mySerializer)
+    public function map( MySerializer $mySerializer)
     {
         $session = new Session();
-//        $customers = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenanceForMap(false);
-//        // récupération de la liste de client ayant besoin d'une maintenance
-//        $customersNeedMaintenance = $extractCustomer->extractCustomerNeedMaintenance($customers);
-//
-//        // ajout des lastmaintenance date à chaque customer
-//        $this->addPlannedMaintenanceToCustomer($customersNeedMaintenance);
-//        // trie par coleur des clients en fonction de sa date de contrat
-//        $customersNeedMaintenanceColored = $extractCustomer->filterCustomersByPeriodMaintenance($customersNeedMaintenance);
-//
-//        $customers = [];
-//        foreach ($customersNeedMaintenanceColored as $color => $value) {
-//            /** @var Customer $customer */
-//            foreach ($value as $customer) {
-//                $customerFo = $extractCustomer->createCustomerForJsonExportToMap($customer);
-//                if ($color == "blue") {
-//                    /** @var DateTime $planned */
-//                    $planned = $customer->getPlannedMaintenanceDate();
-//                    $customerFo['planned'] = $planned->format('d/m/Y');
-//                }
-//                $customerFo['color'] = $color;
-//                $customers[] = $customerFo;
-//            }
-//        }
-//
-//        $customers = $mySerializer->serialize($customers);
+
         $customers = $this->getDoctrine()->getRepository(Customer::class)->findNeedMaintenanceForMap(false);
         $customers = $mySerializer->serialize($customers);
         return $this->render('map.html.twig', [
@@ -97,19 +71,6 @@ class IndexController extends Controller
             ]
         );
     }
-
-
-//    private function addPlannedMaintenanceToCustomer(Array $customers)
-//    {
-//        /** @var Customer $customerNeedMaintenance */
-//        foreach ($customers as $customer) {
-//            $interventionReport = $this->interventionReportRepository->findLastPlannedMaintenance($customer);
-//            $plannedDate = null;
-//            $interventionReport != null ? $plannedDate = $interventionReport->getPlannedDate() : null;
-//            $customer->setPlannedMaintenanceDate($plannedDate);
-//        }
-//        return $customers;
-//    }
 
     /**
      * @param ConfigurationRepository $configurationRepository

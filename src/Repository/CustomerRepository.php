@@ -31,7 +31,7 @@ class CustomerRepository extends ServiceEntityRepository
             ->andWhere('c.name LIKE :name')
             ->setParameter('name', '%'.$value.'%')
             ->orderBy('c.name', 'ASC')
-            ->setMaxResults(50)
+//            ->setMaxResults(50)
             ->getQuery()
             ->getResult()
         ;
@@ -39,31 +39,6 @@ class CustomerRepository extends ServiceEntityRepository
 
     public function findNeedMaintenanceForMap()
     {
-        // récupération du numéro de mois
-
-//        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
-//        $customers = $this->createQueryBuilder('c')
-//            ->andWhere('c.contractFinish = false')
-//            ->andWhere('c.lastMaintenanceDate < :dateMin')
-//            ->andWhere('c.plannedMaintenanceDate IS NULL')
-//            ->setParameter('dateMin', $dateMin)
-//            ->orderBy('c.name', 'ASC')
-//            ->setMaxResults(100)
-//            ->getQuery()
-//            ->getResult()
-//            ;
-//
-//
-//        $data = [];
-//        $data['plannedMaintenance']= [];
-//        /** @var Customer $customer */
-//        foreach ($customers as $customer){
-//            if($customer->getPlannedMaintenanceDate() != null){
-//                $data['plannedMaintenance'][]=$customer;
-//            }else{
-//                $data[$customer->getAnniversaryDate()][]= $customer;
-//            }
-//        }
         $date = new DateTime();
         $monthActual = (int) $date->format('m');
         $monthActual == 12 ? $nextMonth = 1 : $nextMonth = $monthActual + 1;
@@ -84,14 +59,6 @@ class CustomerRepository extends ServiceEntityRepository
         $group['red'] = $customerFiltered['outdated'];
         $group['orange'] = $warning;
         $group['green'] =  $success;
-
-//        $data = [
-//            'fullName' => $customer->getName() . ' ' . $customer->getFirstname(),
-//            'fullAdress' => $customer->getFullAdress(),
-//            'location' => $customer->getCoordGPS(),
-//            'annivContratDate' => $customer->getAnniversaryDate()->format('d M'),
-//            'id' => $customer->getId(),
-//        ];
 
         // contruction des données pour JSON
         $data = [
@@ -122,8 +89,6 @@ class CustomerRepository extends ServiceEntityRepository
     public function findNeedMaintenance()
     {
         // récupération du numéro de mois
-
-//        $dateMin = new DateTime('-'.$numberOfMonthBeforeAlert.' month');
         $customers = $this->createQueryBuilder('c')
             ->andWhere('c.contractFinish = false')
             ->orderBy('c.plannedMaintenanceDate', 'ASC')
