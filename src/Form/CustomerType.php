@@ -42,6 +42,7 @@ class CustomerType extends AbstractType
 //                'required' => false,
 //            ])
             ->add('anniversaryDate',ChoiceType::class,[
+                'label' => 'Date d\'anniversaire',
                 'choices' => [
                     'Janvier' => 1,
                     'Février' => 2,

@@ -9,7 +9,7 @@
 </head>
 <body>
 {% include '_navbar.html.twig' %}
-<div class="container-fluid">
+<div id="flashBox" class="container-fluid">
     {% for label, messages in app.flashes %}
         {% for message in messages %}
             <div class="mt-4 text-center alert alert-{{ label }}">

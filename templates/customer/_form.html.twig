@@ -40,24 +40,48 @@
         {{ form_widget(form.complementAdress) }}
     </div>
 </div>
-<div class="row mb-3 ">
-    <div class="col-md-3">
+<div class="row mb-3">
+    <div class="col-6 col-lg-3 mb-3">
         {{ form_label(form.contractDate) }}
         {{ form_widget(form.contractDate) }}
     </div>
-    <div class="col-md-3">
+    <div class="col-6 col-lg-3 mb-3">
         {{ form_label(form.anniversaryDate) }}
         {{ form_widget(form.anniversaryDate) }}
     </div>
-    <div class="col-md-3">
+    <div class="col-6 col-lg-3 mb-3">
         {{ form_label(form.lastMaintenanceDate) }}
         {{ form_widget(form.lastMaintenanceDate) }}
     </div>
-    <div class="col-md-3 d-flex align-items-end">
+    <div class="col-6 col-lg-3 d-flex align-items-end mb-3">
         {{ form_label(form.contractFinish) }}
         {{ form_widget(form.contractFinish) }}
     </div>
 </div>
+{% if form.longitude is defined and form.latitude is defined %}
+<div class="row mb-4">
+    <div class="col-6 col-md-3">
+        {{ form_label(form.longitude) }}
+        {{ form_widget(form.longitude ) }}
+    </div>
+    <div class="col-6 col-md-3">
+        {{ form_label(form.latitude) }}
+        {{ form_widget(form.latitude) }}
+    </div>
+    <div class="col-8 offset-2 mt-3 col-md-4 col-lg-3 offset-md-0 ">
+        <div class="h-100 d-flex flex-column">
+            <button type="button" id="resetCoord" data-customer="{{ customer.id }}" class="btn btn-outline-primary mt-auto">Reset Coordonnées</button>
+        </div>
+    </div>
+    {#<div class="col form-inline ">#}
+    {#{{ form_label(form.longitude,null, {'label_attr': {'class': ' mr-1'}}) }}#}
+    {#{{ form_widget(form.longitude , {'label_attr': {'class': 'ml-3 mr-1'}}) }}#}
+    {#{{ form_label(form.latitude ,null, {'label_attr': {'class': 'ml-3 mr-1'}}) }}#}
+    {#{{ form_widget(form.latitude , {'label_attr': {'class': 'ml-3'}}) }}#}
+    {#<button class="btn btn-outline-primary ml-4">Reset Coordonnées</button>#}
+    {#</div>#}
+</div>
+{% endif %}
 <div class="row mb-3">
     <div class="col">
         {{ form_label(form.information) }}
@@ -67,7 +91,7 @@
 <div class="row">
     <div class="col">
         <div class="text-center">
-            <button class="btn btn-primary">{{ button_label|default('Valider') }}</button>
+            <button class="btn btn-primary" >{{ button_label|default('Valider') }}</button>
         </div>
         {{ form_end(form) }}
     </div>
