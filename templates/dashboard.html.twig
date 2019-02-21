@@ -1,0 +1,115 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Customer index{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row mt-4 mb-4">
+            <div class="col-2">
+                <div class="infoCount shadow">
+                    <p class="infoTitle">Clients enregistrés</p>
+                    <p class="counter">{{ dataCustomers.nbCustomers }}</p>
+                    <div class="progress">
+                        <div class="progress-bar" style="width:100%">100%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="infoCount shadow">
+                    {% set nbCustomersOnContractRatio = dataCustomers.nbCustomersOnContract / dataCustomers.nbCustomers * 100 %}
+                    <p class="infoTitle">Clients en contrat</p>
+                    <p class="counter">{{ dataCustomers.nbCustomersOnContract }}</p>
+                    <div class="progress">
+                        <div class="progress-bar"
+                             style="width:{{ nbCustomersOnContractRatio }}%">{{ nbCustomersOnContractRatio }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="infoCount shadow">
+                    {% set nbPlannedMaintenanceRatio = dataCustomers.nbPlannedMaintenance / dataCustomers.nbCustomers * 100 %}
+                    <p class="infoTitle">Clients plannifié</p>
+                    <p class="counter">{{ dataCustomers.nbPlannedMaintenance }}</p>
+                    <div class="progress">
+                        <div class="progress-bar"
+                             style="width:{{ nbPlannedMaintenanceRatio }}%">{{ nbPlannedMaintenanceRatio }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="infoCount shadow">
+                    {% set nbCustomersToPlanRatio = dataCustomers.nbCustomersToPlan / dataCustomers.nbCustomers * 100 %}
+                    <p class="infoTitle">Clients à plannifier</p>
+                    <p class="counter">{{ dataCustomers.nbCustomersToPlan }}</p>
+                    <div class="progress">
+                        <div class="progress-bar"
+                             style="width:{{ nbCustomersToPlanRatio }}%">{{ nbCustomersToPlanRatio }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="infoCount shadow">
+                    {% set nbCustomerDontHaveMaintenanceSinceOneYearRatio = dataCustomers.nbCustomerDontHaveMaintenanceSinceOneYear / dataCustomers.nbCustomers * 100 %}
+                    <p class="infoTitle">Clients sans maintenance depuis un an</p>
+                    <p class="counter">{{ dataCustomers.nbCustomerDontHaveMaintenanceSinceOneYear }}</p>
+                    <div class="progress">
+                        <div class="progress-bar"
+                             style="width:{{ nbCustomerDontHaveMaintenanceSinceOneYearRatio }}%">{{ nbCustomerDontHaveMaintenanceSinceOneYearRatio }}
+                            %
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2">
+                <div class="infoCount shadow">
+                    {% set nbCoordGPSNullRatio = dataCustomers.nbCoordGPSNull / dataCustomers.nbCustomers * 100 %}
+                    <p class="infoTitle">Clients sans coordonnées GPS</p>
+                    <p class="counter">{{ dataCustomers.nbCoordGPSNull }}</p>
+                    <div class="progress">
+                        <div class="progress-bar" style="width:{{ nbCoordGPSNullRatio }}%">{{ nbCoordGPSNullRatio }}%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="text-center mt-4">
+                    <a class="btn btn-outline-primary" href="{{ path('customerNeedMaintenance') }}">Voir tableaux des
+                        maintenances</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col text-center">
+                <div class="table-responsive d-flex justify-content-center">
+                    <table class="table calendarTable table-borderless w-auto">
+                        <thead>
+                        <tr>
+                            <th class="headTitle pb-0" colspan="12">Calendrier des maintenances clients</th>
+                        </tr>
+                        <tr>
+                            {% for entry in nbCustomersByAnniversaryDate %}
+                                <th class="pb-0">{{ entry.anniversaryDate }}</th>
+                            {% endfor %}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            {% for entry in nbCustomersByAnniversaryDate %}
+                                <td class="pt-0">{{ entry.countCustomer }}</td>
+                            {% endfor %}
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

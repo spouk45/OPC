@@ -1,3 +1,4 @@
+
 body {
   background-color:  $backgroundColor;
   color: $textColor1;
@@ -90,5 +91,76 @@ table{
 
   &:hover{
     filter:invert(90%);
+  }
+}
+
+// --------------------
+.infoCount{
+  text-align: center;
+  background-color: $dark2 ;
+  border-radius: .25rem;
+  padding : 0.5rem;
+  //color:$textColor1;
+  color:darken(white,20%);
+  p{margin:0}
+  .infoTitle{
+    letter-spacing:1px;
+    font-size:0.8rem;
+    font-weight: bold;
+  }
+  .counter {
+    font-size:2.75rem;
+  }
+
+  .progress{
+    height:14px;
+  }
+
+  .progress-bar{
+    font-size: 10px;
+  }
+
+}
+
+// ---------------
+.gridMaintenance{
+
+  .grid{
+    text-align: center;
+    padding : 0;
+    color:darken(white,20%);
+    background-color: $dark2 ;
+    min-width: 100px;
+    border-right:1px solid $primary;
+
+    .title{
+      border-bottom:1px solid $primary;
+      font-weight: bold;
+      letter-spacing:1px;
+      font-size:1.2rem;
+    }
+
+    .counter{
+      font-size:1.2rem;
+    }
+  }
+
+  .grid:last-child{
+    border-right:none;
+  }
+}
+
+.calendarTable{
+
+  color:darken(white,20%);
+  background-color: $dark2 ;
+  th{
+    border: none !important;
+    background-color: $dark2;
+    //color:darken(white,20%);
+  }
+  .headTitle{
+    font-size: larger;
+    color:darken(white,20%);
   }
 }

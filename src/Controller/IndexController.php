@@ -68,19 +68,26 @@ class IndexController extends Controller
             'value' => false
         ]);
         $nbCustomersNotOnContract = $nbCustomers - $nbCustomersOnContract;
-        $nbPlannedMaintenanceDate = $customerRepository->countPlannedDate();
+        $nbPlannedMaintenance = $customerRepository->countPlannedDate();
         $nbCustomersToPlan = $customerRepository->countCustomerToPlanIn2NextMonth();
         $nbCustomerDontHaveMaintenanceSinceOneYear = $customerRepository->countCustomerDontHaveMaintenanceSinceOneYear();
         $nbCoordGPSNull = $customerRepository->countCoordGPSNull();
+
+        $dataCustomers = [
+            'nbCustomers' => $nbCustomers,
+            'nbCustomersOnContract' => $nbCustomersOnContract,
+//            'nbCustomersNotOnContract' => $nbCustomersNotOnContract,
+            'nbPlannedMaintenance' => $nbPlannedMaintenance,
+            'nbCustomersToPlan' => $nbCustomersToPlan,
+            'nbCustomerDontHaveMaintenanceSinceOneYear' => $nbCustomerDontHaveMaintenanceSinceOneYear,
+            'nbCoordGPSNull' => $nbCoordGPSNull,
+        ];
+
         $nbCustomersByAnniversaryDate = $customerRepository->getCountByAnniversaryDate();
-        dump($nbCustomers);
-        dump($nbPlannedMaintenanceDate);
-        dump($nbCustomersToPlan);
-        dump($nbCustomerDontHaveMaintenanceSinceOneYear);
-        dump($nbCoordGPSNull);
-        dump($nbCustomersByAnniversaryDate);
-        dd($nbCustomersOnContract);
-        return $this->render('customerNeedMaintenance.html.twig', [
+
+        return $this->render('dashboard.html.twig', [
+                'dataCustomers' => $dataCustomers,
+                'nbCustomersByAnniversaryDate' => $nbCustomersByAnniversaryDate,
             ]
         );
     }
@@ -134,6 +141,6 @@ class IndexController extends Controller
 
         $session->set('configs', $dataConfigs);
 
-        return $this->redirectToRoute('customerNeedMaintenance');
+        return $this->redirectToRoute('dashboard');
     }
 }

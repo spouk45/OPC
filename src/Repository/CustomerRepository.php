@@ -95,14 +95,12 @@ class CustomerRepository extends ServiceEntityRepository
             ->getQuery()->getResult();
 
         $data = [];
+        $dateUtils = new DateUtils();
         for ($i = 1; $i <= 12; $i++) {
-            $data[$i] = ['countCustomer' => 0, 'anniversaryDate' => $i];
+            $data[$i] = ['countCustomer' => 0, 'anniversaryDate' => $dateUtils->getMonthToShortString($i)];
         }
         foreach ($results as $result) {
-            $data[$result['anniversaryDate']] = [
-                'countCustomer' => $result['countCustomer'],
-                'anniversaryDate' => $result['anniversaryDate']
-            ];
+            $data[$result['anniversaryDate']]['countCustomer'] = $result['countCustomer'];
         }
         return $data;
     }
