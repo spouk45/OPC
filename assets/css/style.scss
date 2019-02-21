@@ -97,6 +97,7 @@ table{
 // --------------------
 .infoCount{
   text-align: center;
+  width:300px;
   background-color: $dark2 ;
   border-radius: .25rem;
   padding : 0.5rem;
@@ -151,9 +152,14 @@ table{
 }
 
 .calendarTable{
-
-  color:darken(white,20%);
+  border-radius: .25rem;
   background-color: $dark2 ;
+
+  table{
+    background-color: $dark2 ;
+    color:darken(white,20%);
+
+  }
   th{
     border: none !important;
     background-color: $dark2;
