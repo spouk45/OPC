@@ -29,6 +29,21 @@ table{
   }
 
 }
+.myBg-light {
+  background-color: $bgLight;
+
+}
+.myBg-danger{
+  background-color: rgba(#ff6666,0.8);
+}
+
+.myBg-success{
+  background-color: rgba(#33cc33,0.8);
+}
+
+.myBg-warning{
+  background-color: rgba(#ff9933,0.8);
+}
 
 .table-primary, .table-primary > th, .table-primary > td{
   background-color: rgba($blue,0.3);
@@ -38,6 +53,10 @@ table{
   background-color: rgba($yellow,0.3);
 }
 
+.space-letter{
+  letter-spacing:1px;
+}
+
 .myTable{
   .myBody{
     max-height: 50vh;
@@ -45,7 +64,8 @@ table{
     overflow-x: hidden;
   }
   .thead1{
-    background-color: $tableColor;
+    background-color: $dark3;
+    color:$colorTitle;
   }
   .thead2{
     background-color: $dark;

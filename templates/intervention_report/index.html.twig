@@ -27,8 +27,7 @@
                             <td>{{ intervention_report.plannedDate ? intervention_report.plannedDate|date('d M Y') : '' }}</td>
                             <td>{{ intervention_report.realisedDate ? intervention_report.realisedDate|date('d M Y') : '' }}</td>
                             <td>
-                                <a href="{{ path('intervention_report_show', {'id': intervention_report.id}) }}"><img
-                                            class="icone" src="/img/fiche.png"></a>
+
                                 <a href="{{ path('intervention_report_edit', {'id': intervention_report.id}) }}"><img
                                             class="icone" src="/img/edit.png"></a>
                             </td>

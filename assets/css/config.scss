@@ -6,8 +6,10 @@ $info: lighten($primary,30%);
 $table-bg: darken(white,10%);
 $dark: darken($backgroundColor,10%);
 $dark2 : darken($backgroundColor,6%);
-$colorTitle : white;
+$dark3 : darken($backgroundColor,20%);
+$colorTitle : darken(white,20%);
 
+$bgLight: darken(white,20%);
 // nav
 $dropdown-bg: darken($dark,5%);
 $dropdown-link-color: $primary;

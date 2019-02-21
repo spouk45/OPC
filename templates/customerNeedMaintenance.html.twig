@@ -11,8 +11,7 @@
                 <div class="col-6 p-2">
                     <div class="container-fluid myTable text-center myBody">
                         <nav class="navbar sticky-top thead1">
-                            <h4 class="col-12"><span
-                                        class="badge badge-primary">Liste des maintenances clients à venir</span></h4>
+                            <h5 class="col-12 font-weight-bold space-letter">Liste des maintenances clients à venir</h5>
                             <div class="col-3 cell">Client</div>
                             <div class="col-3 cell">Ville</div>
                             <div class="col-3 cell">Dernière maintenance</div>
@@ -20,88 +19,95 @@
                         </nav>
                         <div class=" position-relative myBody">
                             {% if  customersOutdated|length > 0 %}
-                            <nav class="navbar navbar-expand-sm thead2 sticky-top justify-content-center">
-                                Dépassé - Urgent
-                            </nav>
+                                <nav class="navbar navbar-expand-sm thead2 sticky-top justify-content-center">
+                                    Dépassé - Urgent
+                                </nav>
                                 {% for customer in customersOutdated %}
-                                <div class="row tbody bg-danger">
-                                    <div class="col-3 cell">{{ customer.name }}</div>
-                                    <div class="col-3 cell">{{ customer.city }}</div>
-                                    <div class="col-3 cell">{{ customer.lastMaintenanceDate|date("d/m/Y") }}</div>
-                                    <div class="col-3 cell"><a
-                                                href="{{ path('customer_show',{'id':customer.id}) }}"><img
-                                                    class="icone" src="img/fiche.png" alt="voir"></a>
+                                    <div class="row tbody myBg-danger">
+                                        <div class="col-3 cell">{{ customer.name }}</div>
+                                        <div class="col-3 cell">{{ customer.city }}</div>
+                                        <div class="col-3 cell">{{ customer.lastMaintenanceDate|date("d/m/Y") }}</div>
+                                        <div class="col-3 cell"><a
+                                                    href="{{ path('customer_show',{'id':customer.id}) }}"><img
+                                                        class="icone" src="img/fiche.png" alt="voir"></a>
+                                        </div>
                                     </div>
-                                </div>
                                 {% endfor %}
                             {% endif %}
 
-                                {% set monthStart = monthActual %}
-                                {% for i in 1..12 %}
-                                    {% if customersByMonth[monthActual] is defined %}
-                                        <nav class="navbar navbar-expand-sm thead2 sticky-top justify-content-center">
-                                            {{ dateUtils.monthToString(monthActual) }}
-                                        </nav>
-                                        {% for key,customer in customersByMonth[monthActual] %}
-                                            <div class="row tbody
-                                            {% if monthActual == monthStart %}bg-warning
-                                            {% elseif monthStart == 11 and (monthActual == 12 or monthActual == 1) %}bg-success
-                                            {% elseif monthStart == 12 and (monthActual == 1 or monthActual == 2 ) %}bg-success
-                                            {% elseif monthActual  ==  monthStart + 1 or monthActual  ==  monthStart + 2 %}bg-success
+                            {% set monthStart = monthActual %}
+                            {% for i in 1..12 %}
+                                {% if customersByMonth[monthActual] is defined %}
+                                    <nav class="navbar navbar-expand-sm thead2 sticky-top justify-content-center">
+                                        {{ dateUtils.monthToString(monthActual) }}
+                                    </nav>
+                                    {% for key,customer in customersByMonth[monthActual] %}
+                                        <div class="row tbody
+                                            {% if monthActual == monthStart %}myBg-warning
+                                            {% elseif monthStart == 11 and (monthActual == 12 or monthActual == 1) %}myBg-success
+                                            {% elseif monthStart == 12 and (monthActual == 1 or monthActual == 2 ) %}myBg-success
+                                            {% elseif monthActual  ==  monthStart + 1 or monthActual  ==  monthStart + 2 %}myBg-success
 
                                             {% else %}
                                                     bg-light
                                             {% endif %}
                                              ">
-                                                <div class="col-3 cell">{{ customer.name }}</div>
-                                                <div class="col-3 cell">{{ customer.city }}</div>
-                                                <div class="col-3 cell">{{ customer.lastMaintenanceDate|date("d/m/Y") }}</div>
-                                                <div class="col-3 cell"><a
-                                                            href="{{ path('customer_show',{'id':customer.id}) }}"><img
-                                                                class="icone" src="img/fiche.png" alt="voir"></a>
-                                                </div>
+                                            <div class="col-3 cell">{{ customer.name }}</div>
+                                            <div class="col-3 cell">{{ customer.city }}</div>
+                                            <div class="col-3 cell">{{ customer.lastMaintenanceDate|date("d/m/Y") }}</div>
+                                            <div class="col-3 cell"><a
+                                                        href="{{ path('customer_show',{'id':customer.id}) }}"><img
+                                                            class="icone" src="img/fiche.png" alt="voir"></a>
                                             </div>
-                                        {% endfor %}
-                                    {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
 
-                                    {% set monthActual = monthActual + 1 %}
-                                    {% if monthActual > 12 %}
-                                        {% set monthActual = 1 %}
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
+                                {% set monthActual = monthActual + 1 %}
+                                {% if monthActual > 12 %}
+                                    {% set monthActual = 1 %}
+                                {% endif %}
+                            {% endfor %}
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-6 p-2">
-                        <div class="container-fluid myTable text-center myBody">
-                            <nav class="navbar sticky-top thead1">
-                                <h4 class="col-12"><span class="badge badge-primary">Liste des clients plannifié</span>
-                                </h4>
-                                <div class="col-3 cell">Client</div>
-                                <div class="col-3 cell">Ville</div>
-                                <div class="col-3 cell">Date plannifiée</div>
-                                <div class="col-3 cell">Fiche client</div>
-                            </nav>
-                            <div class=" position-relative myBody">
-                                {% for customer in customersPlanned %}
-                                    <div class="row bg-light tbody">
-                                        <div class="col-3 cell">{{ customer.name }}</div>
-                                        <div class="col-3 cell">{{ customer.city }}</div>
-                                        <div class="col-3 cell">{{ customer.plannedMaintenanceDate|date("d/m/Y") }}</div>
-                                        <div class="col-3 cell">
+                <div class="col-6 p-2">
+                    <div class="container-fluid myTable text-center myBody">
+                        <nav class="navbar sticky-top thead1 pl-0 pr-0" >
+                            <h5 class="col-12 font-weight-bold space-letter">Liste des clients plannifiés</h5>
+                            <div class="col-3 cell">Client</div>
+                            <div class="col-3 cell">Ville</div>
+                            <div class="col-3 cell">Date plannifiée</div>
+                            <div class="col-3 cell">Fiche client</div>
+                        </nav>
+                        <div class=" position-relative myBody">
+                            {% for customer in customersPlanned %}
+                                <div class="row myBg-light tbody">
+                                    <div class="col-3">
+                                        <div class="cell">{{ customer.name }}</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cell">{{ customer.city }}</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cell">{{ customer.plannedMaintenanceDate|date("d/m/Y") }}</div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="cell">
                                             <a href="{{ path('customer_show',{'id':customer.id}) }}">
                                                 <img class="icone" src="img/fiche.png" alt="voir">
                                             </a>
                                         </div>
                                     </div>
-                                {% endfor %}
-                            </div>
+                                </div>
+                            {% endfor %}
                         </div>
                     </div>
-
                 </div>
+
             </div>
+        </div>
     </section>
 
 {% endblock %}
